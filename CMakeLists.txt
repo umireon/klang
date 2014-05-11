@@ -16,7 +16,7 @@ target_link_libraries(calc add)
 if (test)
     enable_testing()
 
-    set(TESTS OFF)
+    set(TESTS OFF CACHE BOOL "")
     add_subdirectory(lib/cpputest)
     file(GLOB TestSourceFiles test/*.cpp)
     add_executable(runUnit ${TestSourceFiles})
