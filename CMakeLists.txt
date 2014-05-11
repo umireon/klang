@@ -3,10 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(cotire)
 
-set(CMAKE_CXX_FLAGS "-fextended-identifiers")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
-
-project(test)
+project(klang)
 
 option(test "Build all tests." ON)
 
@@ -19,6 +16,7 @@ target_link_libraries(calc add)
 if (test)
     enable_testing()
 
+    set(TESTS OFF)
     add_subdirectory(lib/cpputest)
     file(GLOB TestSourceFiles test/*.cpp)
     add_executable(runUnit ${TestSourceFiles})
@@ -28,7 +26,7 @@ if (test)
 
     add_test(Unit runUnit)
 
-    add_subdirectory(lib/igloo)
+    add_subdirectory(lib/igloo EXCLUDE_FROM_ALL)
     include_directories(${igloo_SOURCE_DIR})
     file(GLOB SpecSourceFiles spec/*.cpp)
     add_executable(runSpec ${SpecSourceFiles})
