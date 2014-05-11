@@ -9,28 +9,28 @@ int input(const char *str)
     return 0;
 }
 
-Describe(プログラム電卓)
+Describe(ProgramCalc)
 {
-    It(足し算できる)
+    It(Adds)
     {
         Assert::That(input("2+3\n"), Equals(5));
     }
-    It(四則演算できる)
+    It(Arith)
     {
         Assert::Failure("策定中");
     }
 
-    It(関数を定義できる)
+    It(DefineFunc)
     {
         Assert::Failure("策定中");
     }
 
-    It(関数をを実行できる)
+    It(ExecFunc)
     {
         Assert::Failure("策定中");
     }
 
-    It(変数に代入できる)
+    It(AssignVar)
     {
         Assert::Failure("策定中");
     }
