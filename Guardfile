@@ -22,19 +22,19 @@ guard :shell do
     build = `cd build && make`
     if $? != 0
         n "Build Failed", 'make', :failed
-        break
+        next
     end
 
     unit = `build/runUnit`.each_line.to_a[-2]
     if $? != 0
         n unit, 'CppUTest', :failed
-        break
+        next
     end
 
     spec = `build/runSpec`.each_line.to_a[-1]
     if $? != 0
         n spec, 'igloo', :failed
-        break
+        next
     end
 
     n "All of Build, Unit, Spec succeeded.", "Integrity", :success
