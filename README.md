@@ -3,14 +3,14 @@
 # TDD
 ```
 bundle install
-CC=clang CXX=clang bundle exec guard
+CC=clang CXX=clang++ bundle exec guard
 ```
 
 # ビルド方法
 ```
 mkdir build
 cd build
-CC=clang CXX=clang cmake -DTEST=ON ..
+CC=clang CXX=clang++ cmake -DTEST=ON ..
 make
 make test
 ```

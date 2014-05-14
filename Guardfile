@@ -14,9 +14,9 @@ notification :terminal_notifier
 
 guard :shell do
   watch("CMakeLists.txt") do
-    cmake = `mkdir -p build && cd build && cmake .. -Dtest=ON`.each_line.to_a[-1]
+    cmake = `mkdir -p build && cd build && cmake -DTEST=ON ..`
     puts cmake
-    n cmake[3..-1], "CMake", ($? == 0 ? :success : :failed)
+    n cmake.each_line.to_a[-1][3..-1], "CMake", ($? == 0 ? :success : :failed)
   end
 
   watch(%r{^(src|spec|test)\/(.+)\.c(pp)?$|^main\.c$}) do |m|
