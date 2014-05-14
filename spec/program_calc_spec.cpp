@@ -9,6 +9,7 @@ int input(const char *str)
     return 0;
 }
 
+/*
 Describe(プログラム電卓)
 {
     It(足し算できる)
@@ -35,4 +36,5 @@ Describe(プログラム電卓)
         Assert::Failure("策定中");
     }
 };
+*/
 

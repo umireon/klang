@@ -5,13 +5,10 @@ include(cotire)
 
 project(klang)
 
-option(test "Build all tests." ON)
+option(test "Build all tests." OFF)
+add_library(parser src/parser.c)
 
 set(serial "0.0.0")
-
-add_library(add src/add.c)
-add_executable(calc main.c)
-target_link_libraries(calc add)
 
 if (test)
     enable_testing()
@@ -22,7 +19,7 @@ if (test)
     add_executable(runUnit ${TestSourceFiles})
     include_directories(${CppUTest_SOURCE_DIR}/include)
     target_link_libraries(runUnit CppUTest CppUTestExt)
-    target_link_libraries(runUnit add)
+    target_link_libraries(runUnit parser)
 
     add_test(Unit runUnit)
 
@@ -30,7 +27,7 @@ if (test)
     include_directories(${igloo_SOURCE_DIR})
     file(GLOB SpecSourceFiles spec/*.cpp)
     add_executable(runSpec ${SpecSourceFiles})
-    target_link_libraries(runSpec add)
+    target_link_libraries(runSpec parser)
 
     add_test(Spec runSpec)
 endif()
