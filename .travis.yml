@@ -6,7 +6,7 @@ compiler:
 before_script:
   - mkdir build
   - cd build
-  - cmake .. -Dtest=ON
+  - cmake -DTEST=ON ..
 
 script: 
   - make
