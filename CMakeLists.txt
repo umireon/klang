@@ -6,6 +6,8 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
+set(CTEST_OUTPUT_ON_FAILURE ON)
+
 add_library(parser src/parser.c)
 
 set(serial "0.0.0")
