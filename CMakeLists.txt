@@ -1,36 +1,41 @@
 cmake_minimum_required(VERSION 2.8)
 
-set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-include(cotire)
-
 project(klang)
 
-option(test "Build all tests." ON)
+option(TEST "Build all tests." OFF)
+option(UNIT_TEST "Build unit tests." OFF)
+option(INTEGRATION_TEST "Build integration tests." OFF)
+
+add_library(parser src/parser.c)
 
 set(serial "0.0.0")
 
-add_library(add src/add.c)
-add_executable(calc main.c)
-target_link_libraries(calc add)
+if (TEST)
+    set(UNIT_TEST ON)
+    set(INTEGRATION_TEST ON)
+endif()
 
-if (test)
+if (UNIT_TEST)
     enable_testing()
 
-    set(TESTS OFF CACHE BOOL "")
-    add_subdirectory(lib/cpputest)
+    add_subdirectory(lib/cpputest EXCLUDE_FROM_ALL)
+    include_directories(${CppUTest_SOURCE_DIR}/include)
+
     file(GLOB TestSourceFiles test/*.cpp)
     add_executable(runUnit ${TestSourceFiles})
-    include_directories(${CppUTest_SOURCE_DIR}/include)
     target_link_libraries(runUnit CppUTest CppUTestExt)
-    target_link_libraries(runUnit add)
-
+    target_link_libraries(runUnit parser)
     add_test(Unit runUnit)
+endif()
+
+if (INTEGRATION_TEST)
+    enable_testing()
 
     add_subdirectory(lib/igloo EXCLUDE_FROM_ALL)
     include_directories(${igloo_SOURCE_DIR})
+
     file(GLOB SpecSourceFiles spec/*.cpp)
     add_executable(runSpec ${SpecSourceFiles})
-    target_link_libraries(runSpec add)
-
+    target_link_libraries(runSpec parser)
     add_test(Spec runSpec)
 endif()

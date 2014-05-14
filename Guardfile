@@ -14,12 +14,12 @@ notification :terminal_notifier
 
 guard :shell do
   watch("CMakeLists.txt") do
-    cmake = `mkdir -p build && cd build && cmake ..`.each_line.to_a[-1]
+    cmake = `mkdir -p build && cd build && cmake -DTEST=ON ..`
     puts cmake
-    n cmake[3..-1], "CMake", ($? == 0 ? :success : :failed)
+    n cmake.each_line.to_a[-1][3..-1], "CMake", ($? == 0 ? :success : :failed)
   end
 
-  watch(%r{^(src|spec|test)\/(.+)\.c(pp)?$}) do |m|
+  watch(%r{^(src|spec|test)\/(.+)\.c(pp)?$|^main\.c$}) do |m|
     build = `cd build && make`
     puts build
     if $? != 0
@@ -27,17 +27,17 @@ guard :shell do
         next
     end
 
-    unit = `build/runUnit`.each_line.to_a[-2]
+    unit = `build/runUnit`
     puts unit
     if $? != 0
-        n unit, 'CppUTest', :failed
+        n unit.each_line.to_a[-2], 'CppUTest', :failed
         next
     end
 
-    spec = `build/runSpec`.each_line.to_a[-1]
+    spec = `build/runSpec`
     puts spec
     if $? != 0
-        n spec, 'igloo', :failed
+        n spec.each_line.to_a[-1], 'igloo', :failed
         next
     end
 
