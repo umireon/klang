@@ -1,7 +1,9 @@
 #include <igloo/igloo_alt.h>
 using namespace igloo;
 
-#define Pending printf("P");return
+#include <stdio.h>
+
+#define Pending printf("P");return;
 
 bool accepts(const char *str)
 {
