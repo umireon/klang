@@ -19,6 +19,10 @@ enum symbol_type get_type_of_next_symbol(char c)
 		return SYMBOL_ALPHABET_X;
 	} else if ('g' <= dc && dc <= 'z') {
 		return SYMBOL_ALPHABET;
+	} else if (c == '+') {
+		return SYMBOL_SIGN_PLUS;
+	} else if (c == '-') {
+		return SYMBOL_SIGN_MINUS;
 	} else if (c == '\0') {
 		return SYMBOL_NULL;
 	} else {
@@ -123,6 +127,23 @@ int read_number_hex_or_oct(const char *str)
 	}
 }
 
+int read_number_signed(const char *str)
+{
+	enum symbol_type type = get_type_of_next_symbol(str[0]);
+
+	switch (type) {
+	case SYMBOL_NUMBER_ZERO:
+		return read_number_hex_or_oct(str);
+	case SYMBOL_NUMBER_OCT:
+	case SYMBOL_NUMBER_DEC:
+		return read_number_dec(str);
+	case SYMBOL_SIGN_PLUS:
+		return read_number_signed(str + 1);
+	case SYMBOL_SIGN_MINUS:
+		return -read_number_signed(str + 1);
+	}
+}
+
 struct ast_node *parse_number(const char *str)
 {
 	struct ast_node *num = malloc(sizeof(struct ast_node));
@@ -137,6 +158,10 @@ struct ast_node *parse_number(const char *str)
 	case SYMBOL_NUMBER_OCT:
 	case SYMBOL_NUMBER_DEC:
 		num->value = read_number_dec(str);
+		break;
+	case SYMBOL_SIGN_PLUS:
+	case SYMBOL_SIGN_MINUS:
+		num->value = read_number_signed(str);
 		break;
 	}
 
