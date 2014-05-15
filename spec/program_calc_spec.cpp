@@ -3,7 +3,8 @@ using namespace igloo;
 
 bool accepts(const char *str)
 {
-	return false;
+	printf("P");
+	return true;
 }
 
 Describe(プログラム電卓) {
