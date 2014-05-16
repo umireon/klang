@@ -261,10 +261,12 @@ struct ast_node *parse_statement(const char *str)
 	case SYMBOL_NUMBER_ZERO:
 	case SYMBOL_NUMBER_OCT:
 	case SYMBOL_NUMBER_DEC:
+	case SYMBOL_SIGN_MINUS:
+	case SYMBOL_SIGN_PLUS:
 		stmt->num_of_child++;
 		stmt->children = malloc(sizeof(struct ast_node) * 1);
-		struct ast_node *number = parse_number(str);
-		stmt->children[0] = number;
+		struct ast_node *term = parse_term(str);
+		stmt->children[0] = term;
 	}
 
 	return stmt;
