@@ -48,7 +48,7 @@ int main(int argc, const char **argv)
 {
     if (argc == 1) {
         cout << "Usage: " << argv[0] << " <expression>" << endl;
-        exit(1);
+        return 1;
     }
 
     struct ast_node *ast = parse_statement(argv[1]);
