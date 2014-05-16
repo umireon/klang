@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
 
@@ -19,6 +20,12 @@ enum symbol_type get_type_of_next_symbol(char c)
 		return SYMBOL_ALPHABET_X;
 	} else if ('g' <= dc && dc <= 'z') {
 		return SYMBOL_ALPHABET;
+	} else if (c == '*') {
+		return SYMBOL_OP_ASTERISK;
+	} else if (c == '/') {
+		return SYMBOL_OP_SLASH;
+	} else if (c == '+') {
+		return SYMBOL_SIGN_PLUS;
 	} else if (c == '+') {
 		return SYMBOL_SIGN_PLUS;
 	} else if (c == '-') {
@@ -31,117 +38,132 @@ enum symbol_type get_type_of_next_symbol(char c)
 	}
 }
 
-int read_number_oct(const char *str)
+int read_number_oct(const char **head)
 {
-	char *p = str;
+	char *str = *head;
 	enum symbol_type type;
 	int val = 0;
 
 	while (1) {
-		type = get_type_of_next_symbol(p[0]);
+		type = get_type_of_next_symbol(str[0]);
 
 		switch (type) {
 		case SYMBOL_NUMBER_ZERO:
 		case SYMBOL_NUMBER_OCT:
-			val = val * 8 + p[0] - '0';
-			p++;
+			val = val * 8 + str[0] - '0';
+			str++;
 			break;
-		case SYMBOL_NUMBER_DEC:
-		case SYMBOL_ALPHABET:
-		case SYMBOL_ALPHABET_X:
-		case SYMBOL_NULL:
+		default:
+			*head = str;
 			return val;
 		}
 	}
 }
 
-int read_number_hex(const char *str)
+int read_number_hex(const char **head)
 {
-	char *p = str;
+	char *str = *head;
 	enum symbol_type type;
 	int val = 0;
 
 	while (1) {
-		type = get_type_of_next_symbol(p[0]);
+		type = get_type_of_next_symbol(str[0]);
 
 		switch (type) {
 		case SYMBOL_NUMBER_ZERO:
 		case SYMBOL_NUMBER_OCT:
 		case SYMBOL_NUMBER_DEC:
-			val = val * 16 + p[0] - '0';
-			p++;
+			val = val * 16 + str[0] - '0';
+			str++;
 			break;
 		case SYMBOL_ALPHABET_HEXUPPER:
-			val = val * 16 + p[0] - 'A' + 10;
-			p++;
+			val = val * 16 + str[0] - 'A' + 10;
+			str++;
 			break;
 		case SYMBOL_ALPHABET_HEXLOWER:
-			val = val * 16 + p[0] - 'a' + 10;
-			p++;
+			val = val * 16 + str[0] - 'a' + 10;
+			str++;
 			break;
-		case SYMBOL_ALPHABET:
-		case SYMBOL_ALPHABET_X:
-		case SYMBOL_NULL:
+		default:
+			*head = str;
 			return val;
 		}
 	}
 }
 
-int read_number_dec(const char *str)
+int read_number_dec(const char **head)
 {
-	char *p = str;
+	const char *str = *head;
 	enum symbol_type type;
 	int val = 0;
 
 	while (1) {
-		type = get_type_of_next_symbol(p[0]);
+		type = get_type_of_next_symbol(str[0]);
 
 		switch (type) {
 		case SYMBOL_NUMBER_ZERO:
 		case SYMBOL_NUMBER_OCT:
 		case SYMBOL_NUMBER_DEC:
-			val = val * 10 + p[0] - '0';
-			p++;
+			val = val * 10 + str[0] - '0';
+			str++;
 			break;
-		case SYMBOL_ALPHABET:
-		case SYMBOL_ALPHABET_HEXUPPER:
-		case SYMBOL_ALPHABET_HEXLOWER:
-		case SYMBOL_ALPHABET_X:
-		case SYMBOL_NULL:
+		default:
+			*head = str;
 			return val;
 		}
 	}
 }
 
-int read_number_hex_or_oct(const char *str)
+int read_number_hex_or_oct(const char **head)
 {
-	enum symbol_type type = get_type_of_next_symbol(str[1]);
+	const char *str = *head;
+	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	int val;
+
 	switch (type) {
 	case SYMBOL_ALPHABET_X:
-		return read_number_hex(str + 2);
-	case SYMBOL_NUMBER_ZERO:
+		str++;
+		val = read_number_hex(&str);
+		break;
 	case SYMBOL_NUMBER_OCT:
 	case SYMBOL_NUMBER_DEC:
-	case SYMBOL_NULL:
-		return read_number_oct(str);
+		val = read_number_oct(&str);
+		break;
+	default:
+		val = 0;
 	}
+
+	*head = str;
+	return val;
 }
 
-int read_number_signed(const char *str)
+int read_number_signed(const char **head)
 {
+	const char *str = *head;
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	int val;
 
 	switch (type) {
 	case SYMBOL_NUMBER_ZERO:
-		return read_number_hex_or_oct(str);
+		str++;
+		val = read_number_hex_or_oct(&str);
+		break;
 	case SYMBOL_NUMBER_OCT:
 	case SYMBOL_NUMBER_DEC:
-		return read_number_dec(str);
+		val = read_number_dec(&str);
+		break;
 	case SYMBOL_SIGN_PLUS:
-		return read_number_signed(str + 1);
+		str++;
+		val = read_number_signed(&str);
+		break;
 	case SYMBOL_SIGN_MINUS:
-		return -read_number_signed(str + 1);
+		str++;
+		val = -read_number_signed(&str);
+		break;
 	}
+
+	*head = str;
+	return val;
 }
 
 struct ast_node *parse_number(const char *str)
@@ -149,23 +171,71 @@ struct ast_node *parse_number(const char *str)
 	struct ast_node *num = malloc(sizeof(struct ast_node));
 	num->type = AST_NUMBER;
 	num->num_of_child = 0;
+	num->strhead = str;
 
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
 	switch (type) {
 	case SYMBOL_NUMBER_ZERO:
-		num->value = read_number_hex_or_oct(str);
+		str++;
+		num->value = read_number_hex_or_oct(&str);
 		break;
 	case SYMBOL_NUMBER_OCT:
 	case SYMBOL_NUMBER_DEC:
-		num->value = read_number_dec(str);
+		num->value = read_number_dec(&str);
 		break;
 	case SYMBOL_SIGN_PLUS:
 	case SYMBOL_SIGN_MINUS:
-		num->value = read_number_signed(str);
+		num->value = read_number_signed(&str);
 		break;
 	}
 
+	num->strtail = str;
+
 	return num;
+}
+
+struct ast_node *parse_term(const char *str)
+{
+	struct ast_node *term = malloc(sizeof(struct ast_node));
+	struct ast_node *mul, *parent;
+	term->type = AST_TERM;
+	term->num_of_child = 0;
+
+	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	switch (type) {
+	case SYMBOL_NUMBER_ZERO:
+	case SYMBOL_NUMBER_OCT:
+	case SYMBOL_NUMBER_DEC:
+	case SYMBOL_SIGN_MINUS:
+	case SYMBOL_SIGN_PLUS:
+		term->num_of_child = 1;
+		term->children = malloc(sizeof(struct ast_node) * term->num_of_child);
+		term->children[0] = parse_number(str);
+		str = term->children[0]->strtail;
+		printf("%s\n", str);
+		parent = term;
+
+		while (1) {
+			type = get_type_of_next_symbol(str[0]);
+			switch (type) {
+			case SYMBOL_OP_ASTERISK:
+				str++;
+				mul = malloc(sizeof(struct ast_node));
+				mul->type = AST_MULTIPLICATION;
+				mul->num_of_child = 2;
+				mul->children = malloc(sizeof(struct ast_node) * mul->num_of_child);
+				mul->children[0] = parent->children[0];
+				mul->children[1] = parse_number(str);
+				parent->children[0] = mul;
+				str = mul->children[1]->strtail;
+				break;
+			default:
+				return term;
+			}
+		}
+	}
+
+	return term;
 }
 
 struct ast_node *parse_statement(const char *str)
