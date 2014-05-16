@@ -16,7 +16,8 @@ enum node_type {
 	AST_STATEMENT,
 	AST_NUMBER,
 	AST_TERM,
-	AST_MULTIPLICATION
+	AST_MULTIPLICATION,
+	AST_DIVISION
 };
 
 enum symbol_type {

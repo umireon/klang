@@ -212,7 +212,6 @@ struct ast_node *parse_term(const char *str)
 		term->children = malloc(sizeof(struct ast_node) * term->num_of_child);
 		term->children[0] = parse_number(str);
 		str = term->children[0]->strtail;
-		printf("%s\n", str);
 		parent = term;
 
 		while (1) {
@@ -222,6 +221,17 @@ struct ast_node *parse_term(const char *str)
 				str++;
 				mul = malloc(sizeof(struct ast_node));
 				mul->type = AST_MULTIPLICATION;
+				mul->num_of_child = 2;
+				mul->children = malloc(sizeof(struct ast_node) * mul->num_of_child);
+				mul->children[0] = parent->children[0];
+				mul->children[1] = parse_number(str);
+				parent->children[0] = mul;
+				str = mul->children[1]->strtail;
+				break;
+			case SYMBOL_OP_SLASH:
+				str++;
+				mul = malloc(sizeof(struct ast_node));
+				mul->type = AST_DIVISION;
 				mul->num_of_child = 2;
 				mul->children = malloc(sizeof(struct ast_node) * mul->num_of_child);
 				mul->children[0] = parent->children[0];
