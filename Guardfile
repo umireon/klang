@@ -16,7 +16,7 @@ guard :shell do
     n cmake.each_line.to_a[-1][3..-1], "CMake", ($? == 0 ? :success : :failed)
   end
 
-  watch(%r{^(src|spec|test)\/(.+)\.c(pp)?$|^main\.c$}) do |m|
+  watch(%r{^(src|spec|test)\/(.+)\.(c(pp)?|h)$|^main\.c$}) do |m|
     build = `cd build && make`
     puts build
     if $? != 0
