@@ -7,7 +7,7 @@ TEST_GROUP(parse_number)
 {
 };
 
-TEST(parse_number, ReturnNumberNode)
+/*TEST(parse_number, ReturnNumberNode)
 {
     struct ast_node *num;
     num = parse_number("1");
@@ -145,4 +145,4 @@ TEST(parse_number, ComplexSign)
 
     num = parse_number("+-+5");
     CHECK_EQUAL(-5, num->value);
-}
+}*/

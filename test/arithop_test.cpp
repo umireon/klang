@@ -7,7 +7,7 @@ TEST_GROUP(parse_term)
 {
 };
 
-TEST(parse_term, ReturnTermNode)
+/*TEST(parse_term, ReturnTermNode)
 {
     struct ast_node *term;
     term = parse_term("1");
@@ -179,4 +179,4 @@ TEST(parse_term, 3Elem)
     CHECK_EQUAL(AST_NUMBER, num->type);
     CHECK_EQUAL(0, num->num_of_child);
     CHECK_EQUAL(2, num->value);
-}
+}*/
