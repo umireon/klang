@@ -7,176 +7,176 @@ TEST_GROUP(parse_term)
 {
 };
 
-/*TEST(parse_term, ReturnTermNode)
+TEST(parse_term, ReturnTermNode)
 {
-    struct ast_node *term;
-    term = parse_term("1");
+    AstNode *term = parse_term("1");
     CHECK_EQUAL(AST_TERM, term->type);
+    delete term;
 }
 
 TEST(parse_term, CanHaveAPlainNumber)
 {
-    struct ast_node *term, *num;
-    term = parse_term("0x5");
-    CHECK_EQUAL(1, term->num_of_child);
+    AstNode *term = parse_term("0x5");
+    CHECK_EQUAL(1, term->children.size());
 
-    num = term->children[0];
+    AstNode *num = term->children.at(0);
     CHECK_EQUAL(AST_NUMBER, num->type);
     CHECK_EQUAL(5, num->value);
+    delete term;
 }
 
 TEST(parse_term, CanHaveAPositiveNumber)
 {
-    struct ast_node *term, *num;
-    term = parse_term("+-+-+0x5");
-    CHECK_EQUAL(1, term->num_of_child);
+    AstNode *term = parse_term("+-+-+0x5");
+    CHECK_EQUAL(1, term->children.size());
 
-    num = term->children[0];
+    AstNode *num = term->children.at(0);
     CHECK_EQUAL(AST_NUMBER, num->type);
     CHECK_EQUAL(5, num->value);
+    delete term;
 }
 
 
 TEST(parse_term, CanHaveANegativeNumber)
 {
-    struct ast_node *term, *num;
-    term = parse_term("-+-+-0x5");
-    CHECK_EQUAL(1, num->num_of_child);
+    AstNode *term = parse_term("-+-+-0x5");
+    CHECK_EQUAL(1, term->children.size());
 
-    num = term->children[0];
+    AstNode *num = term->children.at(0);
     CHECK_EQUAL(AST_NUMBER, num->type);
     CHECK_EQUAL(-5, num->value);
+    delete term;
 }
 
 TEST(parse_term, 2ElemMultiplication)
 {
-    struct ast_node *term, *mul, *num;
-    term = parse_term("2*3");
-    CHECK_EQUAL(1, term->num_of_child);
+    AstNode *term = parse_term("2*3");
+    CHECK_EQUAL(1, term->children.size());
 
-    mul = term->children[0];
+    AstNode *mul = term->children.at(0);
     CHECK_EQUAL(AST_MULTIPLICATION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    CHECK_EQUAL(2, mul->children.size());
 
-    num = mul->children[0];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(2, num->value);
+    AstNode *num1 = mul->children.at(0);
+    CHECK_EQUAL(AST_NUMBER, num1->type);
+    CHECK_EQUAL(0, num1->children.size());
+    CHECK_EQUAL(2, num1->value);
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(3, num->value);
+    AstNode *num2 = mul->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num2->type);
+    CHECK_EQUAL(0, num2->children.size());
+    CHECK_EQUAL(3, num2->value);
+    delete term;
 }
 
 TEST(parse_term, 3ElemMultiplication)
 {
-    struct ast_node *term, *mul, *num;
-    term = parse_term("2*3*4");
-    CHECK_EQUAL(1, term->num_of_child);
+    AstNode *term = parse_term("2*3*4");
+    CHECK_EQUAL(1, term->children.size());
 
-    mul = term->children[0];
-    CHECK_EQUAL(AST_MULTIPLICATION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    AstNode *mul1 = term->children.at(0);
+    CHECK_EQUAL(AST_MULTIPLICATION, mul1->type);
+    CHECK_EQUAL(2, mul1->children.size());
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(4, num->value);
+    AstNode *num1 = mul1->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num1->type);
+    CHECK_EQUAL(0, num1->children.size());
+    CHECK_EQUAL(4, num1->value);
 
-    mul = mul->children[0];
-    CHECK_EQUAL(AST_MULTIPLICATION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    AstNode *mul2 = mul1->children.at(0);
+    CHECK_EQUAL(AST_MULTIPLICATION, mul2->type);
+    CHECK_EQUAL(2, mul2->children.size());
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(3, num->value);
+    AstNode *num2 = mul2->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num2->type);
+    CHECK_EQUAL(0, num2->children.size());
+    CHECK_EQUAL(3, num2->value);
 
-    num = mul->children[0];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(2, num->value);
+    AstNode *num3 = mul2->children.at(0);
+    CHECK_EQUAL(AST_NUMBER, num3->type);
+    CHECK_EQUAL(0, num3->children.size());
+    CHECK_EQUAL(2, num3->value);
+    delete term;
 }
 
 
 TEST(parse_term, 2ElemDivision)
 {
-    struct ast_node *term, *mul, *num;
-    term = parse_term("2/3");
-    CHECK_EQUAL(1, term->num_of_child);
+    AstNode *term = parse_term("2/3");
+    CHECK_EQUAL(1, term->children.size());
 
-    mul = term->children[0];
-    CHECK_EQUAL(AST_DIVISION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    AstNode *div = term->children.at(0);
+    CHECK_EQUAL(AST_DIVISION, div->type);
+    CHECK_EQUAL(2, div->children.size());
 
-    num = mul->children[0];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(2, num->value);
+    AstNode *num1 = div->children.at(0);
+    CHECK_EQUAL(AST_NUMBER, num1->type);
+    CHECK_EQUAL(0, num1->children.size());
+    CHECK_EQUAL(2, num1->value);
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(3, num->value);
+    AstNode *num2 = div->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num2->type);
+    CHECK_EQUAL(0, num2->children.size());
+    CHECK_EQUAL(3, num2->value);
+    delete term;
 }
 
 TEST(parse_term, 3ElemDivision)
 {
-    struct ast_node *term, *mul, *num;
-    term = parse_term("2/3/4");
-    CHECK_EQUAL(1, term->num_of_child);
+    AstNode *term = parse_term("2/3/4");
+    CHECK_EQUAL(1, term->children.size());
 
-    mul = term->children[0];
-    CHECK_EQUAL(AST_DIVISION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    AstNode *div1 = term->children.at(0);
+    CHECK_EQUAL(AST_DIVISION, div1->type);
+    CHECK_EQUAL(2, div1->children.size());
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(4, num->value);
+    AstNode *num1 = div1->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num1->type);
+    CHECK_EQUAL(0, num1->children.size());
+    CHECK_EQUAL(4, num1->value);
 
-    mul = mul->children[0];
-    CHECK_EQUAL(AST_DIVISION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    AstNode *div2 = div1->children.at(0);
+    CHECK_EQUAL(AST_DIVISION, div2->type);
+    CHECK_EQUAL(2, div2->children.size());
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(3, num->value);
+    AstNode *num2 = div2->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num2->type);
+    CHECK_EQUAL(0, num2->children.size());
+    CHECK_EQUAL(3, num2->value);
 
-    num = mul->children[0];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(2, num->value);
+    AstNode *num3 = div2->children.at(0);
+    CHECK_EQUAL(AST_NUMBER, num3->type);
+    CHECK_EQUAL(0, num3->children.size());
+    CHECK_EQUAL(2, num3->value);
+    delete term;
 }
 
 TEST(parse_term, 3Elem)
 {
-    struct ast_node *term, *mul, *num;
-    term = parse_term("2/3*4");
-    CHECK_EQUAL(1, term->num_of_child);
+    AstNode *term = parse_term("2/3*4");
+    CHECK_EQUAL(1, term->children.size());
 
-    mul = term->children[0];
+    AstNode *mul = term->children.at(0);
     CHECK_EQUAL(AST_MULTIPLICATION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    CHECK_EQUAL(2, mul->children.size());
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(4, num->value);
+    AstNode *num1 = mul->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num1->type);
+    CHECK_EQUAL(0, num1->children.size());
+    CHECK_EQUAL(4, num1->value);
 
-    mul = mul->children[0];
-    CHECK_EQUAL(AST_DIVISION, mul->type);
-    CHECK_EQUAL(2, mul->num_of_child);
+    AstNode *div = mul->children.at(0);
+    CHECK_EQUAL(AST_DIVISION, div->type);
+    CHECK_EQUAL(2, div->children.size());
 
-    num = mul->children[1];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(3, num->value);
+    AstNode *num2 = div->children.at(1);
+    CHECK_EQUAL(AST_NUMBER, num2->type);
+    CHECK_EQUAL(0, num2->children.size());
+    CHECK_EQUAL(3, num2->value);
 
-    num = mul->children[0];
-    CHECK_EQUAL(AST_NUMBER, num->type);
-    CHECK_EQUAL(0, num->num_of_child);
-    CHECK_EQUAL(2, num->value);
-}*/
+    AstNode *num3 = div->children.at(0);
+    CHECK_EQUAL(AST_NUMBER, num3->type);
+    CHECK_EQUAL(0, num3->children.size());
+    CHECK_EQUAL(2, num3->value);
+    delete term;
+}

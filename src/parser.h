@@ -30,8 +30,9 @@ public:
 	enum node_type type;
 	const char *strhead;
 	const char *strtail;
-	std::vector<AstNode> children;
+	std::vector<AstNode*> children;
 	int value;
+	~AstNode();
 };
 
 AstNode* parse(const char *str);

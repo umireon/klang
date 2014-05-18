@@ -4,6 +4,14 @@
 #include <iostream>
 #include "parser.h"
 
+AstNode::~AstNode(void)
+{
+	int size = children.size();
+	for (int i = 0; i < size; i++) {
+		delete children.at(i);
+	}
+}
+
 enum symbol_type get_type_of_next_symbol(char c)
 {
 	char dc = c | 0x20;
@@ -198,7 +206,7 @@ AstNode* parse_number(const char *str)
 AstNode* parse_term(const char *str)
 {
 	AstNode *term = new AstNode();
-	AstNode *mul, *parent;
+	AstNode *mul, *parent, *num;
 	term->type = AST_TERM;
 
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
@@ -208,8 +216,8 @@ AstNode* parse_term(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		term->children.push_back(*parse_number(str));
-		str = term->children[0].strtail;
+		term->children.push_back(parse_number(str));
+		str = term->children.at(0)->strtail;
 		parent = term;
 
 		while (1) {
@@ -221,9 +229,9 @@ AstNode* parse_term(const char *str)
 				mul->type = AST_MULTIPLICATION;
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
-				mul->children.push_back(*parse_number(str));
-				parent->children.push_back(*mul);
-				str = mul->children.at(1).strtail;
+				mul->children.push_back(parse_number(str));
+				parent->children.push_back(mul);
+				str = mul->children.at(1)->strtail;
 				break;
 			case SYMBOL_OP_SLASH:
 				str++;
@@ -231,9 +239,9 @@ AstNode* parse_term(const char *str)
 				mul->type = AST_DIVISION;
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
-				mul->children.push_back(*parse_number(str));
-				parent->children.push_back(*mul);
-				str = mul->children.at(1).strtail;
+				mul->children.push_back(parse_number(str));
+				parent->children.push_back(mul);
+				str = mul->children.at(1)->strtail;
 				break;
 			default:
 				return term;
@@ -258,7 +266,7 @@ AstNode* parse_statement(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		stmt->children.push_back(*parse_term(str));
+		stmt->children.push_back(parse_term(str));
 	}
 
 	return stmt;
