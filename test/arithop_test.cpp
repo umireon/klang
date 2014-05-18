@@ -5,34 +5,6 @@ extern "C" {
 #include "../src/parser.h"
 }
 
-void print_ast(struct ast_node *root, int depth)
-{
-    for (int i = 0; i < depth; i++) {
-        std::cout << "  ";
-    }
-
-    switch (root->type) {
-    case AST_NUMBER:
-        std::cout << "<AST_NUMBER: ";
-        break;
-    case AST_TERM:
-        std::cout << "<AST_TERM: ";
-        break;
-    case AST_MULTIPLICATION:
-        std::cout << "<AST_MULTIPLICATION: ";
-        break;
-    case AST_STATEMENT:
-        std::cout << "<AST_STATEMENT: ";
-        break;
-    }
-
-    std::cout << root->value << std::endl;
-
-    for (int i = 0; i < root->num_of_child; i++) {
-        print_ast(root->children[i], depth + 1);
-    }
-}
-
 TEST_GROUP(parse_term)
 {
 };
