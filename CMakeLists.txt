@@ -6,7 +6,7 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
-add_library(parser src/parser.c)
+add_library(parser src/parser.cpp)
 
 add_executable(print_ast src/print_ast.cpp)
 target_link_libraries(print_ast parser)
