@@ -49,7 +49,7 @@ int main(int argc, const char **argv)
         return 1;
     }
 
-    AstNode &ast = parse_statement(argv[1]);
+    AstNode &ast = *parse_statement(argv[1]);
 
     print_ast(ast, 0);
 

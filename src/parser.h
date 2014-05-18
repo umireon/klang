@@ -34,7 +34,7 @@ public:
 	int value;
 };
 
-AstNode& parse(const char *str);
-AstNode& parse_statement(const char *str);
-AstNode& parse_term(const char *str);
-AstNode& parse_number(const char *str);
+AstNode* parse(const char *str);
+AstNode* parse_statement(const char *str);
+AstNode* parse_term(const char *str);
+AstNode* parse_number(const char *str);

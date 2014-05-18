@@ -168,7 +168,7 @@ int read_number_signed(const char **head)
 	return val;
 }
 
-AstNode& parse_number(const char *str)
+AstNode* parse_number(const char *str)
 {
 	AstNode *num = new AstNode();
 	num->type = AST_NUMBER;
@@ -192,10 +192,10 @@ AstNode& parse_number(const char *str)
 
 	num->strtail = str;
 
-	return *num;
+	return num;
 }
 
-AstNode& parse_term(const char *str)
+AstNode* parse_term(const char *str)
 {
 	AstNode *term = new AstNode();
 	AstNode *mul, *parent;
@@ -208,7 +208,7 @@ AstNode& parse_term(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		term->children.push_back(parse_number(str));
+		term->children.push_back(*parse_number(str));
 		str = term->children[0].strtail;
 		parent = term;
 
@@ -221,7 +221,7 @@ AstNode& parse_term(const char *str)
 				mul->type = AST_MULTIPLICATION;
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
-				mul->children.push_back(parse_number(str));
+				mul->children.push_back(*parse_number(str));
 				parent->children.push_back(*mul);
 				str = mul->children.at(1).strtail;
 				break;
@@ -231,20 +231,20 @@ AstNode& parse_term(const char *str)
 				mul->type = AST_DIVISION;
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
-				mul->children.push_back(parse_number(str));
+				mul->children.push_back(*parse_number(str));
 				parent->children.push_back(*mul);
 				str = mul->children.at(1).strtail;
 				break;
 			default:
-				return *term;
+				return term;
 			}
 		}
 	}
 
-	return *term;
+	return term;
 }
 
-AstNode& parse_statement(const char *str)
+AstNode* parse_statement(const char *str)
 {
 	AstNode *stmt;
 	stmt = new AstNode();
@@ -258,13 +258,13 @@ AstNode& parse_statement(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		stmt->children.push_back(parse_term(str));
+		stmt->children.push_back(*parse_term(str));
 	}
 
-	return *stmt;
+	return stmt;
 }
 
-AstNode& parse(const char *str)
+AstNode* parse(const char *str)
 {
 	return parse_statement(str);
 }
