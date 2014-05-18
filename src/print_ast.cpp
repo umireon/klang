@@ -1,9 +1,7 @@
 #include <iostream>
 #include <string>
 
-extern "C" {
 #include "parser.h"
-}
 
 using namespace std;
 

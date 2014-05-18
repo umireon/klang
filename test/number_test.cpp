@@ -1,9 +1,7 @@
 #include <CppUTest/TestHarness.h>
 #include <limits.h>
 
-extern "C" {
 #include "../src/parser.h"
-}
 
 TEST_GROUP(parse_number)
 {
@@ -126,9 +124,11 @@ TEST(parse_number, NegativeHexdecimal)
     struct ast_node *num;
     num = parse_number("-0x4");
     CHECK_EQUAL(-4, num->value);
+    free(num);
 
     num = parse_number("-0x80000000");
     CHECK_EQUAL(-2147483648, num->value);
+    free(num);
 }
 
 TEST(parse_number, ComplexSign)

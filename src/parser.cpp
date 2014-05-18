@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include "parser.h"
 
 enum symbol_type get_type_of_next_symbol(char c)
@@ -40,7 +41,7 @@ enum symbol_type get_type_of_next_symbol(char c)
 
 int read_number_oct(const char **head)
 {
-	char *str = *head;
+	const char *str = *head;
 	enum symbol_type type;
 	int val = 0;
 
@@ -62,7 +63,7 @@ int read_number_oct(const char **head)
 
 int read_number_hex(const char **head)
 {
-	char *str = *head;
+	const char *str = *head;
 	enum symbol_type type;
 	int val = 0;
 
@@ -168,7 +169,7 @@ int read_number_signed(const char **head)
 
 struct ast_node *parse_number(const char *str)
 {
-	struct ast_node *num = malloc(sizeof(struct ast_node));
+	struct ast_node *num = (struct ast_node*)malloc(sizeof(struct ast_node));
 	num->type = AST_NUMBER;
 	num->num_of_child = 0;
 	num->strhead = str;
@@ -196,7 +197,7 @@ struct ast_node *parse_number(const char *str)
 
 struct ast_node *parse_term(const char *str)
 {
-	struct ast_node *term = malloc(sizeof(struct ast_node));
+	struct ast_node *term = (struct ast_node*)malloc(sizeof(struct ast_node));
 	struct ast_node *mul, *parent;
 	term->type = AST_TERM;
 	term->num_of_child = 0;
@@ -209,7 +210,7 @@ struct ast_node *parse_term(const char *str)
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
 		term->num_of_child = 1;
-		term->children = malloc(sizeof(struct ast_node) * term->num_of_child);
+		term->children = (struct ast_node**)malloc(sizeof(struct ast_node*) * term->num_of_child);
 		term->children[0] = parse_number(str);
 		str = term->children[0]->strtail;
 		parent = term;
@@ -219,10 +220,10 @@ struct ast_node *parse_term(const char *str)
 			switch (type) {
 			case SYMBOL_OP_ASTERISK:
 				str++;
-				mul = malloc(sizeof(struct ast_node));
+				mul = (struct ast_node*)malloc(sizeof(struct ast_node));
 				mul->type = AST_MULTIPLICATION;
 				mul->num_of_child = 2;
-				mul->children = malloc(sizeof(struct ast_node) * mul->num_of_child);
+				mul->children = (struct ast_node**)malloc(sizeof(struct ast_node*) * mul->num_of_child);
 				mul->children[0] = parent->children[0];
 				mul->children[1] = parse_number(str);
 				parent->children[0] = mul;
@@ -230,10 +231,10 @@ struct ast_node *parse_term(const char *str)
 				break;
 			case SYMBOL_OP_SLASH:
 				str++;
-				mul = malloc(sizeof(struct ast_node));
+				mul = (struct ast_node*)malloc(sizeof(struct ast_node));
 				mul->type = AST_DIVISION;
 				mul->num_of_child = 2;
-				mul->children = malloc(sizeof(struct ast_node) * mul->num_of_child);
+				mul->children = (struct ast_node**)malloc(sizeof(struct ast_node*) * mul->num_of_child);
 				mul->children[0] = parent->children[0];
 				mul->children[1] = parse_number(str);
 				parent->children[0] = mul;
@@ -251,7 +252,7 @@ struct ast_node *parse_term(const char *str)
 struct ast_node *parse_statement(const char *str)
 {
 	struct ast_node *stmt;
-	stmt = malloc(sizeof(struct ast_node));
+	stmt = (struct ast_node*)malloc(sizeof(struct ast_node));
 	stmt->type = AST_STATEMENT;
 	stmt->num_of_child = 0;
 
@@ -264,7 +265,7 @@ struct ast_node *parse_statement(const char *str)
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
 		stmt->num_of_child++;
-		stmt->children = malloc(sizeof(struct ast_node) * 1);
+		stmt->children = (struct ast_node**)malloc(sizeof(struct ast_node*) * 1);
 		struct ast_node *term = parse_term(str);
 		stmt->children[0] = term;
 	}
