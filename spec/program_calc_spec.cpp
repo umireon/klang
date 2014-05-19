@@ -8,7 +8,7 @@
 #include <igloo/igloo_alt.h>
 using namespace igloo;
 
-#include <stdio.h>
+#include <string.h>
 
 #include "../src/parser.h"
 
