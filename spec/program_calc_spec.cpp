@@ -12,7 +12,7 @@ using namespace igloo;
 
 #include "../src/parser.h"
 
-#define Pending printf("P");return;
+#define Pending std::cout << "P";return;
 
 int accepts(const char *str)
 {
