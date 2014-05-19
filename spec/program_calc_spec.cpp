@@ -10,16 +10,18 @@ using namespace igloo;
 
 #include <stdio.h>
 
+#include "../src/parser.h"
+
 #define Pending printf("P");return;
 
-bool accepts(const char *str)
+int accepts(const char *str)
 {
-	printf("P");
-	return true;
+	AstNode *stmt = parse(str);
+	return (strlen(stmt->strtail) == 0);
 }
 
 Describe(プログラム電卓) {
-	It(四則演算を受け入れる) {Pending;
+	It(四則演算を受け入れる) {
 		Assert::That(accepts("1+2*3-4/5"));
 	}
 
@@ -71,11 +73,11 @@ Describe(プログラム電卓) {
 		Assert::That(accepts("product(list)"));
 	}
 
-	It(行列を受け入れる){
+	It(行列を受け入れる){Pending;
 		Assert::That(accepts("A={{1,2},{3,4}}"));
 	}
 
-	It(行列の計算を受け入れる){
+	It(行列の計算を受け入れる){Pending;
 		Assert::That(accepts("A+B"));
 		Assert::That(accepts("A-B"));
 		Assert::That(accepts("A*B"));
@@ -87,11 +89,11 @@ Describe(プログラム電卓) {
 		Assert::That(accepts("abs(A)"));
 	}
 
-	It(グラフ描画を受け入れる){
+	It(グラフ描画を受け入れる){Pending;
 		Assert::That(accepts("draw(X,Y)"));
 	}
 
-	It(最小二乗法を受け入れる){
+	It(最小二乗法を受け入れる){Pending;
 		Assert::That(accepts("minsq(X,Y)"));
 	}
 
