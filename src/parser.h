@@ -7,7 +7,10 @@ enum node_type {
 	AST_MULTIPLICATION,
 	AST_DIVISION,
 	AST_STUB,
-	AST_UNKNOWN
+	AST_UNKNOWN,
+	AST_ADDITION,
+	AST_SUBTRACTION,
+	AST_EXPRESSION
 };
 
 enum symbol_type {
@@ -39,5 +42,6 @@ public:
 
 AstNode* parse(const char *str);
 AstNode* parse_statement(const char *str);
+AstNode* parse_expression(const char *str);
 AstNode* parse_term(const char *str);
 AstNode* parse_number(const char *str);

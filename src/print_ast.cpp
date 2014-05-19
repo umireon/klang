@@ -16,6 +16,21 @@ void print_ast(AstNode *root, int depth)
             cout << indent << "  str: " << str << endl;
             cout << indent << "  value: " << root->value << endl;
             break;
+        case AST_EXPRESSION:
+            cout << indent << "- type: AST_EXPRESSION" << endl;
+            cout << indent << "  str: " << str << endl;
+            cout << indent << "  children:" << endl;
+            break;
+        case AST_ADDITION:
+            cout << indent << "- type: AST_ADDITION" << endl;
+            cout << indent << "  str: " << str << endl;
+            cout << indent << "  children:" << endl;
+            break;
+        case AST_SUBTRACTION:
+            cout << indent << "- type: AST_SUBTRACTION" << endl;
+            cout << indent << "  str: " << str << endl;
+            cout << indent << "  children:" << endl;
+            break;
         case AST_TERM:
             cout << indent << "- type: AST_TERM" << endl;
             cout << indent << "  str: " << str << endl;

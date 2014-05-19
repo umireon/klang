@@ -248,7 +248,7 @@ AstNode* parse_term(const char *str)
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
 		term->children.push_back(parse_number(str));
-		str = term->children.at(0)->strtail;
+		term->strtail = str = term->children.at(0)->strtail;
 		parent = term;
 
 		while (1) {
@@ -285,6 +285,58 @@ AstNode* parse_term(const char *str)
 	return term;
 }
 
+AstNode* parse_expression(const char *str)
+{
+	AstNode *expr = new AstNode();
+	AstNode *mul, *parent, *num;
+	expr->type = AST_EXPRESSION;
+	expr->strhead = str;
+
+	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	switch (type) {
+	case SYMBOL_NUMBER_ZERO:
+	case SYMBOL_NUMBER_OCT:
+	case SYMBOL_NUMBER_DEC:
+	case SYMBOL_SIGN_MINUS:
+	case SYMBOL_SIGN_PLUS:
+		expr->children.push_back(parse_term(str));
+		expr->strtail = str = expr->children.at(0)->strtail;
+		parent = expr;
+
+		while (1) {
+			type = get_type_of_next_symbol(str[0]);
+			switch (type) {
+			case SYMBOL_SIGN_PLUS:
+				mul = new AstNode();
+				mul->type = AST_ADDITION;
+				mul->strhead = str;
+				mul->children.push_back(parent->children.at(0));
+				parent->children.pop_back();
+				str++;
+				mul->children.push_back(parse_term(str));
+				parent->children.push_back(mul);
+				mul->strtail = expr->strtail = str = mul->children.at(1)->strtail;
+				break;
+			case SYMBOL_SIGN_MINUS:
+				mul = new AstNode();
+				mul->type = AST_SUBTRACTION;
+				mul->strhead = str;
+				mul->children.push_back(parent->children.at(0));
+				parent->children.pop_back();
+				str++;
+				mul->children.push_back(parse_term(str));
+				parent->children.push_back(mul);
+				mul->strtail = expr->strtail = str = mul->children.at(1)->strtail;
+				break;
+			default:
+				return expr;
+			}
+		}
+	}
+
+	return expr;
+}
+
 AstNode* parse_statement(const char *str)
 {
 	AstNode *stmt;
@@ -300,7 +352,7 @@ AstNode* parse_statement(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		stmt->children.push_back(parse_term(str));
+		stmt->children.push_back(parse_expression(str));
 	}
 
 	if (stmt->children.size() == 0) {
