@@ -1,16 +1,4 @@
-struct ast_node {
-    int type;
-    int num_of_child;
-    struct ast_node **children;
-    const char *strhead;
-    const char *strtail;
-    int value;
-};
-
-struct ast_node *parse(const char *str);
-struct ast_node *parse_statement(const char *str);
-struct ast_node *parse_term(const char *str);
-struct ast_node *parse_number(const char *str);
+#include <vector>
 
 enum node_type {
 	AST_STATEMENT,
@@ -35,3 +23,19 @@ enum symbol_type {
 	SYMBOL_NULL,
 	SYMBOL_UNKNOWN
 };
+
+class AstNode
+{
+public:
+	enum node_type type;
+	const char *strhead;
+	const char *strtail;
+	std::vector<AstNode*> children;
+	int value;
+	~AstNode();
+};
+
+AstNode* parse(const char *str);
+AstNode* parse_statement(const char *str);
+AstNode* parse_term(const char *str);
+AstNode* parse_number(const char *str);
