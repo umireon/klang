@@ -5,7 +5,9 @@ enum node_type {
 	AST_NUMBER,
 	AST_TERM,
 	AST_MULTIPLICATION,
-	AST_DIVISION
+	AST_DIVISION,
+	AST_STUB,
+	AST_UNKNOWN
 };
 
 enum symbol_type {
