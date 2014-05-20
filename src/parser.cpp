@@ -40,6 +40,10 @@ enum symbol_type get_type_of_next_symbol(char c)
 		return SYMBOL_SIGN_PLUS;
 	} else if (c == '-') {
 		return SYMBOL_SIGN_MINUS;
+	} else if (c == '(') {
+		return SYMBOL_PAREN_LEFT;
+	} else if (c == ')') {
+		return SYMBOL_PAREN_RIGHT;
 	} else if (c == '\0') {
 		return SYMBOL_NULL;
 	} else {
@@ -174,6 +178,93 @@ int read_number_signed(const char **head)
 
 	*head = str;
 	return val;
+}
+
+AstNode* parse_paren_right(const char *str)
+{
+	AstNode *stub, *unknown;
+	AstNode *pright = new AstNode();
+	pright->type = AST_PAREN_RIGHT;
+	pright->strhead = str;
+
+	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	switch (type) {
+	case SYMBOL_PAREN_RIGHT:
+		str++;
+		break;
+	default:
+		stub = new AstNode();
+		stub->type = AST_STUB;
+		stub->strhead = str;
+
+		unknown = new AstNode();
+		unknown->type = AST_UNKNOWN;
+		unknown->strhead = str;
+		str++;
+		unknown->strtail = str;
+		stub->children.push_back(unknown);
+
+		pright = parse_paren_right(str);
+		stub->children.push_back(pright);
+		stub->strtail = pright->strtail;
+		return stub;
+	}
+
+	pright->strtail = str;
+
+	return pright;
+}
+
+AstNode* parse_paren_left(const char *str)
+{
+	AstNode *stub, *unknown;
+	AstNode *pleft = new AstNode();
+	pleft->type = AST_PAREN_LEFT;
+	pleft->strhead = str;
+
+	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	switch (type) {
+	case SYMBOL_PAREN_LEFT:
+		str++;
+		break;
+	default:
+		stub = new AstNode();
+		stub->type = AST_STUB;
+		stub->strhead = str;
+
+		unknown = new AstNode();
+		unknown->type = AST_UNKNOWN;
+		unknown->strhead = str;
+		str++;
+		unknown->strtail = str;
+		stub->children.push_back(unknown);
+
+		pleft = parse_paren_left(str);
+		stub->children.push_back(pleft);
+		stub->strtail = pleft->strtail;
+		return stub;
+	}
+
+	pleft->strtail = str;
+
+	return pleft;
+}
+
+AstNode* parse_paren(const char *str)
+{
+	AstNode *term = new AstNode();
+	term->type = AST_TERM;
+	AstNode *pleft = parse_paren_left(str);
+	term->children.push_back(pleft);
+	str = pleft->strtail;
+
+	term->children.push_back(new AstNode());
+	term->children.at(1)->type = AST_EXPRESSION;
+
+	AstNode *pright = parse_paren_right(str);
+	term->children.push_back(pright);
+	str = pleft->strtail;
+	return term;
 }
 
 AstNode* parse_number(const char *str)
