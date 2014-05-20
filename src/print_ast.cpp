@@ -51,15 +51,30 @@ void print_ast(AstNode *root, int depth)
             cout << indent << "  str: " << str << endl;
             cout << indent << "  children:" << endl;
             break;
+        case AST_PAREN_LEFT:
+            cout << indent << "- type: AST_PAREN_LEFT" << endl;
+            cout << indent << "  str: " << str << endl;
+            break;
+        case AST_PAREN_RIGHT:
+            cout << indent << "- type: AST_PAREN_RIGHT" << endl;
+            cout << indent << "  str: " << str << endl;
+            break;
+        case AST_PAREN:
+            cout << indent << "- type: AST_PAREN" << endl;
+            cout << indent << "  str: " << str << endl;
+            cout << indent << "  children:" << endl;
+            break;
         case AST_STUB:
             cout << indent << "- type: AST_STUB" << endl;
             cout << indent << "  str: " << str << endl;
             cout << indent << "  children:" << endl;
             break;
         case AST_UNKNOWN:
+        default:
             cout << indent << "- type: AST_UNKNOWN" << endl;
             cout << indent << "  str: " << str << endl;
             break;
+
     }
 
     for (int i = 0; i < root->children.size(); i++) {

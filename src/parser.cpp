@@ -252,17 +252,19 @@ AstNode* parse_paren_left(const char *str)
 AstNode* parse_paren(const char *str)
 {
 	AstNode *term = new AstNode();
-	term->type = AST_TERM;
+	term->type = AST_PAREN;
+	term->strhead = str;
 	AstNode *pleft = parse_paren_left(str);
 	term->children.push_back(pleft);
 	str = pleft->strtail;
 
-	term->children.push_back(new AstNode());
-	term->children.at(1)->type = AST_EXPRESSION;
+	AstNode *expr = parse_expression(str);
+	term->children.push_back(expr);
+	str = expr->strtail;
 
 	AstNode *pright = parse_paren_right(str);
 	term->children.push_back(pright);
-	str = pleft->strtail;
+	term->strtail = pright->strtail;
 	return term;
 }
 
@@ -370,6 +372,11 @@ AstNode* parse_term(const char *str)
 				return term;
 			}
 		}
+	case SYMBOL_PAREN_LEFT:
+		AstNode *paren = parse_paren(str);
+		term->children.push_back(paren);
+		term->strtail = paren->strtail;
+		break;
 	}
 
 	return term;
@@ -389,6 +396,7 @@ AstNode* parse_expression(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
+	case SYMBOL_PAREN_LEFT:
 		expr->children.push_back(parse_term(str));
 		expr->strtail = str = expr->children.at(0)->strtail;
 		parent = expr;
@@ -442,6 +450,7 @@ AstNode* parse_statement(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
+	case SYMBOL_PAREN_LEFT:
 		stmt->children.push_back(parse_expression(str));
 	}
 
