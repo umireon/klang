@@ -25,7 +25,7 @@ Describe(プログラム電卓) {
 		Assert::That(accepts("1+2*3-4/5"));
 	}
 
-	It(丸括弧を受け入れる) {Pending;
+	It(丸括弧を受け入れる) {
 		Assert::That(accepts("2*(3+4)"));
 	}
 

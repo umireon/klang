@@ -353,7 +353,7 @@ AstNode* parse_term(const char *str)
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
 				str++;
-				mul->children.push_back(parse_number(str));
+				mul->children.push_back(parse_term(str));
 				parent->children.push_back(mul);
 				mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 				break;
@@ -364,7 +364,7 @@ AstNode* parse_term(const char *str)
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
 				str++;
-				mul->children.push_back(parse_number(str));
+				mul->children.push_back(parse_term(str));
 				parent->children.push_back(mul);
 				mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 				break;

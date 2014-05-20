@@ -7,10 +7,10 @@ TEST_GROUP(parse_paren)
 {
 };
 
-TEST(parse_paren, ReturnTermNode)
+TEST(parse_paren, ReturnParenNode)
 {
     AstNode *term = parse_paren("(1)");
-    CHECK_EQUAL(AST_TERM, term->type);
+    CHECK_EQUAL(AST_PAREN, term->type);
     delete term;
 }
 
@@ -33,7 +33,7 @@ TEST(parse_paren, ContainsExpressionNode)
 TEST(parse_paren, ContainsParenRightNode)
 {
     AstNode *term = parse_paren("(1)");
-    //AstNode *expr = term->children.at(2);
-    //CHECK_EQUAL(AST_PAREN_RIGHT, expr->type);
+    AstNode *expr = term->children.at(2);
+    CHECK_EQUAL(AST_PAREN_RIGHT, expr->type);
     delete term;
 }
