@@ -183,14 +183,17 @@ int read_number_signed(const char **head)
 AstNode* parse_paren_right(const char *str)
 {
 	AstNode *stub, *unknown;
-	AstNode *pright = new AstNode();
-	pright->type = AST_PAREN_RIGHT;
-	pright->strhead = str;
+	AstNode *pright;
 
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
 	switch (type) {
 	case SYMBOL_PAREN_RIGHT:
+		pright = new AstNode();
+		pright->type = AST_PAREN_RIGHT;
+		pright->strhead = str;
 		str++;
+		pright->strtail = str;
+		return pright;
 		break;
 	default:
 		stub = new AstNode();
@@ -209,10 +212,6 @@ AstNode* parse_paren_right(const char *str)
 		stub->strtail = pright->strtail;
 		return stub;
 	}
-
-	pright->strtail = str;
-
-	return pright;
 }
 
 AstNode* parse_paren_left(const char *str)
