@@ -26,8 +26,11 @@ if (UNIT_TEST)
 
     file(GLOB TestSourceFiles test/*.cpp)
     add_executable(runUnit ${TestSourceFiles})
+    set_target_properties(runUnit PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
+    add_library(parser_test src/parser.cpp)
+    set_target_properties(parser_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
     target_link_libraries(runUnit CppUTest CppUTestExt)
-    target_link_libraries(runUnit parser)
+    target_link_libraries(runUnit parser_test)
     add_test(Unit runUnit)
 endif()
 
