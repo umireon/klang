@@ -12,7 +12,7 @@ TEST(parse_term, ReturnTermNode)
     AstNode *term = parse_term("1");
     CHECK_EQUAL(AST_TERM, term->type);
     delete term;
-}/*
+}
 
 TEST(parse_term, CanHaveAPlainNumber)
 {
@@ -179,4 +179,4 @@ TEST(parse_term, 3Elem)
     CHECK_EQUAL(0, num3->children.size());
     CHECK_EQUAL(2, num3->value);
     delete term;
-}*/
+}

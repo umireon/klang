@@ -363,14 +363,10 @@ AstNode* parse_term(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		term->children.push_back(parse_number(str));
-		term->strtail = str = term->children.at(0)->strtail;
-		parent = term;
-		break;
 	case SYMBOL_PAREN_LEFT:
-		AstNode *paren = parse_paren(str);
-		term->children.push_back(paren);
-		term->strtail = str = paren->strtail;
+		AstNode *elem = parse_elem(str);
+		term->children.push_back(elem);
+		term->strtail = str = elem->strtail;
 		parent = term;
 		break;
 	}
