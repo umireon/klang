@@ -325,6 +325,30 @@ AstNode* parse_number(const char *str)
 	return num;
 }
 
+AstNode* parse_elem(const char *str)
+{
+	AstNode *elem = new AstNode();
+	elem->type = AST_TERM;
+	elem->strhead = str;
+	enum symbol_type type = get_type_of_next_symbol(str[0]);
+
+	switch (type) {
+	case SYMBOL_NUMBER_ZERO:
+	case SYMBOL_NUMBER_OCT:
+	case SYMBOL_NUMBER_DEC:
+	case SYMBOL_SIGN_MINUS:
+	case SYMBOL_SIGN_PLUS:
+		elem->children.push_back(parse_number(str));
+		break;
+	case SYMBOL_PAREN_LEFT:
+		elem->children.push_back(parse_paren(str));
+	}
+
+	elem->strtail = elem->children.at(0)->strtail;
+
+	return elem;
+}
+
 AstNode* parse_term(const char *str)
 {
 	AstNode *term = new AstNode();
@@ -342,41 +366,43 @@ AstNode* parse_term(const char *str)
 		term->children.push_back(parse_number(str));
 		term->strtail = str = term->children.at(0)->strtail;
 		parent = term;
-
-		while (1) {
-			type = get_type_of_next_symbol(str[0]);
-			switch (type) {
-			case SYMBOL_OP_ASTERISK:
-				mul = new AstNode();
-				mul->type = AST_MULTIPLICATION;
-				mul->strhead = str;
-				mul->children.push_back(parent->children.at(0));
-				parent->children.pop_back();
-				str++;
-				mul->children.push_back(parse_term(str));
-				parent->children.push_back(mul);
-				mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
-				break;
-			case SYMBOL_OP_SLASH:
-				mul = new AstNode();
-				mul->type = AST_DIVISION;
-				mul->strhead = str;
-				mul->children.push_back(parent->children.at(0));
-				parent->children.pop_back();
-				str++;
-				mul->children.push_back(parse_term(str));
-				parent->children.push_back(mul);
-				mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
-				break;
-			default:
-				return term;
-			}
-		}
+		break;
 	case SYMBOL_PAREN_LEFT:
 		AstNode *paren = parse_paren(str);
 		term->children.push_back(paren);
-		term->strtail = paren->strtail;
+		term->strtail = str = paren->strtail;
+		parent = term;
 		break;
+	}
+
+	while (1) {
+		type = get_type_of_next_symbol(str[0]);
+		switch (type) {
+		case SYMBOL_OP_ASTERISK:
+			mul = new AstNode();
+			mul->type = AST_MULTIPLICATION;
+			mul->strhead = str;
+			mul->children.push_back(parent->children.at(0));
+			parent->children.pop_back();
+			str++;
+			mul->children.push_back(parse_elem(str));
+			parent->children.push_back(mul);
+			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
+			break;
+		case SYMBOL_OP_SLASH:
+			mul = new AstNode();
+			mul->type = AST_DIVISION;
+			mul->strhead = str;
+			mul->children.push_back(parent->children.at(0));
+			parent->children.pop_back();
+			str++;
+			mul->children.push_back(parse_elem(str));
+			parent->children.push_back(mul);
+			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
+			break;
+		default:
+			return term;
+		}
 	}
 
 	return term;

@@ -13,7 +13,8 @@ enum node_type {
 	AST_PAREN,
 	AST_PAREN_LEFT,
 	AST_PAREN_RIGHT,
-	AST_EXPRESSION
+	AST_EXPRESSION,
+	AST_ELEMENT
 };
 
 enum symbol_type {

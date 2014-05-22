@@ -69,6 +69,11 @@ void print_ast(AstNode *root, int depth)
             cout << indent << "  str: " << str << endl;
             cout << indent << "  children:" << endl;
             break;
+        case AST_ELEMENT:
+            cout << indent << "- type: AST_ELEMENT" << endl;
+            cout << indent << "  str: " << str << endl;
+            cout << indent << "  children:" << endl;
+            break;
         case AST_UNKNOWN:
         default:
             cout << indent << "- type: AST_UNKNOWN" << endl;
