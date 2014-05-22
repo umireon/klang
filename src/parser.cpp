@@ -328,7 +328,7 @@ AstNode* parse_number(const char *str)
 AstNode* parse_elem(const char *str)
 {
 	AstNode *elem = new AstNode();
-	elem->type = AST_TERM;
+	elem->type = AST_ELEMENT;
 	elem->strhead = str;
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
 
