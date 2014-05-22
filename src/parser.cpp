@@ -325,7 +325,7 @@ AstNode* parse_number(const char *str)
 	return num;
 }
 
-AstNode* parse_elem(const char *str)
+AstNode* parse_element(const char *str)
 {
 	AstNode *elem = new AstNode();
 	elem->type = AST_ELEMENT;
@@ -364,7 +364,7 @@ AstNode* parse_term(const char *str)
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
 	case SYMBOL_PAREN_LEFT:
-		AstNode *elem = parse_elem(str);
+		AstNode *elem = parse_element(str);
 		term->children.push_back(elem);
 		term->strtail = str = elem->strtail;
 		parent = term;
@@ -381,7 +381,7 @@ AstNode* parse_term(const char *str)
 			mul->children.push_back(parent->children.at(0));
 			parent->children.pop_back();
 			str++;
-			mul->children.push_back(parse_elem(str));
+			mul->children.push_back(parse_element(str));
 			parent->children.push_back(mul);
 			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 			break;
@@ -392,7 +392,7 @@ AstNode* parse_term(const char *str)
 			mul->children.push_back(parent->children.at(0));
 			parent->children.pop_back();
 			str++;
-			mul->children.push_back(parse_elem(str));
+			mul->children.push_back(parse_element(str));
 			parent->children.push_back(mul);
 			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 			break;
