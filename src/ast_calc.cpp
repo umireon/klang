@@ -101,7 +101,7 @@ int main(int argc, const char **argv)
 
     AstNode *ast = parse_statement(argv[1]);
 
-    printf("%d\n", ast_calc(ast));
+    cout << ast_calc(ast) << endl;
 
     return 0;
 }
