@@ -18,6 +18,7 @@ enum symbol_type {
 	SYMBOL_NULL,
 	SYMBOL_UNKNOWN,
 	SYMBOL_EQUAL,
+	SYMBOL_DOT,
 };
 
 int read_number_oct(const char **head);

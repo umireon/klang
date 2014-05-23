@@ -37,6 +37,8 @@ enum symbol_type get_type_of_next_symbol(char c)
 		return SYMBOL_PAREN_LEFT;
 	} else if (c == ')') {
 		return SYMBOL_PAREN_RIGHT;
+	} else if (c == '.') {
+		return SYMBOL_DOT;
 	} else if (c == '\0') {
 		return SYMBOL_NULL;
 	} else {
@@ -98,6 +100,29 @@ int read_number_hex(const char **head)
 	}
 }
 
+int read_number_float(const char **head)
+{
+	const char *str = *head;
+	enum symbol_type type;
+	int val = 0;
+
+	while (1) {
+		type = get_type_of_next_symbol(str[0]);
+
+		switch (type) {
+		case SYMBOL_NUMBER_ZERO:
+		case SYMBOL_NUMBER_OCT:
+		case SYMBOL_NUMBER_DEC:
+			val = val * 10 + str[0] - '0';
+			str++;
+			break;
+		default:
+			*head = str;
+			return val;
+		}
+	}
+}
+
 int read_number_dec(const char **head)
 {
 	const char *str = *head;
@@ -114,6 +139,11 @@ int read_number_dec(const char **head)
 			val = val * 10 + str[0] - '0';
 			str++;
 			break;
+		case SYMBOL_DOT:
+			str++;
+			val = read_number_float(&str);
+			*head = str;
+			return 0;
 		default:
 			*head = str;
 			return val;
