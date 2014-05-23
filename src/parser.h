@@ -1,21 +1,5 @@
 #include <vector>
-
-enum node_type {
-	AST_STATEMENT,
-	AST_NUMBER,
-	AST_TERM,
-	AST_MULTIPLICATION,
-	AST_DIVISION,
-	AST_STUB,
-	AST_UNKNOWN,
-	AST_ADDITION,
-	AST_SUBTRACTION,
-	AST_PAREN,
-	AST_PAREN_LEFT,
-	AST_PAREN_RIGHT,
-	AST_EXPRESSION,
-	AST_ELEMENT
-};
+#include "ast.h"
 
 enum symbol_type {
 	SYMBOL_NUMBER_ZERO,
@@ -35,17 +19,6 @@ enum symbol_type {
 	SYMBOL_UNKNOWN
 };
 
-class AstNode
-{
-public:
-	enum node_type type;
-	const char *strhead;
-	const char *strtail;
-	std::vector<AstNode*> children;
-	int value;
-	~AstNode();
-};
-
 int read_number_oct(const char **head);
 int read_number_hex(const char **head);
 int read_number_dec(const char **head);
@@ -58,4 +31,5 @@ AstNode* parse_expression(const char *str);
 AstNode* parse_element(const char *str);
 AstNode* parse_term(const char *str);
 AstNode* parse_paren(const char *str);
+AstNode* parse_identifier(const char *str);
 AstNode* parse_number(const char *str);

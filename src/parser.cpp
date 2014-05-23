@@ -2,15 +2,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
+#include "ast.h"
 #include "parser.h"
-
-AstNode::~AstNode(void)
-{
-	int size = children.size();
-	for (int i = 0; i < size; i++) {
-		delete children.at(i);
-	}
-}
 
 enum symbol_type get_type_of_next_symbol(char c)
 {
@@ -178,6 +171,31 @@ int read_number_signed(const char **head)
 
 	*head = str;
 	return val;
+}
+
+AstNode* parse_identifier(const char *str)
+{
+	AstNode *ident = new AstNode();
+	ident->type = AST_IDENTIFIER;
+	ident->strhead = str;
+
+	enum symbol_type type;
+
+	while (1) {
+		type = get_type_of_next_symbol(str[0]);
+
+		switch (type) {
+		case SYMBOL_ALPHABET_HEXUPPER:
+		case SYMBOL_ALPHABET_HEXLOWER:
+		case SYMBOL_ALPHABET_X:
+		case SYMBOL_ALPHABET:
+			str++;
+			break;
+		default:
+			ident->strtail = str;
+			return ident;
+		}
+	}
 }
 
 AstNode* parse_paren_right(const char *str)
