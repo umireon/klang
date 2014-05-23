@@ -24,3 +24,13 @@ TEST(parse_identifier, CanRead4LetterIdentifier)
 
     delete ident;
 }
+
+TEST(parse_identifier, CanRead4AlnumIdentifier)
+{
+    AstNode *ident;
+    ident = parse_identifier("a2xd");
+    CHECK_EQUAL(AST_IDENTIFIER, ident->type);
+    CHECK_EQUAL(4, ident->strtail - ident->strhead);
+
+    delete ident;
+}

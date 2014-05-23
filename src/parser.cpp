@@ -189,6 +189,9 @@ AstNode* parse_identifier(const char *str)
 		case SYMBOL_ALPHABET_HEXLOWER:
 		case SYMBOL_ALPHABET_X:
 		case SYMBOL_ALPHABET:
+		case SYMBOL_NUMBER_ZERO:
+		case SYMBOL_NUMBER_OCT:
+		case SYMBOL_NUMBER_DEC:
 			str++;
 			break;
 		default:
