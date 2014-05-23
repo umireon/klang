@@ -55,6 +55,7 @@ int read_number_signed(const char **head);
 AstNode* parse(const char *str);
 AstNode* parse_statement(const char *str);
 AstNode* parse_expression(const char *str);
+AstNode* parse_element(const char *str);
 AstNode* parse_term(const char *str);
 AstNode* parse_paren(const char *str);
 AstNode* parse_number(const char *str);

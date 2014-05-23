@@ -325,10 +325,10 @@ AstNode* parse_number(const char *str)
 	return num;
 }
 
-AstNode* parse_elem(const char *str)
+AstNode* parse_element(const char *str)
 {
 	AstNode *elem = new AstNode();
-	elem->type = AST_TERM;
+	elem->type = AST_ELEMENT;
 	elem->strhead = str;
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
 
@@ -363,14 +363,10 @@ AstNode* parse_term(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		term->children.push_back(parse_number(str));
-		term->strtail = str = term->children.at(0)->strtail;
-		parent = term;
-		break;
 	case SYMBOL_PAREN_LEFT:
-		AstNode *paren = parse_paren(str);
-		term->children.push_back(paren);
-		term->strtail = str = paren->strtail;
+		AstNode *elem = parse_element(str);
+		term->children.push_back(elem);
+		term->strtail = str = elem->strtail;
 		parent = term;
 		break;
 	}
@@ -385,7 +381,7 @@ AstNode* parse_term(const char *str)
 			mul->children.push_back(parent->children.at(0));
 			parent->children.pop_back();
 			str++;
-			mul->children.push_back(parse_elem(str));
+			mul->children.push_back(parse_element(str));
 			parent->children.push_back(mul);
 			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 			break;
@@ -396,7 +392,7 @@ AstNode* parse_term(const char *str)
 			mul->children.push_back(parent->children.at(0));
 			parent->children.pop_back();
 			str++;
-			mul->children.push_back(parse_elem(str));
+			mul->children.push_back(parse_element(str));
 			parent->children.push_back(mul);
 			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 			break;

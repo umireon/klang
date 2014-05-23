@@ -14,14 +14,6 @@ TEST(parse_expression, ReturnExpressionNode)
     delete expr;
 }
 
-TEST(parse_expression, ContainsTermNode)
-{
-    AstNode *expr = parse_expression("1");
-    AstNode *term = expr->children.at(0);
-    CHECK_EQUAL(AST_TERM, term->type);
-    delete expr;
-}
-
 TEST(parse_expression, 2TermAddition)
 {
     AstNode *expr = parse_expression("2+3");
@@ -29,12 +21,6 @@ TEST(parse_expression, 2TermAddition)
 
     CHECK_EQUAL(AST_ADDITION, add->type);
     CHECK_EQUAL(2, add->children.size());
-
-    AstNode *num1 = add->children.at(0)->children.at(0);
-    AstNode *num2 = add->children.at(1)->children.at(0);
-
-    CHECK_EQUAL(2, num1->value);
-    CHECK_EQUAL(3, num2->value);
 
     delete expr;
 }
@@ -45,29 +31,21 @@ TEST(parse_expression, 3TermAddition)
     AstNode *add1 = expr->children.at(0);
     AstNode *add2 = add1->children.at(0);
 
-    AstNode *num1 = add2->children.at(0)->children.at(0);
-    AstNode *num2 = add2->children.at(1)->children.at(0);
-    AstNode *num3 = add1->children.at(1)->children.at(0);
+    CHECK_EQUAL(AST_ADDITION, add1->type);
+    CHECK_EQUAL(2, add1->children.size());
+    CHECK_EQUAL(AST_ADDITION, add2->type);
+    CHECK_EQUAL(2, add2->children.size());
 
-    CHECK_EQUAL(2, num1->value);
-    CHECK_EQUAL(3, num2->value);
-    CHECK_EQUAL(4, num3->value);
     delete expr;
 }
 
 TEST(parse_expression, 2TermSubtraction)
 {
     AstNode *expr = parse_expression("2-3");
-    AstNode *add = expr->children.at(0);
+    AstNode *sub = expr->children.at(0);
 
-    CHECK_EQUAL(AST_SUBTRACTION, add->type);
-    CHECK_EQUAL(2, add->children.size());
-
-    AstNode *num1 = add->children.at(0)->children.at(0);
-    AstNode *num2 = add->children.at(1)->children.at(0);
-
-    CHECK_EQUAL(2, num1->value);
-    CHECK_EQUAL(3, num2->value);
+    CHECK_EQUAL(AST_SUBTRACTION, sub->type);
+    CHECK_EQUAL(2, sub->children.size());
 
     delete expr;
 }
@@ -75,15 +53,29 @@ TEST(parse_expression, 2TermSubtraction)
 TEST(parse_expression, 3TermSubtraction)
 {
     AstNode *expr = parse_expression("2-3-4");
-    AstNode *add1 = expr->children.at(0);
-    AstNode *add2 = add1->children.at(0);
+    AstNode *sub1 = expr->children.at(0);
+    AstNode *sub2 = sub1->children.at(0);
 
-    AstNode *num1 = add2->children.at(0)->children.at(0);
-    AstNode *num2 = add2->children.at(1)->children.at(0);
-    AstNode *num3 = add1->children.at(1)->children.at(0);
+    CHECK_EQUAL(AST_SUBTRACTION, sub1->type);
+    CHECK_EQUAL(2, sub1->children.size());
+    CHECK_EQUAL(AST_SUBTRACTION, sub2->type);
+    CHECK_EQUAL(2, sub2->children.size());
 
-    CHECK_EQUAL(2, num1->value);
-    CHECK_EQUAL(3, num2->value);
-    CHECK_EQUAL(4, num3->value);
+    delete expr;
+}
+
+TEST(parse_expression, 3ElemComplex)
+{
+    AstNode *expr = parse_expression("2-3+4");
+    CHECK_EQUAL(1, expr->children.size());
+
+    AstNode *add = expr->children.at(0);
+    CHECK_EQUAL(AST_ADDITION, add->type);
+    CHECK_EQUAL(2, add->children.size());
+
+    AstNode *sub = add->children.at(0);
+    CHECK_EQUAL(AST_SUBTRACTION, sub->type);
+    CHECK_EQUAL(2, sub->children.size());
+
     delete expr;
 }
