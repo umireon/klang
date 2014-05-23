@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <typeinfo>
 
 #include "ast.h"
 #include "parser.h"
@@ -11,81 +12,9 @@ void print_ast(AstNode *root, int depth)
     string indent = string(depth * 4, ' ');
     string str = string(root->strhead, root->strtail - root->strhead);
 
-    switch (root->type) {
-        case AST_NUMBER:
-            cout << indent << "- type: AST_NUMBER" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  value: " << root->value << endl;
-            break;
-        case AST_EXPRESSION:
-            cout << indent << "- type: AST_EXPRESSION" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_ADDITION:
-            cout << indent << "- type: AST_ADDITION" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_SUBTRACTION:
-            cout << indent << "- type: AST_SUBTRACTION" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_TERM:
-            cout << indent << "- type: AST_TERM" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_MULTIPLICATION:
-            cout << indent << "- type: AST_MULTIPLICATION" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_DIVISION:
-            cout << indent << "- type: AST_DIVISION" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_STATEMENT:
-            cout << indent << "- type: AST_STATEMENT" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_PAREN_LEFT:
-            cout << indent << "- type: AST_PAREN_LEFT" << endl;
-            cout << indent << "  str: " << str << endl;
-            break;
-        case AST_PAREN_RIGHT:
-            cout << indent << "- type: AST_PAREN_RIGHT" << endl;
-            cout << indent << "  str: " << str << endl;
-            break;
-        case AST_PAREN:
-            cout << indent << "- type: AST_PAREN" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_STUB:
-            cout << indent << "- type: AST_STUB" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_ELEMENT:
-            cout << indent << "- type: AST_ELEMENT" << endl;
-            cout << indent << "  str: " << str << endl;
-            cout << indent << "  children:" << endl;
-            break;
-        case AST_IDENTIFIER:
-            cout << indent << "- type: AST_IDENTIFIER" << endl;
-            cout << indent << "  str: " << str << endl;
-            break;
-        case AST_UNKNOWN:
-        default:
-            cout << indent << "- type: AST_UNKNOWN" << endl;
-            cout << indent << "  str: " << str << endl;
-            break;
-
-    }
+    cout << indent << "- type: " << typeid(*root).name() << endl;
+    cout << indent << "  str: " << str << endl;
+    cout << indent << "  value: " << root->value << endl;
 
     for (int i = 0; i < root->children.size(); i++) {
         print_ast(root->children.at(i), depth + 1);
@@ -104,53 +33,8 @@ AstNode* ast_reduce(AstNode* root)
     enum node_type type = root->type;
     switch (type) {
     case AST_ADDITION:
-        if (size == 2) {
-            AstNode *x = children[0];
-            AstNode *y = children[1];
-
-            if (x->type == AST_NUMBER && y->type == AST_NUMBER) {
-                AstNode *newRoot = new AstNode();
-                newRoot->type = AST_NUMBER;
-                newRoot->strhead = x->strhead;
-                newRoot->strtail = y->strtail;
-                newRoot->value = x->value + y->value;
-                delete root;
-                return newRoot;
-            }
-        }
-        break;
     case AST_SUBTRACTION:
-        if (size == 2) {
-            AstNode *x = children[0];
-            AstNode *y = children[1];
-
-            if (x->type == AST_NUMBER && y->type == AST_NUMBER) {
-                AstNode *newRoot = new AstNode();
-                newRoot->type = AST_NUMBER;
-                newRoot->strhead = x->strhead;
-                newRoot->strtail = y->strtail;
-                newRoot->value = x->value - y->value;
-                delete root;
-                return newRoot;
-            }
-        }
-        break;
     case AST_MULTIPLICATION:
-        if (size == 2) {
-            AstNode *x = children[0];
-            AstNode *y = children[1];
-
-            if (x->type == AST_NUMBER && y->type == AST_NUMBER) {
-                AstNode *newRoot = new AstNode();
-                newRoot->type = AST_NUMBER;
-                newRoot->strhead = x->strhead;
-                newRoot->strtail = y->strtail;
-                newRoot->value = x->value * y->value;
-                delete root;
-                return newRoot;
-            }
-        }
-        break;
     case AST_DIVISION:
         if (size == 2) {
             AstNode *x = children[0];
@@ -161,7 +45,20 @@ AstNode* ast_reduce(AstNode* root)
                 newRoot->type = AST_NUMBER;
                 newRoot->strhead = x->strhead;
                 newRoot->strtail = y->strtail;
-                newRoot->value = x->value / y->value;
+                switch (type) {
+                case AST_ADDITION:
+                    newRoot->value = x->value + y->value;
+                    break;
+                case AST_SUBTRACTION:
+                    newRoot->value = x->value - y->value;
+                    break;
+                case AST_MULTIPLICATION:
+                    newRoot->value = x->value * y->value;
+                    break;
+                case AST_DIVISION:
+                    newRoot->value = x->value / y->value;
+                    break;
+                }
                 delete root;
                 return newRoot;
             }
@@ -177,6 +74,7 @@ AstNode* ast_reduce(AstNode* root)
             return newRoot;
         }
         break;
+    case AST_STATEMENT:
     case AST_EXPRESSION:
     case AST_TERM:
     case AST_ELEMENT:

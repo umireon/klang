@@ -1,3 +1,4 @@
+#include <sstream>
 #include "ast.h"
 
 AstNode::~AstNode(void)
