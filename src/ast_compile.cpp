@@ -33,53 +33,8 @@ AstNode* ast_reduce(AstNode* root)
     enum node_type type = root->type;
     switch (type) {
     case AST_ADDITION:
-        if (size == 2) {
-            AstNode *x = children[0];
-            AstNode *y = children[1];
-
-            if (x->type == AST_NUMBER && y->type == AST_NUMBER) {
-                AstNode *newRoot = new AstNode();
-                newRoot->type = AST_NUMBER;
-                newRoot->strhead = x->strhead;
-                newRoot->strtail = y->strtail;
-                newRoot->value = x->value + y->value;
-                delete root;
-                return newRoot;
-            }
-        }
-        break;
     case AST_SUBTRACTION:
-        if (size == 2) {
-            AstNode *x = children[0];
-            AstNode *y = children[1];
-
-            if (x->type == AST_NUMBER && y->type == AST_NUMBER) {
-                AstNode *newRoot = new AstNode();
-                newRoot->type = AST_NUMBER;
-                newRoot->strhead = x->strhead;
-                newRoot->strtail = y->strtail;
-                newRoot->value = x->value - y->value;
-                delete root;
-                return newRoot;
-            }
-        }
-        break;
     case AST_MULTIPLICATION:
-        if (size == 2) {
-            AstNode *x = children[0];
-            AstNode *y = children[1];
-
-            if (x->type == AST_NUMBER && y->type == AST_NUMBER) {
-                AstNode *newRoot = new AstNode();
-                newRoot->type = AST_NUMBER;
-                newRoot->strhead = x->strhead;
-                newRoot->strtail = y->strtail;
-                newRoot->value = x->value * y->value;
-                delete root;
-                return newRoot;
-            }
-        }
-        break;
     case AST_DIVISION:
         if (size == 2) {
             AstNode *x = children[0];
@@ -90,7 +45,20 @@ AstNode* ast_reduce(AstNode* root)
                 newRoot->type = AST_NUMBER;
                 newRoot->strhead = x->strhead;
                 newRoot->strtail = y->strtail;
-                newRoot->value = x->value / y->value;
+                switch (type) {
+                case AST_ADDITION:
+                    newRoot->value = x->value + y->value;
+                    break;
+                case AST_SUBTRACTION:
+                    newRoot->value = x->value - y->value;
+                    break;
+                case AST_MULTIPLICATION:
+                    newRoot->value = x->value * y->value;
+                    break;
+                case AST_DIVISION:
+                    newRoot->value = x->value / y->value;
+                    break;
+                }
                 delete root;
                 return newRoot;
             }
