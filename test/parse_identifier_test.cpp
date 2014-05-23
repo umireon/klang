@@ -9,16 +9,18 @@ TEST_GROUP(parse_identifier)
 
 TEST(parse_identifier, ReturnIdentifierNode)
 {
+    Parse p;
     AstNode *ident;
-    ident = parse_identifier("a");
+    ident = p.parse_identifier("a");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);
     delete ident;
 }
 
 TEST(parse_identifier, CanRead4LetterIdentifier)
 {
+    Parse p;
     AstNode *ident;
-    ident = parse_identifier("abcd");
+    ident = p.parse_identifier("abcd");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);
     CHECK_EQUAL(4, ident->strtail - ident->strhead);
 
@@ -27,8 +29,9 @@ TEST(parse_identifier, CanRead4LetterIdentifier)
 
 TEST(parse_identifier, CanRead4AlnumIdentifier)
 {
+    Parse p;
     AstNode *ident;
-    ident = parse_identifier("a2xd");
+    ident = p.parse_identifier("a2xd");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);
     CHECK_EQUAL(4, ident->strtail - ident->strhead);
 

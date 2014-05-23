@@ -16,7 +16,8 @@ using namespace igloo;
 
 int accepts(const char *str)
 {
-	AstNode *stmt = parse(str);
+	Parse p;
+	AstNode *stmt = p.parse(str);
 	return (strlen(stmt->strtail) == 0);
 }
 

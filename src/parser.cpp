@@ -5,7 +5,7 @@
 #include "ast.h"
 #include "parser.h"
 
-enum symbol_type get_type_of_next_symbol(char c)
+enum symbol_type Parse::get_type_of_next_symbol(char c)
 {
 	char dc = c | 0x20;
 
@@ -47,14 +47,14 @@ enum symbol_type get_type_of_next_symbol(char c)
 	}
 }
 
-int read_number_oct(const char **head)
+int Parse::read_number_oct(const char **head)
 {
 	const char *str = *head;
 	enum symbol_type type;
 	int val = 0;
 
 	while (1) {
-		type = get_type_of_next_symbol(str[0]);
+		type = this->get_type_of_next_symbol(str[0]);
 
 		switch (type) {
 		case SYMBOL_NUMBER_ZERO:
@@ -69,7 +69,7 @@ int read_number_oct(const char **head)
 	}
 }
 
-int read_number_hex(const char **head)
+int Parse::read_number_hex(const char **head)
 {
 	const char *str = *head;
 	enum symbol_type type;
@@ -100,7 +100,7 @@ int read_number_hex(const char **head)
 	}
 }
 
-int read_number_float(const char **head)
+int Parse::read_number_float(const char **head)
 {
 	const char *str = *head;
 	enum symbol_type type;
@@ -123,7 +123,7 @@ int read_number_float(const char **head)
 	}
 }
 
-int read_number_dec(const char **head)
+int Parse::read_number_dec(const char **head)
 {
 	const char *str = *head;
 	enum symbol_type type;
@@ -151,7 +151,7 @@ int read_number_dec(const char **head)
 	}
 }
 
-int read_number_hex_or_oct(const char **head)
+int Parse::read_number_hex_or_oct(const char **head)
 {
 	const char *str = *head;
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
@@ -174,7 +174,7 @@ int read_number_hex_or_oct(const char **head)
 	return val;
 }
 
-int read_number_signed(const char **head)
+int Parse::read_number_signed(const char **head)
 {
 	const char *str = *head;
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
@@ -203,7 +203,7 @@ int read_number_signed(const char **head)
 	return val;
 }
 
-AstNode* parse_identifier(const char *str)
+AstNode* Parse::parse_identifier(const char *str)
 {
 	AstNode *ident = new AstIdentifier();
 	ident->strhead = str;
@@ -230,7 +230,7 @@ AstNode* parse_identifier(const char *str)
 	}
 }
 
-AstNode* parse_paren_right(const char *str)
+AstNode* Parse::parse_paren_right(const char *str)
 {
 	AstNode *stub, *unknown;
 	AstNode *pright;
@@ -264,7 +264,7 @@ AstNode* parse_paren_right(const char *str)
 	}
 }
 
-AstNode* parse_paren_left(const char *str)
+AstNode* Parse::parse_paren_left(const char *str)
 {
 	AstNode *stub, *unknown;
 	AstNode *pleft = new AstNode();
@@ -299,7 +299,7 @@ AstNode* parse_paren_left(const char *str)
 	return pleft;
 }
 
-AstNode* parse_paren(const char *str)
+AstNode* Parse::parse_paren(const char *str)
 {
 	AstNode *term = new AstParen();
 	term->strhead = str;
@@ -317,7 +317,7 @@ AstNode* parse_paren(const char *str)
 	return term;
 }
 
-AstNode* parse_number(const char *str)
+AstNode* Parse::parse_number(const char *str)
 {
 	AstNode *stub, *unknown;
 	AstNode *num = new AstNumber();
@@ -373,7 +373,7 @@ AstNode* parse_number(const char *str)
 	return num;
 }
 
-AstNode* parse_element(const char *str)
+AstNode* Parse::parse_element(const char *str)
 {
 	AstNode *elem = new AstElement();
 	elem->strhead = str;
@@ -403,13 +403,13 @@ AstNode* parse_element(const char *str)
 	return elem;
 }
 
-AstNode* parse_term(const char *str)
+AstNode* Parse::parse_term(const char *str)
 {
 	AstNode *term = new AstTerm();
 	AstNode *mul, *parent, *num;
 	term->strhead = str;
 
-	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	enum symbol_type type = this->get_type_of_next_symbol(str[0]);
 	switch (type) {
 	case SYMBOL_NUMBER_ZERO:
 	case SYMBOL_NUMBER_OCT:
@@ -421,7 +421,7 @@ AstNode* parse_term(const char *str)
 	case SYMBOL_ALPHABET_HEXLOWER:
 	case SYMBOL_ALPHABET_X:
 	case SYMBOL_ALPHABET:
-		AstNode *elem = parse_element(str);
+		AstNode *elem = this->parse_element(str);
 		term->children.push_back(elem);
 		term->strtail = str = elem->strtail;
 		parent = term;
@@ -437,7 +437,7 @@ AstNode* parse_term(const char *str)
 			mul->children.push_back(parent->children.at(0));
 			parent->children.pop_back();
 			str++;
-			mul->children.push_back(parse_element(str));
+			mul->children.push_back(this->parse_element(str));
 			parent->children.push_back(mul);
 			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 			break;
@@ -447,7 +447,7 @@ AstNode* parse_term(const char *str)
 			mul->children.push_back(parent->children.at(0));
 			parent->children.pop_back();
 			str++;
-			mul->children.push_back(parse_element(str));
+			mul->children.push_back(this->parse_element(str));
 			parent->children.push_back(mul);
 			mul->strtail = term->strtail = str = mul->children.at(1)->strtail;
 			break;
@@ -459,7 +459,7 @@ AstNode* parse_term(const char *str)
 	return term;
 }
 
-AstNode* parse_expression(const char *str)
+AstNode* Parse::parse_expression(const char *str)
 {
 	AstNode *expr = new AstExpression();
 	AstNode *mul, *parent, *num;
@@ -477,12 +477,12 @@ AstNode* parse_expression(const char *str)
 	case SYMBOL_ALPHABET_HEXLOWER:
 	case SYMBOL_ALPHABET_X:
 	case SYMBOL_ALPHABET:
-		expr->children.push_back(parse_term(str));
+		expr->children.push_back(this->parse_term(str));
 		expr->strtail = str = expr->children.at(0)->strtail;
 		parent = expr;
 
 		while (1) {
-			type = get_type_of_next_symbol(str[0]);
+			type = this->get_type_of_next_symbol(str[0]);
 			switch (type) {
 			case SYMBOL_SIGN_PLUS:
 				mul = new AstAddition();
@@ -490,7 +490,7 @@ AstNode* parse_expression(const char *str)
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
 				str++;
-				mul->children.push_back(parse_term(str));
+				mul->children.push_back(this->parse_term(str));
 				parent->children.push_back(mul);
 				mul->strtail = expr->strtail = str = mul->children.at(1)->strtail;
 				break;
@@ -501,7 +501,7 @@ AstNode* parse_expression(const char *str)
 				mul->children.push_back(parent->children.at(0));
 				parent->children.pop_back();
 				str++;
-				mul->children.push_back(parse_term(str));
+				mul->children.push_back(this->parse_term(str));
 				parent->children.push_back(mul);
 				mul->strtail = expr->strtail = str = mul->children.at(1)->strtail;
 				break;
@@ -514,13 +514,13 @@ AstNode* parse_expression(const char *str)
 	return expr;
 }
 
-AstNode* parse_statement(const char *str)
+AstNode* Parse::parse_statement(const char *str)
 {
 	AstNode *stmt;
 	stmt = new AstStatement();
 	stmt->strhead = str;
 
-	enum symbol_type type = get_type_of_next_symbol(str[0]);
+	enum symbol_type type = this->get_type_of_next_symbol(str[0]);
 
 	switch (type) {
 	case SYMBOL_NUMBER_ZERO:
@@ -533,7 +533,7 @@ AstNode* parse_statement(const char *str)
 	case SYMBOL_ALPHABET_HEXLOWER:
 	case SYMBOL_ALPHABET_X:
 	case SYMBOL_ALPHABET:
-		stmt->children.push_back(parse_expression(str));
+		stmt->children.push_back(this->parse_expression(str));
 	}
 
 	if (stmt->children.size() == 0) {
@@ -545,7 +545,7 @@ AstNode* parse_statement(const char *str)
 	return stmt;
 }
 
-AstNode* parse(const char *str)
+AstNode* Parse::parse(const char *str)
 {
-	return parse_statement(str);
+	return this->parse_statement(str);
 }
