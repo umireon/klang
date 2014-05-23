@@ -51,6 +51,10 @@ Describe(プログラム電卓) {
 		Assert::That(accepts("a=2"));
 	}
 
+	It(変数を受け入れる) {
+		Assert::That(accepts("a*2"));
+	}
+
 	It(比較演算子を受け入れる) {Pending;
 		Assert::That(accepts("1 <= 2"));
 		Assert::That(accepts("1 < 2"));

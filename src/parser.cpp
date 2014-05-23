@@ -2,15 +2,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
+#include "ast.h"
 #include "parser.h"
-
-AstNode::~AstNode(void)
-{
-	int size = children.size();
-	for (int i = 0; i < size; i++) {
-		delete children.at(i);
-	}
-}
 
 enum symbol_type get_type_of_next_symbol(char c)
 {
@@ -180,6 +173,34 @@ int read_number_signed(const char **head)
 	return val;
 }
 
+AstNode* parse_identifier(const char *str)
+{
+	AstNode *ident = new AstNode();
+	ident->type = AST_IDENTIFIER;
+	ident->strhead = str;
+
+	enum symbol_type type;
+
+	while (1) {
+		type = get_type_of_next_symbol(str[0]);
+
+		switch (type) {
+		case SYMBOL_ALPHABET_HEXUPPER:
+		case SYMBOL_ALPHABET_HEXLOWER:
+		case SYMBOL_ALPHABET_X:
+		case SYMBOL_ALPHABET:
+		case SYMBOL_NUMBER_ZERO:
+		case SYMBOL_NUMBER_OCT:
+		case SYMBOL_NUMBER_DEC:
+			str++;
+			break;
+		default:
+			ident->strtail = str;
+			return ident;
+		}
+	}
+}
+
 AstNode* parse_paren_right(const char *str)
 {
 	AstNode *stub, *unknown;
@@ -342,6 +363,13 @@ AstNode* parse_element(const char *str)
 		break;
 	case SYMBOL_PAREN_LEFT:
 		elem->children.push_back(parse_paren(str));
+		break;
+	case SYMBOL_ALPHABET_HEXUPPER:
+	case SYMBOL_ALPHABET_HEXLOWER:
+	case SYMBOL_ALPHABET_X:
+	case SYMBOL_ALPHABET:
+		elem->children.push_back(parse_identifier(str));
+		break;
 	}
 
 	elem->strtail = elem->children.at(0)->strtail;
@@ -364,6 +392,10 @@ AstNode* parse_term(const char *str)
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
 	case SYMBOL_PAREN_LEFT:
+	case SYMBOL_ALPHABET_HEXUPPER:
+	case SYMBOL_ALPHABET_HEXLOWER:
+	case SYMBOL_ALPHABET_X:
+	case SYMBOL_ALPHABET:
 		AstNode *elem = parse_element(str);
 		term->children.push_back(elem);
 		term->strtail = str = elem->strtail;
@@ -419,6 +451,10 @@ AstNode* parse_expression(const char *str)
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
 	case SYMBOL_PAREN_LEFT:
+	case SYMBOL_ALPHABET_HEXUPPER:
+	case SYMBOL_ALPHABET_HEXLOWER:
+	case SYMBOL_ALPHABET_X:
+	case SYMBOL_ALPHABET:
 		expr->children.push_back(parse_term(str));
 		expr->strtail = str = expr->children.at(0)->strtail;
 		parent = expr;
@@ -473,6 +509,10 @@ AstNode* parse_statement(const char *str)
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
 	case SYMBOL_PAREN_LEFT:
+	case SYMBOL_ALPHABET_HEXUPPER:
+	case SYMBOL_ALPHABET_HEXLOWER:
+	case SYMBOL_ALPHABET_X:
+	case SYMBOL_ALPHABET:
 		stmt->children.push_back(parse_expression(str));
 	}
 
