@@ -18,6 +18,7 @@ enum node_type {
 	AST_EXPRESSION,
 	AST_ELEMENT,
 	AST_IDENTIFIER,
+	AST_ASSIGNMENT,
 };
 
 class AstNode

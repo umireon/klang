@@ -14,6 +14,9 @@ target_link_libraries(print_ast parser)
 add_executable(ast_calc src/ast_calc.cpp)
 target_link_libraries(ast_calc parser)
 
+add_executable(ast_compile src/ast_compile.cpp)
+target_link_libraries(ast_compile parser)
+
 set(serial "0.0.0")
 
 if (TEST)
