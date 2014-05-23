@@ -11,6 +11,9 @@ add_library(parser src/parser.cpp src/ast.cpp)
 add_executable(print_ast src/print_ast.cpp)
 target_link_libraries(print_ast parser)
 
+add_executable(ast_calc src/ast_calc.cpp)
+target_link_libraries(ast_calc parser)
+
 set(serial "0.0.0")
 
 if (TEST)
