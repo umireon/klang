@@ -28,7 +28,7 @@ endif()
 if (UNIT_TEST)
     enable_testing()
 
-    add_subdirectory(lib/cpputest)
+    add_subdirectory(lib/cpputest EXCLUDE_FROM_ALL)
     include_directories(${CppUTest_SOURCE_DIR}/include)
 
     file(GLOB TestSourceFiles test/*.cpp)
