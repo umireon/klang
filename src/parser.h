@@ -69,6 +69,7 @@ protected:
 	AstNode* chain_power(AstNode* root, const char *str);
 	AstNode* chain_multiplication(AstNode* root, const char *str);
 	AstNode* chain_division(AstNode* root, const char* str);
+	AstNode* chain_reminder(AstNode* root, const char* str);
 private:
 	Parse p;
 };

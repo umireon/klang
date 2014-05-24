@@ -56,6 +56,9 @@ AstNode* ParseTerm::parse_term(const char *str)
 		case SYMBOL_OP_SLASH:
 			term = chain_division(term, s+1);
 			break;
+		case SYMBOL_OP_PERCENT:
+			term = chain_reminder(term, s+1);
+			break;
 		default:
 			return term;
 		}
@@ -101,6 +104,21 @@ AstNode* ParseTerm::chain_multiplication(AstNode* root, const char *str)
 AstNode* ParseTerm::chain_division(AstNode* root, const char* str)
 {
 	AstNode *newRoot = new AstDivision();
+	newRoot->strhead = root->strhead;
+	std::vector<AstNode*> &newChildren = newRoot->children;
+
+	newChildren.push_back(root);
+	AstNode *elem = p.parse_element(str);
+	newChildren.push_back(elem);
+
+	newRoot->strtail = elem->strtail;
+
+	return newRoot;
+}
+
+AstNode* ParseTerm::chain_reminder(AstNode* root, const char* str)
+{
+	AstNode *newRoot = new AstReminder();
 	newRoot->strhead = root->strhead;
 	std::vector<AstNode*> &newChildren = newRoot->children;
 
