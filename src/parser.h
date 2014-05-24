@@ -39,6 +39,8 @@ protected:
 	AstFloat* read_number_float(const char *str);
 };
 
+class ParseTerm;
+
 class Parse
 {
 public:
@@ -47,8 +49,8 @@ public:
 	AstNode* parse(const char *str);
 	AstNode* parse_statement(const char *str);
 	AstNode* parse_expression(const char *str);
-	AstNode* parse_element(const char *str);
 	AstNode* parse_term(const char *str);
+	AstNode* parse_element(const char *str);
 	AstNode* parse_paren(const char *str);
 	AstNode* parse_paren_left(const char *str);
 	AstNode* parse_paren_right(const char *str);

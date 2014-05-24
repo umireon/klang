@@ -70,6 +70,7 @@ AstNode* ParseTerm::chain_power(AstNode* root, const char *str)
 		root->children[1] = chain_power(root->children[1], str);
 	} else {
 		AstNode *newRoot = new AstPower();
+		newRoot->strhead = root->strhead;
 		std::vector<AstNode*> &newChildren = newRoot->children;
 
 		newChildren.push_back(root);
