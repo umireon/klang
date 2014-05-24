@@ -34,9 +34,9 @@ Describe(プログラム電卓) {
 		Assert::That(accepts("1.234"));
 	}
 
-	It(べき乗を受け入れる) {Pending;
+	It(べき乗を受け入れる) {
 		Assert::That(accepts("2**3"));
-		Assert::That(accepts("10^4"));
+		//Assert::That(accepts("10^4"));
 	}
 
 	It(剰余を受け入れる) {Pending;
