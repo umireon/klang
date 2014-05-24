@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 #include "ast.h"
 #include "parser.h"
