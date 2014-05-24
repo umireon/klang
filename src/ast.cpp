@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <sstream>
 #include "ast.h"
 
@@ -13,12 +14,12 @@ AstNode::~AstNode(void)
 long AstInteger::get_long()
 {
 	std::string s(strhead, strtail - strhead);
-	return std::strtol(s.c_str(), NULL, 0);
+	return strtol(s.c_str(), NULL, 0);
 }
 
 
 long AstOctal::get_long()
 {
 	std::string s(strhead, strtail - strhead);
-	return std::strtol(s.c_str(), NULL, 0);
+	return strtol(s.c_str(), NULL, 0);
 }
