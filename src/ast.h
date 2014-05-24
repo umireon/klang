@@ -21,6 +21,7 @@ enum node_type {
 	AST_STUB,
 	AST_UNKNOWN,
 	AST_POWER,
+	AST_REMINDER,
 };
 
 class AstNode
@@ -102,6 +103,15 @@ public:
 	AstDivision()
 	{
 		this->type = AST_DIVISION;
+	}
+};
+
+class AstReminder : public AstNode
+{
+public:
+	AstReminder()
+	{
+		this->type = AST_REMINDER;
 	}
 };
 
