@@ -8,3 +8,19 @@ AstNode::~AstNode(void)
 		delete children.at(i);
 	}
 }
+
+
+long AstInteger::get_long()
+{
+	std::string s(strhead, strtail - strhead);
+	return std::stol(s, nullptr, 0);
+	return 0;
+}
+
+
+long AstOctal::get_long()
+{
+	std::string s(strhead, strtail - strhead);
+	return std::stol(s, nullptr, 0);
+	return 0;
+}

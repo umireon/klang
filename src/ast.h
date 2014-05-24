@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <vector>
 
 #pragma once
@@ -29,10 +30,14 @@ public:
 	const char *strtail;
 	std::vector<AstNode*> children;
 	int value;
-	~AstNode();
+	virtual ~AstNode();
 	virtual std::string get_type_name()
 	{
 		return "AstNode";
+	}
+	virtual int size()
+	{
+		return children.size();
 	}
 };
 
@@ -124,6 +129,38 @@ public:
 	{
 		this->type = AST_NUMBER;
 	}
+	int size()
+	{
+		return 0;
+	}
+	virtual long get_long()
+	{
+		return 12;
+	}
+};
+
+class AstInteger : public AstNumber
+{
+public:
+	virtual long get_long();
+};
+
+class AstHexdecimal : public AstInteger
+{
+};
+
+class AstOctal : public AstInteger
+{
+public:
+	virtual long get_long();
+};
+
+class AstDecimal : public AstInteger
+{
+};
+
+class AstFloat : public AstInteger
+{
 };
 
 class AstIdentifier : public AstNode
