@@ -13,14 +13,12 @@ AstNode::~AstNode(void)
 long AstInteger::get_long()
 {
 	std::string s(strhead, strtail - strhead);
-	return std::stol(s, nullptr, 0);
-	return 0;
+	return std::strtol(s.c_str(), NULL, 0);
 }
 
 
 long AstOctal::get_long()
 {
 	std::string s(strhead, strtail - strhead);
-	return std::stol(s, nullptr, 0);
-	return 0;
+	return std::strtol(s.c_str(), NULL, 0);
 }
