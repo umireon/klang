@@ -39,7 +39,7 @@ Describe(プログラム電卓) {
 		//Assert::That(accepts("10^4"));
 	}
 
-	It(剰余を受け入れる) {Pending;
+	It(剰余を受け入れる) {
 		Assert::That(accepts("4%2"));
 	}
 
