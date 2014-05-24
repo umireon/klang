@@ -97,7 +97,8 @@ int main(int argc, const char **argv)
         return 1;
     }
 
-    AstNode *ast = parse_statement(argv[1]);
+    Parse p;
+    AstNode *ast = p.parse_statement(argv[1]);
     ast = ast_reduce(ast);
     print_ast(ast, 0);
 

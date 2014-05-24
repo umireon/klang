@@ -8,7 +8,8 @@ TEST_GROUP(Parser)
 
 TEST(Parser, EmptyStatementForEmptyString)
 {
-    AstNode *stmt = parse("");
+	Parse p;
+    AstNode *stmt = p.parse("");
     CHECK_EQUAL(AST_STATEMENT, stmt->type);
     CHECK(stmt->children.empty());
     delete stmt;

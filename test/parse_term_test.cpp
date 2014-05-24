@@ -9,14 +9,16 @@ TEST_GROUP(parse_term)
 
 TEST(parse_term, ReturnTermNode)
 {
-    AstNode *term = parse_term("1");
+    Parse p;
+    AstNode *term = p.parse_term("1");
     CHECK_EQUAL(AST_TERM, term->type);
     delete term;
 }
 
 TEST(parse_term, ContainsElement)
 {
-    AstNode *term = parse_term("0x5");
+    Parse p;
+    AstNode *term = p.parse_term("0x5");
     CHECK_EQUAL(1, term->children.size());
 
     AstNode *elem = term->children.at(0);
@@ -27,7 +29,8 @@ TEST(parse_term, ContainsElement)
 
 TEST(parse_term, 2ElemMultiplication)
 {
-    AstNode *term = parse_term("2*3");
+    Parse p;
+    AstNode *term = p.parse_term("2*3");
     CHECK_EQUAL(1, term->children.size());
 
     AstNode *mul = term->children.at(0);
@@ -39,7 +42,8 @@ TEST(parse_term, 2ElemMultiplication)
 
 TEST(parse_term, 3ElemMultiplication)
 {
-    AstNode *term = parse_term("2*3*4");
+    Parse p;
+    AstNode *term = p.parse_term("2*3*4");
     CHECK_EQUAL(1, term->children.size());
 
     AstNode *mul1 = term->children.at(0);
@@ -56,7 +60,8 @@ TEST(parse_term, 3ElemMultiplication)
 
 TEST(parse_term, 2ElemDivision)
 {
-    AstNode *term = parse_term("2/3");
+    Parse p;
+    AstNode *term = p.parse_term("2/3");
     CHECK_EQUAL(1, term->children.size());
 
     AstNode *div = term->children.at(0);
@@ -68,7 +73,8 @@ TEST(parse_term, 2ElemDivision)
 
 TEST(parse_term, 3ElemDivision)
 {
-    AstNode *term = parse_term("2/3/4");
+    Parse p;
+    AstNode *term = p.parse_term("2/3/4");
     CHECK_EQUAL(1, term->children.size());
 
     AstNode *div1 = term->children.at(0);
@@ -84,7 +90,8 @@ TEST(parse_term, 3ElemDivision)
 
 TEST(parse_term, 3ElemComplex)
 {
-    AstNode *term = parse_term("2/3*4");
+    Parse p;
+    AstNode *term = p.parse_term("2/3*4");
     CHECK_EQUAL(1, term->children.size());
 
     AstNode *mul = term->children.at(0);
