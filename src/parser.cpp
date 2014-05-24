@@ -27,6 +27,8 @@ enum symbol_type Parse::get_type_of_next_symbol(char c)
 		return SYMBOL_OP_ASTERISK;
 	} else if (c == '/') {
 		return SYMBOL_OP_SLASH;
+	} else if (c == '%') {
+		return SYMBOL_OP_PERCENT;
 	} else if (c == '+') {
 		return SYMBOL_SIGN_PLUS;
 	} else if (c == '+') {

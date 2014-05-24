@@ -20,6 +20,7 @@ enum node_type {
 	AST_ASSIGNMENT,
 	AST_STUB,
 	AST_UNKNOWN,
+	AST_POWER,
 };
 
 class AstNode
@@ -110,6 +111,15 @@ public:
 	AstElement()
 	{
 		this->type = AST_ELEMENT;
+	}
+};
+
+class AstPower : public AstNode
+{
+public:
+	AstPower()
+	{
+		this->type = AST_POWER;
 	}
 };
 

@@ -20,6 +20,7 @@ enum symbol_type {
 	SYMBOL_EQUAL,
 	SYMBOL_DOT,
 	SYMBOL_FOLLOW,
+	SYMBOL_OP_PERCENT,
 };
 
 class ParseNumber {
@@ -55,5 +56,18 @@ public:
 	AstNode* parse_number(const char *str);
 private:
 	ParseNumber pn;
+};
+
+class ParseTerm {
+public:
+	AstNode* parse_term(const char *str);
+protected:
+	enum symbol_type get_symbol(char c);
+	AstNode* parse_power_or_multiplication(const char *str);
+	AstNode* chain_power(AstNode* root, const char *str);
+	AstNode* chain_multiplication(AstNode* root, const char *str);
+	AstNode* chain_division(AstNode* root, const char* str);
+private:
+	Parse p;
 };
 
