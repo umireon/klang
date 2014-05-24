@@ -1,4 +1,5 @@
 #include <CppUTest/TestHarness.h>
+#include <cfloat>
 #include <limits.h>
 
 #include "../src/parser.h"
@@ -27,6 +28,7 @@ TEST(ParseNumber, PlainDecimal)
     AstNumber *num;
     num = p.parse_number("3");
     CHECK_EQUAL(3, num->get_long());
+    DOUBLES_EQUAL(3, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
@@ -36,6 +38,7 @@ TEST(ParseNumber, Zero)
     ParseNumber p;
     AstNumber *num = p.parse_number("0");
     CHECK_EQUAL(0, num->get_long());
+    DOUBLES_EQUAL(0, num->get_double(), DBL_EPSILON);
 
     delete num;
 }
@@ -46,6 +49,7 @@ TEST(ParseNumber, PlainOctal)
     AstNumber *num;
     num = p.parse_number("077");
     CHECK_EQUAL(63, num->get_long());
+    DOUBLES_EQUAL(63, num->get_double(), DBL_EPSILON);
 
     delete num;
 }
@@ -56,6 +60,18 @@ TEST(ParseNumber, PlainHexdecimal)
     AstNumber *num;
     num = p.parse_number("0x4");
     CHECK_EQUAL(4, num->get_long());
+    DOUBLES_EQUAL(4, num->get_double(), DBL_EPSILON);
+
+    delete num;
+}
+
+TEST(ParseNumber, PlainFloat)
+{
+    ParseNumber p;
+    AstNumber *num;
+    num = p.parse_number("1.4");
+    CHECK_EQUAL(1, num->get_long());
+    DOUBLES_EQUAL(1.4, num->get_double(), DBL_EPSILON);
 
     delete num;
 }
@@ -66,6 +82,7 @@ TEST(ParseNumber, PositiveDecimal)
     AstNumber *num;
     num = p.parse_number("+3");
     CHECK_EQUAL(3, num->get_long());
+    DOUBLES_EQUAL(3, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
@@ -76,6 +93,7 @@ TEST(ParseNumber, PositiveZero)
     AstNumber *num;
     num = p.parse_number("+0");
     CHECK_EQUAL(0, num->get_long());
+    DOUBLES_EQUAL(0, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
@@ -86,6 +104,7 @@ TEST(ParseNumber, PositiveOctal)
     AstNumber *num;
     num = p.parse_number("+077");
     CHECK_EQUAL(63, num->get_long());
+    DOUBLES_EQUAL(63, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
@@ -96,7 +115,19 @@ TEST(ParseNumber, PositiveHexdecimal)
     AstNumber *num;
     num = p.parse_number("+0x4");
     CHECK_EQUAL(4, num->get_long());
+    DOUBLES_EQUAL(4, num->get_double(), DBL_EPSILON);
     
+    delete num;
+}
+
+TEST(ParseNumber, PositiveFloat)
+{
+    ParseNumber p;
+    AstNumber *num;
+    num = p.parse_number("+1.4");
+    CHECK_EQUAL(1, num->get_long());
+    DOUBLES_EQUAL(1.4, num->get_double(), DBL_EPSILON);
+
     delete num;
 }
 
@@ -106,6 +137,7 @@ TEST(ParseNumber, NegativeDecimal)
     AstNumber *num;
     num = p.parse_number("-3");
     CHECK_EQUAL(-3, num->get_long());
+    DOUBLES_EQUAL(-3, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
@@ -116,6 +148,7 @@ TEST(ParseNumber, NegativeZero)
     AstNumber *num;
     num = p.parse_number("-0");
     CHECK_EQUAL(0, num->get_long());
+    DOUBLES_EQUAL(0, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
@@ -125,7 +158,8 @@ TEST(ParseNumber, NegativeOctal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("-077");
-    CHECK_EQUAL(-077, num->get_long());
+    CHECK_EQUAL(-63, num->get_long());
+    DOUBLES_EQUAL(-63, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
@@ -136,7 +170,18 @@ TEST(ParseNumber, NegativeHexdecimal)
     AstNumber *num;
     num = p.parse_number("-0x4");
     CHECK_EQUAL(-4, num->get_long());
+    DOUBLES_EQUAL(-4, num->get_double(), DBL_EPSILON);
     
     delete num;
 }
 
+TEST(ParseNumber, NegativeFloat)
+{
+    ParseNumber p;
+    AstNumber *num;
+    num = p.parse_number("-1.4");
+    CHECK_EQUAL(-1, num->get_long());
+    DOUBLES_EQUAL(-1.4, num->get_double(), DBL_EPSILON);
+
+    delete num;
+}
