@@ -6,7 +6,7 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
-set(PARSER_SRC src/parser.cpp src/ast.cpp src/ParseNumber.cpp)
+set(PARSER_SRC src/parser.cpp src/ast.cpp src/ParseNumber.cpp src/ParseTerm.cpp)
 add_library(parser ${PARSER_SRC})
 
 add_executable(print_ast src/print_ast.cpp)
@@ -28,6 +28,7 @@ endif()
 if (UNIT_TEST)
     enable_testing()
 
+    set(TESTS OFF CACHE BOOL "CppUTest test")
     add_subdirectory(lib/cpputest)
     include_directories(${CppUTest_SOURCE_DIR}/include)
 
