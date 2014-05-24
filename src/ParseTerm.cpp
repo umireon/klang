@@ -152,7 +152,6 @@ enum symbol_type ParseTerm::get_symbol(char c)
 	} else if (c == '\0') {
 		return SYMBOL_NULL;
 	} else {
-		printf("Unknown Symbol: %d\n", c);
-		return SYMBOL_UNKNOWN;
+		return SYMBOL_FOLLOW;
 	}
 }
