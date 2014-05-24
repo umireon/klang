@@ -17,9 +17,19 @@ long AstInteger::get_long()
 	return strtol(s.c_str(), NULL, 0);
 }
 
+double AstInteger::get_double()
+{
+	return get_long();
+}
 
-long AstOctal::get_long()
+
+long AstFloat::get_long()
+{
+	return get_double();
+}
+
+double AstFloat::get_double()
 {
 	std::string s(strhead, strtail - strhead);
-	return strtol(s.c_str(), NULL, 0);
+	return strtod(s.c_str(), NULL);
 }

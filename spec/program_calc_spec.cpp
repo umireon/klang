@@ -30,7 +30,7 @@ Describe(プログラム電卓) {
 		Assert::That(accepts("2*(3+4)"));
 	}
 
-	It(実数を受け入れる) {Pending;
+	It(実数を受け入れる) {
 		Assert::That(accepts("1.234"));
 	}
 

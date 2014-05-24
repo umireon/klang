@@ -133,16 +133,15 @@ public:
 	{
 		return 0;
 	}
-	virtual long get_long()
-	{
-		return 12;
-	}
+	virtual long get_long() = 0;
+	virtual double get_double() = 0;
 };
 
 class AstInteger : public AstNumber
 {
 public:
-	virtual long get_long();
+	long get_long();
+	double get_double();
 };
 
 class AstHexdecimal : public AstInteger
@@ -151,8 +150,6 @@ class AstHexdecimal : public AstInteger
 
 class AstOctal : public AstInteger
 {
-public:
-	virtual long get_long();
 };
 
 class AstDecimal : public AstInteger
@@ -161,6 +158,8 @@ class AstDecimal : public AstInteger
 
 class AstFloat : public AstInteger
 {
+	long get_long();
+	double get_double();
 };
 
 class AstIdentifier : public AstNode
