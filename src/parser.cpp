@@ -206,58 +206,8 @@ AstNode* Parse::parse_term(const char *str)
 
 AstNode* Parse::parse_expression(const char *str)
 {
-	ParseTerm pt;
-	AstNode *expr = new AstExpression();
-	AstNode *mul, *parent, *num;
-	expr->strhead = str;
-
-	enum symbol_type type = get_type_of_next_symbol(str[0]);
-	switch (type) {
-	case SYMBOL_NUMBER_ZERO:
-	case SYMBOL_NUMBER_OCT:
-	case SYMBOL_NUMBER_DEC:
-	case SYMBOL_SIGN_MINUS:
-	case SYMBOL_SIGN_PLUS:
-	case SYMBOL_PAREN_LEFT:
-	case SYMBOL_ALPHABET_HEXUPPER:
-	case SYMBOL_ALPHABET_HEXLOWER:
-	case SYMBOL_ALPHABET_X:
-	case SYMBOL_ALPHABET:
-		expr->children.push_back(parse_term(str));
-		expr->strtail = str = expr->children.at(0)->strtail;
-		parent = expr;
-
-		while (1) {
-			type = this->get_type_of_next_symbol(str[0]);
-			switch (type) {
-			case SYMBOL_SIGN_PLUS:
-				mul = new AstAddition();
-				mul->strhead = str;
-				mul->children.push_back(parent->children.at(0));
-				parent->children.pop_back();
-				str++;
-				mul->children.push_back(parse_term(str));
-				parent->children.push_back(mul);
-				mul->strtail = expr->strtail = str = mul->children.at(1)->strtail;
-				break;
-			case SYMBOL_SIGN_MINUS:
-				mul = new AstSubtraction();
-				mul->type = AST_SUBTRACTION;
-				mul->strhead = str;
-				mul->children.push_back(parent->children.at(0));
-				parent->children.pop_back();
-				str++;
-				mul->children.push_back(parse_term(str));
-				parent->children.push_back(mul);
-				mul->strtail = expr->strtail = str = mul->children.at(1)->strtail;
-				break;
-			default:
-				return expr;
-			}
-		}
-	}
-
-	return expr;
+	ParseExpression p;
+	return p.parse_expression(str);
 }
 
 AstNode* Parse::parse_statement(const char *str)
