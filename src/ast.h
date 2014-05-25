@@ -151,6 +151,8 @@ public:
 class AstInvocation : public AstParentNode {
 public:
     AstInvocation() { type = AST_INVOCATION; }
+	long get_long(Binding* b);
+	double get_double(Binding* b);
 };
 
 class AstArgument : public AstParentNode {

@@ -225,3 +225,27 @@ double AstAssignment::get_double(Binding* b)
     b->variableTable[children.at(0)->get_string()] = value;
     return value;
 }
+
+long AstInvocation::get_long(Binding* b)
+{
+    return get_double(b);
+}
+
+double AstInvocation::get_double(Binding* b)
+{
+    AstIdentifier *ident = static_cast<AstIdentifier*>(children.at(0));
+    AstArgument *args = static_cast<AstArgument*>(children.at(1));
+    double arg1 = args->children.at(0)->get_double(b);
+    std::string name = ident->get_string();
+
+    if (name == std::string("tan")) {
+        return tan(arg1);
+    } else if (name == std::string("log")) {
+        return log(arg1);
+    } else if (name == std::string("exit")) {
+        exit(0);
+    } else {
+        return 0;
+    }
+}
+
