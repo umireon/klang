@@ -3,24 +3,24 @@
 
 #include "../src/Parse.h"
 
-TEST_GROUP(ParseExpression)
+TEST_GROUP(ParseArithExpression)
 {
 };
 
-TEST(ParseExpression, AstNumber)
+TEST(ParseArithExpression, AstNumber)
 {
-    ParseExpression p;
-    AstNode *expr = p.parse_expression("0");
+    ParseArithExpression p;
+    AstNode *expr = p.parse_arith_expression("0");
     CHECK(dynamic_cast<AstNumber*>(expr));
 
     delete expr;
 }
 
-TEST(ParseExpression, 2ElemAddition)
+TEST(ParseArithExpression, 2ElemAddition)
 {
-    ParseExpression p;
+    ParseArithExpression p;
 
-    AstAddition *expr = dynamic_cast<AstAddition*>(p.parse_expression("2+3"));
+    AstAddition *expr = dynamic_cast<AstAddition*>(p.parse_arith_expression("2+3"));
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
 
@@ -30,11 +30,11 @@ TEST(ParseExpression, 2ElemAddition)
     delete expr;
 }
 
-TEST(ParseExpression, 3ElemAddition)
+TEST(ParseArithExpression, 3ElemAddition)
 {
-    ParseExpression p;
+    ParseArithExpression p;
 
-    AstAddition *expr = dynamic_cast<AstAddition*>(p.parse_expression("2+3+4"));
+    AstAddition *expr = dynamic_cast<AstAddition*>(p.parse_arith_expression("2+3+4"));
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
     
@@ -49,11 +49,11 @@ TEST(ParseExpression, 3ElemAddition)
     delete expr;
 }
 
-TEST(ParseExpression, 2ElemSubtraction)
+TEST(ParseArithExpression, 2ElemSubtraction)
 {
-    ParseExpression p;
+    ParseArithExpression p;
 
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_expression("2-3"));
+    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2-3"));
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
 
@@ -63,11 +63,11 @@ TEST(ParseExpression, 2ElemSubtraction)
     delete expr;
 }
 
-TEST(ParseExpression, 3ElemSubtraction)
+TEST(ParseArithExpression, 3ElemSubtraction)
 {
-    ParseExpression p;
+    ParseArithExpression p;
 
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_expression("2-3-4"));
+    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2-3-4"));
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
     
@@ -82,11 +82,11 @@ TEST(ParseExpression, 3ElemSubtraction)
     delete expr;
 }
 
-TEST(ParseExpression, Complex)
+TEST(ParseArithExpression, Complex)
 {
-    ParseExpression p;
+    ParseArithExpression p;
 
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_expression("2+3-4"));
+    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2+3-4"));
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
     
@@ -101,11 +101,11 @@ TEST(ParseExpression, Complex)
     delete expr;
 }
 
-TEST(ParseExpression, Whitespace)
+TEST(ParseArithExpression, Whitespace)
 {
-    ParseExpression p;
+    ParseArithExpression p;
 
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_expression("2 + 3 - 4"));
+    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2 + 3 - 4"));
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
     

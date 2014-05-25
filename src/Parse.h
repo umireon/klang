@@ -93,6 +93,11 @@ protected:
 class ParseExpression {
 public:
 	AstNode* parse_expression(const char *str);
+};
+
+class ParseArithExpression {
+public:
+	AstNode* parse_arith_expression(const char *str);
 protected:
 	enum SymbolType {
 		SYMBOL_SIGN_PLUS,
