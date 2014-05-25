@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <string>
 #include <vector>
 
 #pragma once
@@ -22,6 +22,8 @@ enum node_type {
 	AST_UNKNOWN,
 	AST_POWER,
 	AST_REMINDER,
+	AST_FLOAT,
+	AST_INTEGER,
 };
 
 class AstNode
@@ -30,163 +32,100 @@ public:
 	enum node_type type;
 	const char *strhead;
 	const char *strtail;
+
+    virtual ~AstNode() {}
+    virtual int size() { return 0; }
+	virtual long get_long() { return 0; }
+	virtual double get_double() { return 0; }
+	virtual std::string get_string();
+};
+
+class AstParentNode : public AstNode {
+public:
 	std::vector<AstNode*> children;
-	int value;
-	virtual ~AstNode();
-	virtual std::string get_type_name()
-	{
-		return "AstNode";
-	}
-	virtual int size()
-	{
-		return children.size();
-	}
+    
+    virtual ~AstParentNode();
+	virtual int size() { return children.size(); }
 };
 
-class AstStatement : public AstNode
-{
+class AstAddition : public AstParentNode {
 public:
-	AstStatement()
-	{
-		this->type = AST_STATEMENT;
-	}
+    AstAddition() { type = AST_ADDITION; }
+    long get_long();
+    double get_double();
 };
 
-class AstExpression : public AstNode
-{
+class AstSubtraction : public AstParentNode {
 public:
-	AstExpression()
-	{
-		this->type = AST_EXPRESSION;
-	}
+    AstSubtraction() { type = AST_SUBTRACTION; }
+    long get_long();
+    double get_double();
 };
 
-class AstAddition : public AstNode
-{
+class AstMultiplication : public AstParentNode {
 public:
-	AstAddition()
-	{
-		this->type = AST_ADDITION;
-	}
+    AstMultiplication() { type = AST_MULTIPLICATION; }
+    long get_long();
+    double get_double();
 };
 
-class AstSubtraction : public AstNode
-{
+class AstDivision : public AstParentNode {
 public:
-	AstSubtraction()
-	{
-		this->type = AST_SUBTRACTION;
-	}
+    AstDivision() { type = AST_DIVISION; }
+    long get_long();
+    double get_double();
 };
 
-class AstTerm : public AstNode
-{
+class AstReminder : public AstParentNode {
 public:
-	AstTerm()
-	{
-		this->type = AST_TERM;
-	}
+    AstReminder() { type = AST_REMINDER; }
+    long get_long();
+    double get_double();
 };
 
-class AstMultiplication : public AstNode
-{
+class AstPower : public AstParentNode {
 public:
-	AstMultiplication()
-	{
-		this->type = AST_MULTIPLICATION;
-	}
+    AstPower() { type = AST_POWER; }
+    long get_long();
+    double get_double();
 };
 
-class AstDivision : public AstNode
-{
+class AstParen : public AstParentNode {
 public:
-	AstDivision()
-	{
-		this->type = AST_DIVISION;
-	}
+    AstParen() { type = AST_PAREN; }
+	long get_long();
+    double get_double();
 };
 
-class AstReminder : public AstNode
-{
+class AstNumber : public AstNode {
 public:
-	AstReminder()
-	{
-		this->type = AST_REMINDER;
-	}
+    AstNumber() { type = AST_NUMBER; }
 };
 
-class AstElement : public AstNode
-{
+class AstInteger : public AstNumber {
 public:
-	AstElement()
-	{
-		this->type = AST_ELEMENT;
-	}
-};
-
-class AstPower : public AstNode
-{
-public:
-	AstPower()
-	{
-		this->type = AST_POWER;
-	}
-};
-
-class AstParen : public AstNode
-{
-public:
-	AstParen()
-	{
-		this->type = AST_PAREN;
-	}
-};
-
-class AstNumber : public AstNode
-{
-public:
-	AstNumber()
-	{
-		this->type = AST_NUMBER;
-	}
-	int size()
-	{
-		return 0;
-	}
-	virtual long get_long() = 0;
-	virtual double get_double() = 0;
-};
-
-class AstInteger : public AstNumber
-{
-public:
+    AstInteger() { type = AST_INTEGER; }
 	long get_long();
 	double get_double();
 };
 
-class AstHexdecimal : public AstInteger
-{
+class AstHexdecimal : public AstInteger {
 };
 
-class AstOctal : public AstInteger
-{
+class AstOctal : public AstInteger {
 };
 
-class AstDecimal : public AstInteger
-{
+class AstDecimal : public AstInteger {
 };
 
-class AstFloat : public AstInteger
-{
+class AstFloat : public AstInteger {
+public:
+    AstFloat() { type = AST_FLOAT; }
 	long get_long();
 	double get_double();
 };
 
-class AstIdentifier : public AstNode
-{
+class AstIdentifier : public AstNode {
 public:
-	AstIdentifier()
-	{
-		this->type = AST_IDENTIFIER;
-	}
+    AstIdentifier() { type = AST_IDENTIFIER; }
 };

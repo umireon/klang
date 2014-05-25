@@ -1,7 +1,7 @@
 #include <iostream>
 #include <CppUTest/TestHarness.h>
 
-#include "../src/parser.h"
+#include "../src/Parse.h"
 
 TEST_GROUP(ParseTerm)
 {
@@ -10,8 +10,9 @@ TEST_GROUP(ParseTerm)
 TEST(ParseTerm, AstElement)
 {
     ParseTerm p;
+
     AstNode *term = p.parse_term("0");
-    CHECK(dynamic_cast<AstElement*>(term));
+    CHECK(dynamic_cast<AstNumber*>(term));
 
     delete term;
 }
@@ -19,13 +20,13 @@ TEST(ParseTerm, AstElement)
 TEST(ParseTerm, 2ElemMultiplication)
 {
     ParseTerm p;
-    AstNode *term = p.parse_term("2*3");
-    CHECK_EQUAL(2, term->size());
-    CHECK_EQUAL(AST_MULTIPLICATION, term->type);
 
+    AstMultiplication *term = dynamic_cast<AstMultiplication*>(p.parse_term("2*3"));
+    CHECK(term);
     std::vector<AstNode*> &children = term->children;
-    CHECK_EQUAL(AST_ELEMENT, children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->type);
+
+    CHECK_EQUAL(2, children[0]->get_long());
+    CHECK_EQUAL(3, children[1]->get_long());
 
     delete term;
 }
@@ -33,17 +34,18 @@ TEST(ParseTerm, 2ElemMultiplication)
 TEST(ParseTerm, 3ElemMultiplication)
 {
     ParseTerm p;
-    AstNode *term = p.parse_term("2*3*4");
-    CHECK_EQUAL(2, term->size());
-    CHECK_EQUAL(AST_MULTIPLICATION, term->type);
 
+    AstMultiplication *term = dynamic_cast<AstMultiplication*>(p.parse_term("2*3*4"));
+    CHECK(term);
     std::vector<AstNode*> &children = term->children;
-    CHECK_EQUAL(2, children[0]->size());
-    CHECK_EQUAL(AST_MULTIPLICATION, children[0]->type);
+    
+    AstMultiplication *term0 = dynamic_cast<AstMultiplication*>(children[0]);
+    CHECK(term0);
+    std::vector<AstNode*> &children0 = term0->children;
 
-    CHECK_EQUAL(AST_ELEMENT, children[0]->children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[0]->children[1]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->type);
+    CHECK_EQUAL(2, children0[0]->get_long());
+    CHECK_EQUAL(3, children0[1]->get_long());
+    CHECK_EQUAL(4, children[1]->get_long());
 
     delete term;
 }
@@ -51,13 +53,13 @@ TEST(ParseTerm, 3ElemMultiplication)
 TEST(ParseTerm, 2ElemDivision)
 {
     ParseTerm p;
-    AstNode *term = p.parse_term("2/3");
-    CHECK_EQUAL(2, term->size());
-    CHECK_EQUAL(AST_DIVISION, term->type);
 
+    AstDivision *term = dynamic_cast<AstDivision*>(p.parse_term("2/3"));
+    CHECK(term);
     std::vector<AstNode*> &children = term->children;
-    CHECK_EQUAL(AST_ELEMENT, children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->type);
+
+    CHECK_EQUAL(2, children[0]->get_long());
+    CHECK_EQUAL(3, children[1]->get_long());
 
     delete term;
 }
@@ -65,31 +67,65 @@ TEST(ParseTerm, 2ElemDivision)
 TEST(ParseTerm, 3ElemDivision)
 {
     ParseTerm p;
-    AstNode *term = p.parse_term("2/3/4");
-    CHECK_EQUAL(2, term->size());
-    CHECK_EQUAL(AST_DIVISION, term->type);
 
+    AstDivision *term = dynamic_cast<AstDivision*>(p.parse_term("2/3/4"));
+    CHECK(term);
     std::vector<AstNode*> &children = term->children;
-    CHECK_EQUAL(2, children[0]->size());
-    CHECK_EQUAL(AST_DIVISION, children[0]->type);
+    
+    AstDivision *term0 = dynamic_cast<AstDivision*>(children[0]);
+    CHECK(term0);
+    std::vector<AstNode*> &children0 = term0->children;
+    
+    CHECK_EQUAL(2, children0[0]->get_long());
+    CHECK_EQUAL(3, children0[1]->get_long());
+    CHECK_EQUAL(4, children[1]->get_long());
+    
+    delete term;
+}
 
-    CHECK_EQUAL(AST_ELEMENT, children[0]->children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[0]->children[1]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->type);
+TEST(ParseTerm, 2ElemReminder)
+{
+    ParseTerm p;
 
+    AstReminder *term = dynamic_cast<AstReminder*>(p.parse_term("2%3"));
+    CHECK(term);
+    std::vector<AstNode*> &children = term->children;
+
+    CHECK_EQUAL(2, children[0]->get_long());
+    CHECK_EQUAL(3, children[1]->get_long());
+
+    delete term;
+}
+
+TEST(ParseTerm, 3ElemReminder)
+{
+    ParseTerm p;
+
+    AstReminder *term = dynamic_cast<AstReminder*>(p.parse_term("2%3%4"));
+    CHECK(term);
+    std::vector<AstNode*> &children = term->children;
+    
+    AstReminder *term0 = dynamic_cast<AstReminder*>(children[0]);
+    CHECK(term0);
+    std::vector<AstNode*> &children0 = term0->children;
+    
+    CHECK_EQUAL(2, children0[0]->get_long());
+    CHECK_EQUAL(3, children0[1]->get_long());
+    CHECK_EQUAL(4, children[1]->get_long());
+    
     delete term;
 }
 
 TEST(ParseTerm, 2ElemPower)
 {
     ParseTerm p;
-    AstNode *term = p.parse_term("2**3");
-    CHECK_EQUAL(2, term->size());
-    CHECK_EQUAL(AST_POWER, term->type);
 
+    AstPower *term = dynamic_cast<AstPower*>(p.parse_term("2**3"));
+    CHECK(term);
     std::vector<AstNode*> &children = term->children;
-    CHECK_EQUAL(AST_ELEMENT, children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->type);
+
+    CHECK_EQUAL(2, children[0]->get_long());
+    CHECK_EQUAL(3, children[1]->get_long());
 
     delete term;
 }
@@ -97,17 +133,18 @@ TEST(ParseTerm, 2ElemPower)
 TEST(ParseTerm, 3ElemPower)
 {
     ParseTerm p;
-    AstNode *term = p.parse_term("2**3**4");
-    CHECK_EQUAL(2, term->size());
-    CHECK_EQUAL(AST_POWER, term->type);
 
+    AstPower *term = dynamic_cast<AstPower*>(p.parse_term("2**3**4"));
+    CHECK(term);
     std::vector<AstNode*> &children = term->children;
-    CHECK_EQUAL(2, children[1]->size());
-    CHECK_EQUAL(AST_POWER, children[1]->type);
+    
+    AstPower *term1 = dynamic_cast<AstPower*>(children[1]);
+    CHECK(term1);
+    std::vector<AstNode*> &children1 = term1->children;
 
-    CHECK_EQUAL(AST_ELEMENT, children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->children[1]->type);
+    CHECK_EQUAL(2, children[0]->get_long());
+    CHECK_EQUAL(3, children1[0]->get_long());
+    CHECK_EQUAL(4, children1[1]->get_long());
 
     delete term;
 }
@@ -115,20 +152,23 @@ TEST(ParseTerm, 3ElemPower)
 TEST(ParseTerm, Complex)
 {
     ParseTerm p;
-    AstNode *term = p.parse_term("1*2**3*4");
-    CHECK_EQUAL(2, term->size());
-    CHECK_EQUAL(AST_MULTIPLICATION, term->type);
 
+    AstDivision *term = dynamic_cast<AstDivision*>(p.parse_term("1*2**3/4"));
+    CHECK(term);
     std::vector<AstNode*> &children = term->children;
-    CHECK_EQUAL(2, children[0]->size());
-    CHECK_EQUAL(AST_MULTIPLICATION, children[0]->type);
-    CHECK_EQUAL(2, children[0]->children[1]->size());
-    CHECK_EQUAL(AST_POWER, children[0]->children[1]->type);
 
-    CHECK_EQUAL(AST_ELEMENT, children[0]->children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[0]->children[1]->children[0]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[0]->children[1]->children[1]->type);
-    CHECK_EQUAL(AST_ELEMENT, children[1]->type);
+    AstMultiplication *term0 = dynamic_cast<AstMultiplication*>(children[0]);
+    CHECK(term0);
+    std::vector<AstNode*> &children0 = term0->children;
+    
+    AstPower *term01 = dynamic_cast<AstPower*>(children0[1]);
+    CHECK(term01);
+    std::vector<AstNode*> &children01 = term01->children;
+
+    CHECK_EQUAL(1, children0[0]->get_long());
+    CHECK_EQUAL(2, children01[0]->get_long());
+    CHECK_EQUAL(3, children01[1]->get_long());
+    CHECK_EQUAL(4, children[1]->get_long());
 
     delete term;
 }

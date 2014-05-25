@@ -10,7 +10,7 @@ using namespace igloo;
 
 #include <string.h>
 
-#include "../src/parser.h"
+#include "../src/Parse.h"
 
 #define Pending std::cout << "P";return;
 
