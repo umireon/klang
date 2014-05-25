@@ -74,3 +74,13 @@ private:
 	Parse p;
 };
 
+class ParseExpression {
+public:
+	AstNode* parse_expression(const char *str);
+protected:
+	enum symbol_type get_symbol(char c);
+	AstNode* chain_addition(AstNode* root, const char *str);
+	AstNode* chain_subtraction(AstNode* root, const char* str);
+private:
+	ParseTerm pt;
+};
