@@ -129,3 +129,8 @@ class AstIdentifier : public AstNode {
 public:
     AstIdentifier() { type = AST_IDENTIFIER; }
 };
+
+class AstAssignment : public AstParentNode {
+public:
+    AstAssignment() { type = AST_ASSIGNMENT; }
+};

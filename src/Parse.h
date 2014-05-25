@@ -95,6 +95,24 @@ public:
 	AstNode* parse_expression(const char *str);
 };
 
+class ParseAssignment {
+public:
+	AstNode* parse_assignment(const char *str);
+protected:
+	enum SymbolType {
+		SYMBOL_OP_ASTERISK,
+		SYMBOL_OP_SLASH,
+		SYMBOL_OP_PERCENT,
+		SYMBOL_FOLLOW,
+		SYMBOL_WHITESPACE,
+	};
+
+	enum SymbolType get_symbol(char c);
+	const char* scan_lexical_symbol(const char* str);
+
+	AstParentNode* chain_assignment(AstNode* root, const char *str);
+};
+
 class ParseArithExpression {
 public:
 	AstNode* parse_arith_expression(const char *str);
