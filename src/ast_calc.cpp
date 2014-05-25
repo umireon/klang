@@ -2,6 +2,7 @@
 #include <string>
 #include <math.h>
 #include <stdexcept>
+#include <stdlib.h>
 
 #include "ast.h"
 #include "Parse.h"
