@@ -12,7 +12,7 @@ AstNumber* ParseNumber::parse_number(const char* str)
 	enum SymbolType type = get_symbol(str[0]);
 	switch (type) {
         case SYMBOL_NUMBER_ZERO:
-            num = read_number_hex_or_oct(str+1);
+            num = read_number_hex_or_oct_or_float(str+1);
             break;
         case SYMBOL_NUMBER_OCT:
         case SYMBOL_NUMBER_DEC:
@@ -38,7 +38,7 @@ AstNumber* ParseNumber::read_number_signed(const char *str)
     
 	switch (type) {
         case SYMBOL_NUMBER_ZERO:
-            return read_number_hex_or_oct(str + 1);
+            return read_number_hex_or_oct_or_float(str + 1);
         case SYMBOL_NUMBER_OCT:
         case SYMBOL_NUMBER_DEC:
             return read_number_dec_or_float(str);
@@ -49,13 +49,15 @@ AstNumber* ParseNumber::read_number_signed(const char *str)
 	}
 }
 
-AstInteger* ParseNumber::read_number_hex_or_oct(const char* str)
+AstNumber* ParseNumber::read_number_hex_or_oct_or_float(const char* str)
 {
 	enum SymbolType type = get_symbol(str[0]);
     
 	switch (type) {
         case SYMBOL_ALPHABET_X:
             return read_number_hex(str+1);
+        case SYMBOL_DOT:
+            return read_number_float(str+1);
         default:
             return read_number_oct(str);
 	}

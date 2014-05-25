@@ -59,7 +59,7 @@ protected:
 
 	AstNumber* read_number_signed(const char *str);
 
-	AstInteger* read_number_hex_or_oct(const char *str);
+	AstNumber* read_number_hex_or_oct_or_float(const char *str);
 	AstHexdecimal* read_number_hex(const char *str);
 	AstOctal* read_number_oct(const char *str);
 

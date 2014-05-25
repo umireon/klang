@@ -43,6 +43,7 @@ public:
 
 	enum Type type;
 
+	virtual ~Number() {}
 	virtual std::string to_string() { return std::string("Number"); }
 	virtual long to_i() = 0;
 	virtual double to_f() = 0;
@@ -154,6 +155,7 @@ public:
 class AstNumber : public AstNode {
 public:
     AstNumber() { type = AST_NUMBER; }
+	virtual Number* evaluate(Binding* b) = 0;
 };
 
 class AstInteger : public AstNumber {

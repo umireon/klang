@@ -41,20 +41,24 @@ TEST(ParseNumber, PlainDecimal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("3");
-    CHECK_EQUAL(3, num->get_long(b));
-    DOUBLES_EQUAL(3, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(3, val->to_i());
+    DOUBLES_EQUAL(3, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, Zero)
 {
     ParseNumber p;
     AstNumber *num = p.parse_number("0");
-    CHECK_EQUAL(0, num->get_long(b));
-    DOUBLES_EQUAL(0, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(0, val->to_i());
+    DOUBLES_EQUAL(0, val->to_f(), DBL_EPSILON);
 
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PlainOctal)
@@ -62,10 +66,12 @@ TEST(ParseNumber, PlainOctal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("077");
-    CHECK_EQUAL(63, num->get_long(b));
-    DOUBLES_EQUAL(63, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(63, val->to_i());
+    DOUBLES_EQUAL(63, val->to_f(), DBL_EPSILON);
 
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PlainHexdecimal)
@@ -73,10 +79,25 @@ TEST(ParseNumber, PlainHexdecimal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("0x4");
-    CHECK_EQUAL(4, num->get_long(b));
-    DOUBLES_EQUAL(4, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(4, val->to_i());
+    DOUBLES_EQUAL(4, val->to_f(), DBL_EPSILON);
 
     delete num;
+    delete val;
+}
+
+TEST(ParseNumber, ZeroFloat)
+{
+    ParseNumber p;
+    AstNumber *num;
+    num = p.parse_number("0.4");
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(0, val->to_i());
+    DOUBLES_EQUAL(0.4, val->to_f(), DBL_EPSILON);
+
+    delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PlainFloat)
@@ -84,10 +105,12 @@ TEST(ParseNumber, PlainFloat)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("1.4");
-    CHECK_EQUAL(1, num->get_long(b));
-    DOUBLES_EQUAL(1.4, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(1, val->to_i());
+    DOUBLES_EQUAL(1.4, val->to_f(), DBL_EPSILON);
 
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PositiveDecimal)
@@ -95,10 +118,12 @@ TEST(ParseNumber, PositiveDecimal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("+3");
-    CHECK_EQUAL(3, num->get_long(b));
-    DOUBLES_EQUAL(3, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(3, val->to_i());
+    DOUBLES_EQUAL(3, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PositiveZero)
@@ -106,10 +131,12 @@ TEST(ParseNumber, PositiveZero)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("+0");
-    CHECK_EQUAL(0, num->get_long(b));
-    DOUBLES_EQUAL(0, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(0, val->to_i());
+    DOUBLES_EQUAL(0, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PositiveOctal)
@@ -117,10 +144,12 @@ TEST(ParseNumber, PositiveOctal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("+077");
-    CHECK_EQUAL(63, num->get_long(b));
-    DOUBLES_EQUAL(63, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(63, val->to_i());
+    DOUBLES_EQUAL(63, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PositiveHexdecimal)
@@ -128,10 +157,12 @@ TEST(ParseNumber, PositiveHexdecimal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("+0x4");
-    CHECK_EQUAL(4, num->get_long(b));
-    DOUBLES_EQUAL(4, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(4, val->to_i());
+    DOUBLES_EQUAL(4, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, PositiveFloat)
@@ -139,10 +170,12 @@ TEST(ParseNumber, PositiveFloat)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("+1.4");
-    CHECK_EQUAL(1, num->get_long(b));
-    DOUBLES_EQUAL(1.4, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(1, val->to_i());
+    DOUBLES_EQUAL(1.4, val->to_f(), DBL_EPSILON);
 
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, NegativeDecimal)
@@ -150,10 +183,12 @@ TEST(ParseNumber, NegativeDecimal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("-3");
-    CHECK_EQUAL(-3, num->get_long(b));
-    DOUBLES_EQUAL(-3, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(-3, val->to_i());
+    DOUBLES_EQUAL(-3, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, NegativeZero)
@@ -161,10 +196,12 @@ TEST(ParseNumber, NegativeZero)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("-0");
-    CHECK_EQUAL(0, num->get_long(b));
-    DOUBLES_EQUAL(0, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(0, val->to_i());
+    DOUBLES_EQUAL(0, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, NegativeOctal)
@@ -172,10 +209,12 @@ TEST(ParseNumber, NegativeOctal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("-077");
-    CHECK_EQUAL(-63, num->get_long(b));
-    DOUBLES_EQUAL(-63, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(-63, val->to_i());
+    DOUBLES_EQUAL(-63, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, NegativeHexdecimal)
@@ -183,10 +222,12 @@ TEST(ParseNumber, NegativeHexdecimal)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("-0x4");
-    CHECK_EQUAL(-4, num->get_long(b));
-    DOUBLES_EQUAL(-4, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(-4, val->to_i());
+    DOUBLES_EQUAL(-4, val->to_f(), DBL_EPSILON);
     
     delete num;
+    delete val;
 }
 
 TEST(ParseNumber, NegativeFloat)
@@ -194,8 +235,10 @@ TEST(ParseNumber, NegativeFloat)
     ParseNumber p;
     AstNumber *num;
     num = p.parse_number("-1.4");
-    CHECK_EQUAL(-1, num->get_long(b));
-    DOUBLES_EQUAL(-1.4, num->get_double(b), DBL_EPSILON);
+    Number* val = num->evaluate(b);
+    CHECK_EQUAL(-1, val->to_i());
+    DOUBLES_EQUAL(-1.4, val->to_f(), DBL_EPSILON);
 
     delete num;
+    delete val;
 }
