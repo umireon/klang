@@ -51,29 +51,8 @@ enum symbol_type Parse::get_type_of_next_symbol(char c)
 
 AstNode* Parse::parse_identifier(const char *str)
 {
-	AstNode *ident = new AstIdentifier();
-	ident->strhead = str;
-
-	enum symbol_type type;
-
-	while (1) {
-		type = get_type_of_next_symbol(str[0]);
-
-		switch (type) {
-		case SYMBOL_ALPHABET_HEXUPPER:
-		case SYMBOL_ALPHABET_HEXLOWER:
-		case SYMBOL_ALPHABET_X:
-		case SYMBOL_ALPHABET:
-		case SYMBOL_NUMBER_ZERO:
-		case SYMBOL_NUMBER_OCT:
-		case SYMBOL_NUMBER_DEC:
-			str++;
-			break;
-		default:
-			ident->strtail = str;
-			return ident;
-		}
-	}
+	ParseIdentifier p;
+	return p.parse_identifier(str);
 }
 
 AstNode* Parse::parse_paren_right(const char *str)
