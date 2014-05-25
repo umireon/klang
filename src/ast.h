@@ -25,6 +25,8 @@ enum node_type {
 	AST_REMINDER,
 	AST_FLOAT,
 	AST_INTEGER,
+	AST_INVOCATION,
+	AST_ARGUMENT,
 };
 
 class Binding
@@ -144,4 +146,14 @@ public:
     AstAssignment() { type = AST_ASSIGNMENT; }
 	long get_long(Binding* b);
 	double get_double(Binding* b);
+};
+
+class AstInvocation : public AstParentNode {
+public:
+    AstInvocation() { type = AST_INVOCATION; }
+};
+
+class AstArgument : public AstParentNode {
+public:
+    AstArgument() { type = AST_ARGUMENT; }
 };

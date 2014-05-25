@@ -168,8 +168,16 @@ protected:
 		SYMBOL_FIRST_NUMBER,
 		SYMBOL_ALPHABET,
 		SYMBOL_PAREN_LEFT,
+		SYMBOL_PAREN_RIGHT,
+		SYMBOL_COMMA,
 		SYMBOL_FOLLOW,
+		SYMBOL_WHITESPACE,
 	};
 
 	enum SymbolType get_symbol(char c);
+	const char* scan_lexical_symbol(const char* str);
+
+	AstNode* parse_identifier_or_invocation(const char *str);
+	AstParentNode* inject_invocation(AstNode* node, const char *str);
+	AstArgument* parse_argument(const char *str);
 };
