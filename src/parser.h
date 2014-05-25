@@ -91,3 +91,10 @@ public:
 protected:
 	enum symbol_type get_symbol(char c);
 };
+
+class ParseParen {
+public:
+	AstNode* parse_paren(const char *str);
+protected:
+	enum symbol_type get_symbol(char c);
+};
