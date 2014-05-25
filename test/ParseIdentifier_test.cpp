@@ -3,22 +3,22 @@
 
 #include "../src/parser.h"
 
-TEST_GROUP(parse_identifier)
+TEST_GROUP(ParseIdentifier)
 {
 };
 
-TEST(parse_identifier, ReturnIdentifierNode)
+TEST(ParseIdentifier, ReturnIdentifierNode)
 {
-    Parse p;
+    ParseIdentifier p;
     AstNode *ident;
     ident = p.parse_identifier("a");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);
     delete ident;
 }
 
-TEST(parse_identifier, CanRead4LetterIdentifier)
+TEST(ParseIdentifier, CanRead4LetterIdentifier)
 {
-    Parse p;
+    ParseIdentifier p;
     AstNode *ident;
     ident = p.parse_identifier("abcd");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);
@@ -27,9 +27,9 @@ TEST(parse_identifier, CanRead4LetterIdentifier)
     delete ident;
 }
 
-TEST(parse_identifier, CanRead4AlnumIdentifier)
+TEST(ParseIdentifier, CanRead4AlnumIdentifier)
 {
-    Parse p;
+    ParseIdentifier p;
     AstNode *ident;
     ident = p.parse_identifier("a2xd");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);

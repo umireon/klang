@@ -84,3 +84,10 @@ protected:
 private:
 	ParseTerm pt;
 };
+
+class ParseIdentifier {
+public:
+	AstIdentifier* parse_identifier(const char *str);
+protected:
+	enum symbol_type get_symbol(char c);
+};
