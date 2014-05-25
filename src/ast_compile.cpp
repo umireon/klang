@@ -54,7 +54,7 @@ AstNode* ast_reduce(AstNode* root)
                 newRoot->strtail = y->strtail;
                 switch (type) {
                 case AST_ADDITION:
-                    newRoot->value = x->value + y->value;
+                    newRoot->value = x->get_long() + y->value;
                     break;
                 case AST_SUBTRACTION:
                     newRoot->value = x->value - y->value;
@@ -92,8 +92,8 @@ AstNode* ast_reduce(AstNode* root)
             return newRoot;
         }
         break;
-    }*/
-
+    }
+*/
     return root;
 }
 

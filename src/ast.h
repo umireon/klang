@@ -22,6 +22,8 @@ enum node_type {
 	AST_UNKNOWN,
 	AST_POWER,
 	AST_REMINDER,
+	AST_FLOAT,
+	AST_INTEGER,
 };
 
 class AstNode
@@ -49,37 +51,50 @@ public:
 class AstAddition : public AstParentNode {
 public:
     AstAddition() { type = AST_ADDITION; }
+    long get_long();
+    double get_double();
 };
 
 class AstSubtraction : public AstParentNode {
 public:
     AstSubtraction() { type = AST_SUBTRACTION; }
+    long get_long();
+    double get_double();
 };
 
 class AstMultiplication : public AstParentNode {
 public:
     AstMultiplication() { type = AST_MULTIPLICATION; }
+    long get_long();
+    double get_double();
 };
 
 class AstDivision : public AstParentNode {
 public:
     AstDivision() { type = AST_DIVISION; }
+    long get_long();
+    double get_double();
 };
 
 class AstReminder : public AstParentNode {
 public:
     AstReminder() { type = AST_REMINDER; }
+    long get_long();
+    double get_double();
 };
 
 class AstPower : public AstParentNode {
 public:
     AstPower() { type = AST_POWER; }
+    long get_long();
+    double get_double();
 };
 
 class AstParen : public AstParentNode {
 public:
     AstParen() { type = AST_PAREN; }
 	long get_long();
+    double get_double();
 };
 
 class AstNumber : public AstNode {
@@ -89,6 +104,7 @@ public:
 
 class AstInteger : public AstNumber {
 public:
+    AstInteger() { type = AST_INTEGER; }
 	long get_long();
 	double get_double();
 };
@@ -104,6 +120,7 @@ class AstDecimal : public AstInteger {
 
 class AstFloat : public AstInteger {
 public:
+    AstFloat() { type = AST_FLOAT; }
 	long get_long();
 	double get_double();
 };
