@@ -55,91 +55,10 @@ AstNode* Parse::parse_identifier(const char *str)
 	return p.parse_identifier(str);
 }
 
-AstNode* Parse::parse_paren_right(const char *str)
-{
-	AstNode *stub, *unknown;
-	AstNode *pright;
-
-	enum symbol_type type = get_type_of_next_symbol(str[0]);
-	switch (type) {
-	case SYMBOL_PAREN_RIGHT:
-		pright = new AstNode();
-		pright->type = AST_PAREN_RIGHT;
-		pright->strhead = str;
-		str++;
-		pright->strtail = str;
-		return pright;
-		break;
-	default:
-		stub = new AstNode();
-		stub->type = AST_STUB;
-		stub->strhead = str;
-
-		unknown = new AstNode();
-		unknown->type = AST_UNKNOWN;
-		unknown->strhead = str;
-		str++;
-		unknown->strtail = str;
-		stub->children.push_back(unknown);
-
-		pright = parse_paren_right(str);
-		stub->children.push_back(pright);
-		stub->strtail = pright->strtail;
-		return stub;
-	}
-}
-
-AstNode* Parse::parse_paren_left(const char *str)
-{
-	AstNode *stub, *unknown;
-	AstNode *pleft = new AstNode();
-	pleft->type = AST_PAREN_LEFT;
-	pleft->strhead = str;
-
-	enum symbol_type type = get_type_of_next_symbol(str[0]);
-	switch (type) {
-	case SYMBOL_PAREN_LEFT:
-		str++;
-		break;
-	default:
-		stub = new AstNode();
-		stub->type = AST_STUB;
-		stub->strhead = str;
-
-		unknown = new AstNode();
-		unknown->type = AST_UNKNOWN;
-		unknown->strhead = str;
-		str++;
-		unknown->strtail = str;
-		stub->children.push_back(unknown);
-
-		pleft = parse_paren_left(str);
-		stub->children.push_back(pleft);
-		stub->strtail = pleft->strtail;
-		return stub;
-	}
-
-	pleft->strtail = str;
-
-	return pleft;
-}
-
 AstNode* Parse::parse_paren(const char *str)
 {
-	AstNode *term = new AstParen();
-	term->strhead = str;
-	AstNode *pleft = parse_paren_left(str);
-	term->children.push_back(pleft);
-	str = pleft->strtail;
-
-	AstNode *expr = parse_expression(str);
-	term->children.push_back(expr);
-	str = expr->strtail;
-
-	AstNode *pright = parse_paren_right(str);
-	term->children.push_back(pright);
-	term->strtail = pright->strtail;
-	return term;
+	ParseParen p;
+	return p.parse_paren(str);
 }
 
 AstNode* Parse::parse_number(const char *str)
