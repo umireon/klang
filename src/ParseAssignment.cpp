@@ -7,14 +7,16 @@
 AstNode* ParseAssignment::parse_assignment(const char *str)
 {
 	ParseArithExpression p;
+
 	AstNode *expr = p.parse_arith_expression(str);
-	if (expr->strtail[0] == '=') {
-		str = expr->strtail + 1;
+	str = expr->strtail;
+	str = scan_lexical_symbol(str);
+	if (str[0] == '=') {
+		str++;
+		return chain_assignment(expr, str);
 	} else {
 		return expr;
 	}
-
-	return chain_assignment(expr, str);
 }
 
 AstParentNode* ParseAssignment::chain_assignment(AstNode* node, const char *str)

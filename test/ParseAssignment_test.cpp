@@ -42,3 +42,22 @@ TEST(ParseAssignment, 3ExpressionAssignment)
 
     delete assign;
 }
+
+TEST(ParseAssignment, Whitespace)
+{
+    ParseAssignment p;
+
+    AstAssignment *assign = dynamic_cast<AstAssignment*>(p.parse_assignment("a = b = 4"));
+    CHECK(assign);
+    std::vector<AstNode*> &children = assign->children;
+    
+    AstAssignment *assign1 = dynamic_cast<AstAssignment*>(children[1]);
+    CHECK(assign1);
+    std::vector<AstNode*> &children1 = assign1->children;
+
+    CHECK_EQUAL(string("a"), children[0]->get_string());
+    CHECK_EQUAL(string("b"), children1[0]->get_string());
+    CHECK_EQUAL(string("4"), children1[1]->get_string());
+
+    delete assign;
+}
