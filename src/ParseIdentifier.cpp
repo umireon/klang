@@ -9,7 +9,7 @@ AstIdentifier* ParseIdentifier::parse_identifier(const char *str)
 	AstIdentifier *ident = new AstIdentifier();
 	ident->strhead = str;
 
-	enum SymbolType type;
+	enum SymbolType type = get_symbol(str[0]);
 
 	switch (type) {
 	case SYMBOL_ALPHABET_LOWER:

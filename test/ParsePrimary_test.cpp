@@ -33,3 +33,58 @@ TEST(ParsePrimary, Identifier)
 
     delete prim;
 }
+
+TEST(ParsePrimary, 0ArgInvocation)
+{
+    ParsePrimary p;
+    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log()"));
+    CHECK(invoke);
+
+    delete invoke;
+}
+
+TEST(ParsePrimary, 0ArgInvocationWhitespace)
+{
+    ParsePrimary p;
+    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log ( )"));
+    CHECK(invoke);
+
+    delete invoke;
+}
+
+TEST(ParsePrimary, 1ArgInvocation)
+{
+    ParsePrimary p;
+    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log(1)"));
+    CHECK(invoke);
+
+    delete invoke;
+}
+
+TEST(ParsePrimary, 1ArgInvocationWhitespace)
+{
+    ParsePrimary p;
+    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log ( 1 )"));
+    CHECK(invoke);
+
+    delete invoke;
+}
+
+TEST(ParsePrimary, 2ArgInvocation)
+{
+    ParsePrimary p;
+    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log(1,2)"));
+    CHECK(invoke);
+
+    delete invoke;
+}
+
+TEST(ParsePrimary, 2ArgInvocationWhitespace)
+{
+    ParsePrimary p;
+    AstNode *node = p.parse_primary("log ( 1 , 2 )");
+    AstInvocation *invoke = dynamic_cast<AstInvocation*>(node);
+    CHECK(invoke);
+
+    delete invoke;
+}

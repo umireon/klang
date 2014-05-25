@@ -3,6 +3,8 @@
 
 #include "../src/Parse.h"
 
+using std::string;
+
 TEST_GROUP(ParseTerm)
 {
 };
@@ -25,8 +27,8 @@ TEST(ParseTerm, 2ElemMultiplication)
     CHECK(term);
     std::vector<AstNode*> &children = term->children;
 
-    CHECK_EQUAL(2, children[0]->get_long());
-    CHECK_EQUAL(3, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children[1]->get_string());
 
     delete term;
 }
@@ -43,9 +45,9 @@ TEST(ParseTerm, 3ElemMultiplication)
     CHECK(term0);
     std::vector<AstNode*> &children0 = term0->children;
 
-    CHECK_EQUAL(2, children0[0]->get_long());
-    CHECK_EQUAL(3, children0[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children0[0]->get_string());
+    CHECK_EQUAL(string("3"), children0[1]->get_string());
+    CHECK_EQUAL(string("4"), children[1]->get_string());
 
     delete term;
 }
@@ -58,8 +60,8 @@ TEST(ParseTerm, 2ElemDivision)
     CHECK(term);
     std::vector<AstNode*> &children = term->children;
 
-    CHECK_EQUAL(2, children[0]->get_long());
-    CHECK_EQUAL(3, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children[1]->get_string());
 
     delete term;
 }
@@ -76,9 +78,9 @@ TEST(ParseTerm, 3ElemDivision)
     CHECK(term0);
     std::vector<AstNode*> &children0 = term0->children;
     
-    CHECK_EQUAL(2, children0[0]->get_long());
-    CHECK_EQUAL(3, children0[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children0[0]->get_string());
+    CHECK_EQUAL(string("3"), children0[1]->get_string());
+    CHECK_EQUAL(string("4"), children[1]->get_string());
     
     delete term;
 }
@@ -91,8 +93,8 @@ TEST(ParseTerm, 2ElemReminder)
     CHECK(term);
     std::vector<AstNode*> &children = term->children;
 
-    CHECK_EQUAL(2, children[0]->get_long());
-    CHECK_EQUAL(3, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children[1]->get_string());
 
     delete term;
 }
@@ -109,9 +111,9 @@ TEST(ParseTerm, 3ElemReminder)
     CHECK(term0);
     std::vector<AstNode*> &children0 = term0->children;
     
-    CHECK_EQUAL(2, children0[0]->get_long());
-    CHECK_EQUAL(3, children0[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children0[0]->get_string());
+    CHECK_EQUAL(string("3"), children0[1]->get_string());
+    CHECK_EQUAL(string("4"), children[1]->get_string());
     
     delete term;
 }
@@ -124,8 +126,8 @@ TEST(ParseTerm, 2ElemPower)
     CHECK(term);
     std::vector<AstNode*> &children = term->children;
 
-    CHECK_EQUAL(2, children[0]->get_long());
-    CHECK_EQUAL(3, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children[1]->get_string());
 
     delete term;
 }
@@ -142,9 +144,9 @@ TEST(ParseTerm, 3ElemPower)
     CHECK(term1);
     std::vector<AstNode*> &children1 = term1->children;
 
-    CHECK_EQUAL(2, children[0]->get_long());
-    CHECK_EQUAL(3, children1[0]->get_long());
-    CHECK_EQUAL(4, children1[1]->get_long());
+    CHECK_EQUAL(string("2"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children1[0]->get_string());
+    CHECK_EQUAL(string("4"), children1[1]->get_string());
 
     delete term;
 }
@@ -169,11 +171,11 @@ TEST(ParseTerm, Complex)
     CHECK(term001);
     std::vector<AstNode*> &children001 = term001->children;
 
-    CHECK_EQUAL(1, children00[0]->get_long());
-    CHECK_EQUAL(2, children001[0]->get_long());
-    CHECK_EQUAL(3, children001[1]->get_long());
-    CHECK_EQUAL(4, children0[1]->get_long());
-    CHECK_EQUAL(5, children[1]->get_long());
+    CHECK_EQUAL(string("1"), children00[0]->get_string());
+    CHECK_EQUAL(string("2"), children001[0]->get_string());
+    CHECK_EQUAL(string("3"), children001[1]->get_string());
+    CHECK_EQUAL(string("4"), children0[1]->get_string());
+    CHECK_EQUAL(string("5"), children[1]->get_string());
 
     delete term;
 }
@@ -198,11 +200,11 @@ TEST(ParseTerm, Whitespace)
     CHECK(term001);
     std::vector<AstNode*> &children001 = term001->children;
 
-    CHECK_EQUAL(1, children00[0]->get_long());
-    CHECK_EQUAL(2, children001[0]->get_long());
-    CHECK_EQUAL(3, children001[1]->get_long());
-    CHECK_EQUAL(4, children0[1]->get_long());
-    CHECK_EQUAL(5, children[1]->get_long());
+    CHECK_EQUAL(string("1"), children00[0]->get_string());
+    CHECK_EQUAL(string("2"), children001[0]->get_string());
+    CHECK_EQUAL(string("3"), children001[1]->get_string());
+    CHECK_EQUAL(string("4"), children0[1]->get_string());
+    CHECK_EQUAL(string("5"), children[1]->get_string());
 
     delete term;
 }

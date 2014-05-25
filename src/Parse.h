@@ -59,7 +59,7 @@ protected:
 
 	AstNumber* read_number_signed(const char *str);
 
-	AstInteger* read_number_hex_or_oct(const char *str);
+	AstNumber* read_number_hex_or_oct_or_float(const char *str);
 	AstHexdecimal* read_number_hex(const char *str);
 	AstOctal* read_number_oct(const char *str);
 
@@ -93,6 +93,29 @@ protected:
 class ParseExpression {
 public:
 	AstNode* parse_expression(const char *str);
+};
+
+class ParseAssignment {
+public:
+	AstNode* parse_assignment(const char *str);
+protected:
+	enum SymbolType {
+		SYMBOL_OP_ASTERISK,
+		SYMBOL_OP_SLASH,
+		SYMBOL_OP_PERCENT,
+		SYMBOL_FOLLOW,
+		SYMBOL_WHITESPACE,
+	};
+
+	enum SymbolType get_symbol(char c);
+	const char* scan_lexical_symbol(const char* str);
+
+	AstParentNode* chain_assignment(AstNode* root, const char *str);
+};
+
+class ParseArithExpression {
+public:
+	AstNode* parse_arith_expression(const char *str);
 protected:
 	enum SymbolType {
 		SYMBOL_SIGN_PLUS,
@@ -145,8 +168,16 @@ protected:
 		SYMBOL_FIRST_NUMBER,
 		SYMBOL_ALPHABET,
 		SYMBOL_PAREN_LEFT,
+		SYMBOL_PAREN_RIGHT,
+		SYMBOL_COMMA,
 		SYMBOL_FOLLOW,
+		SYMBOL_WHITESPACE,
 	};
 
 	enum SymbolType get_symbol(char c);
+	const char* scan_lexical_symbol(const char* str);
+
+	AstNode* parse_identifier_or_invocation(const char *str);
+	AstParentNode* inject_invocation(AstNode* node, const char *str);
+	AstArgument* parse_argument(const char *str);
 };
