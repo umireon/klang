@@ -48,7 +48,7 @@ Describe(プログラム電卓) {
 		Assert::That(accepts("log10(1)"));
 	}
 
-	It(代入を受け入れる) {Pending;
+	It(代入を受け入れる) {
 		Assert::That(accepts("a=2"));
 	}
 

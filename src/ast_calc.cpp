@@ -15,8 +15,8 @@ int main(int argc, const char **argv)
         cin >> line;
         AstNode *ast = p.parse(line.c_str());
         
-        cout << "long: " << ast->get_long() << endl;
-        cout << "double: " << ast->get_double() << endl;
+        cout << "long: " << ast->get_long(new Binding()) << endl;
+        cout << "double: " << ast->get_double(new Binding()) << endl;
     }
 }
 

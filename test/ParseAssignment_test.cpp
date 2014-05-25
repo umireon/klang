@@ -4,6 +4,8 @@
 
 #include "../src/Parse.h"
 
+using std::string;
+
 TEST_GROUP(ParseAssignment)
 {
 };
@@ -16,8 +18,8 @@ TEST(ParseAssignment, 2ExpressionAssignment)
     CHECK(assign);
     std::vector<AstNode*> &children = assign->children;
 
-    CHECK_EQUAL(std::string("a"), children[0]->get_string());
-    CHECK_EQUAL(3, children[1]->get_long());
+    CHECK_EQUAL(string("a"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children[1]->get_string());
 
     delete assign;
 }
@@ -34,9 +36,9 @@ TEST(ParseAssignment, 3ExpressionAssignment)
     CHECK(assign1);
     std::vector<AstNode*> &children1 = assign1->children;
 
-    CHECK_EQUAL(std::string("a"), children[0]->get_string());
-    CHECK_EQUAL(std::string("b"), children1[0]->get_string());
-    CHECK_EQUAL(4, children1[1]->get_long());
+    CHECK_EQUAL(string("a"), children[0]->get_string());
+    CHECK_EQUAL(string("b"), children1[0]->get_string());
+    CHECK_EQUAL(string("4"), children1[1]->get_string());
 
     delete assign;
 }

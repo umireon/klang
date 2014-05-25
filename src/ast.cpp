@@ -16,142 +16,142 @@ AstParentNode::~AstParentNode(void)
 	}
 }
 
-long AstAddition::get_long()
+long AstAddition::get_long(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    long value = (*iter)->get_long();
+    long value = (*iter)->get_long(b);
     iter++;
 
     while (iter != children.end()) {
-        value += (*iter)->get_long();
+        value += (*iter)->get_long(b);
         iter++;
     }
 
     return value;
 }
 
-double AstAddition::get_double()
+double AstAddition::get_double(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    double value = (*iter)->get_double();
+    double value = (*iter)->get_double(b);
     iter++;
     
     while (iter != children.end()) {
-        value += (*iter)->get_double();
+        value += (*iter)->get_double(b);
         iter++;
     }
     
     return value;
 }
 
-long AstSubtraction::get_long()
+long AstSubtraction::get_long(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    long value = (*iter)->get_long();
+    long value = (*iter)->get_long(b);
     iter++;
     
     while (iter != children.end()) {
-        value -= (*iter)->get_long();
+        value -= (*iter)->get_long(b);
         iter++;
     }
     
     return value;
 }
 
-double AstSubtraction::get_double()
+double AstSubtraction::get_double(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    double value = (*iter)->get_double();
+    double value = (*iter)->get_double(b);
     iter++;
     
     while (iter != children.end()) {
-        value -= (*iter)->get_double();
+        value -= (*iter)->get_double(b);
         iter++;
     }
     
     return value;
 }
 
-long AstMultiplication::get_long()
+long AstMultiplication::get_long(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    long value = (*iter)->get_long();
+    long value = (*iter)->get_long(b);
     iter++;
     
     while (iter != children.end()) {
-        value *= (*iter)->get_long();
+        value *= (*iter)->get_long(b);
         iter++;
     }
     
     return value;
 }
 
-double AstMultiplication::get_double()
+double AstMultiplication::get_double(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    double value = (*iter)->get_double();
+    double value = (*iter)->get_double(b);
     iter++;
     
     while (iter != children.end()) {
-        value *= (*iter)->get_double();
+        value *= (*iter)->get_double(b);
         iter++;
     }
     
     return value;
 }
 
-long AstDivision::get_long()
+long AstDivision::get_long(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    long value = (*iter)->get_long();
+    long value = (*iter)->get_long(b);
     iter++;
     
     while (iter != children.end()) {
-        value /= (*iter)->get_long();
+        value /= (*iter)->get_long(b);
         iter++;
     }
     
     return value;
 }
 
-double AstDivision::get_double()
+double AstDivision::get_double(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    double value = (*iter)->get_double();
+    double value = (*iter)->get_double(b);
     iter++;
     
     while (iter != children.end()) {
-        value /= (*iter)->get_double();
+        value /= (*iter)->get_double(b);
         iter++;
     }
     
     return value;
 }
 
-long AstReminder::get_long()
+long AstReminder::get_long(Binding* b)
 {
     std::vector<AstNode*>::iterator iter = children.begin();
-    long value = (*iter)->get_long();
+    long value = (*iter)->get_long(b);
     iter++;
     
     while (iter != children.end()) {
-        value %= (*iter)->get_long();
+        value %= (*iter)->get_long(b);
         iter++;
     }
     
     return value;
 }
 
-double AstReminder::get_double()
+double AstReminder::get_double(Binding* b)
 {
-    return get_long();
+    return get_long(b);
 }
 
-long AstPower::get_long()
+long AstPower::get_long(Binding* b)
 {
     long value = 1;
-    long base = children.at(0)->get_long();
-    long num = children.at(1)->get_long();
+    long base = children.at(0)->get_long(b);
+    long num = children.at(1)->get_long(b);
     
     if (num < 0) {
         return 0;
@@ -164,40 +164,40 @@ long AstPower::get_long()
     return value;
 }
 
-double AstPower::get_double()
+double AstPower::get_double(Binding* b)
 {
-    double base = children.at(0)->get_double();
-    double e = children.at(1)->get_double();
+    double base = children.at(0)->get_double(b);
+    double e = children.at(1)->get_double(b);
 
     return pow(base, e);
 }
 
-long AstParen::get_long()
+long AstParen::get_long(Binding* b)
 {
-	return children.at(0)->get_long();
+	return children.at(0)->get_long(b);
 }
 
-double AstParen::get_double()
+double AstParen::get_double(Binding* b)
 {
-	return children.at(0)->get_double();
+	return children.at(0)->get_double(b);
 }
 
-long AstInteger::get_long()
+long AstInteger::get_long(Binding* b)
 {
 	return strtol(get_string().c_str(), NULL, 0);
 }
 
-double AstInteger::get_double()
+double AstInteger::get_double(Binding* b)
 {
-	return get_long();
+	return get_long(b);
 }
 
-long AstFloat::get_long()
+long AstFloat::get_long(Binding* b)
 {
-	return get_double();
+	return get_double(b);
 }
 
-double AstFloat::get_double()
+double AstFloat::get_double(Binding* b)
 {
 	return strtod(get_string().c_str(), NULL);
 }

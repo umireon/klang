@@ -3,8 +3,20 @@
 
 #include "../src/Parse.h"
 
+using std::string;
+
 TEST_GROUP(ParseArithExpression)
 {
+    Binding *b;
+    void setup()
+    {
+        b = new Binding();
+    }
+    
+    void teardown()
+    {
+        delete b;
+    }
 };
 
 TEST(ParseArithExpression, AstNumber)
@@ -24,8 +36,8 @@ TEST(ParseArithExpression, 2ElemAddition)
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
 
-    CHECK_EQUAL(2, children[0]->get_long());
-    CHECK_EQUAL(3, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children[1]->get_string());
 
     delete expr;
 }
@@ -42,9 +54,9 @@ TEST(ParseArithExpression, 3ElemAddition)
     CHECK(expr0);
     std::vector<AstNode*> &children0 = expr0->children;
     
-    CHECK_EQUAL(2, children0[0]->get_long());
-    CHECK_EQUAL(3, children0[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children0[0]->get_string());
+    CHECK_EQUAL(string("3"), children0[1]->get_string());
+    CHECK_EQUAL(string("4"), children[1]->get_string());
 
     delete expr;
 }
@@ -56,9 +68,9 @@ TEST(ParseArithExpression, 2ElemSubtraction)
     AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2-3"));
     CHECK(expr);
     std::vector<AstNode*> &children = expr->children;
-
-    CHECK_EQUAL(2, children[0]->get_long());
-    CHECK_EQUAL(3, children[1]->get_long());
+    
+    CHECK_EQUAL(string("2"), children[0]->get_string());
+    CHECK_EQUAL(string("3"), children[1]->get_string());
 
     delete expr;
 }
@@ -75,9 +87,9 @@ TEST(ParseArithExpression, 3ElemSubtraction)
     CHECK(expr0);
     std::vector<AstNode*> &children0 = expr0->children;
 
-    CHECK_EQUAL(2, children0[0]->get_long());
-    CHECK_EQUAL(3, children0[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children0[0]->get_string());
+    CHECK_EQUAL(string("3"), children0[1]->get_string());
+    CHECK_EQUAL(string("4"), children[1]->get_string());
     
     delete expr;
 }
@@ -94,9 +106,9 @@ TEST(ParseArithExpression, Complex)
     CHECK(expr0);
     std::vector<AstNode*> &children0 = expr0->children;
 
-    CHECK_EQUAL(2, children0[0]->get_long());
-    CHECK_EQUAL(3, children0[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children0[0]->get_string());
+    CHECK_EQUAL(string("3"), children0[1]->get_string());
+    CHECK_EQUAL(string("4"), children[1]->get_string());
     
     delete expr;
 }
@@ -113,9 +125,9 @@ TEST(ParseArithExpression, Whitespace)
     CHECK(expr0);
     std::vector<AstNode*> &children0 = expr0->children;
 
-    CHECK_EQUAL(2, children0[0]->get_long());
-    CHECK_EQUAL(3, children0[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    CHECK_EQUAL(string("2"), children0[0]->get_string());
+    CHECK_EQUAL(string("3"), children0[1]->get_string());
+    CHECK_EQUAL(string("4"), children[1]->get_string());
     
     delete expr;
 }

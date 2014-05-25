@@ -26,6 +26,10 @@ enum node_type {
 	AST_INTEGER,
 };
 
+class Binding
+{
+};
+
 class AstNode
 {
 public:
@@ -35,8 +39,8 @@ public:
 
     virtual ~AstNode() {}
     virtual int size() { return 0; }
-	virtual long get_long() { return 0; }
-	virtual double get_double() { return 0; }
+	virtual long get_long(Binding* b) { return 0; }
+	virtual double get_double(Binding* b) { return 0; }
 	virtual std::string get_string();
 };
 
@@ -51,50 +55,50 @@ public:
 class AstAddition : public AstParentNode {
 public:
     AstAddition() { type = AST_ADDITION; }
-    long get_long();
-    double get_double();
+    long get_long(Binding* b);
+    double get_double(Binding* b);
 };
 
 class AstSubtraction : public AstParentNode {
 public:
     AstSubtraction() { type = AST_SUBTRACTION; }
-    long get_long();
-    double get_double();
+    long get_long(Binding* b);
+    double get_double(Binding* b);
 };
 
 class AstMultiplication : public AstParentNode {
 public:
     AstMultiplication() { type = AST_MULTIPLICATION; }
-    long get_long();
-    double get_double();
+    long get_long(Binding* b);
+    double get_double(Binding* b);
 };
 
 class AstDivision : public AstParentNode {
 public:
     AstDivision() { type = AST_DIVISION; }
-    long get_long();
-    double get_double();
+    long get_long(Binding* b);
+    double get_double(Binding* b);
 };
 
 class AstReminder : public AstParentNode {
 public:
     AstReminder() { type = AST_REMINDER; }
-    long get_long();
-    double get_double();
+    long get_long(Binding* b);
+    double get_double(Binding* b);
 };
 
 class AstPower : public AstParentNode {
 public:
     AstPower() { type = AST_POWER; }
-    long get_long();
-    double get_double();
+    long get_long(Binding* b);
+    double get_double(Binding* b);
 };
 
 class AstParen : public AstParentNode {
 public:
     AstParen() { type = AST_PAREN; }
-	long get_long();
-    double get_double();
+	long get_long(Binding* b);
+    double get_double(Binding* b);
 };
 
 class AstNumber : public AstNode {
@@ -105,8 +109,8 @@ public:
 class AstInteger : public AstNumber {
 public:
     AstInteger() { type = AST_INTEGER; }
-	long get_long();
-	double get_double();
+	long get_long(Binding* b);
+	double get_double(Binding* b);
 };
 
 class AstHexdecimal : public AstInteger {
@@ -121,8 +125,8 @@ class AstDecimal : public AstInteger {
 class AstFloat : public AstInteger {
 public:
     AstFloat() { type = AST_FLOAT; }
-	long get_long();
-	double get_double();
+	long get_long(Binding* b);
+	double get_double(Binding* b);
 };
 
 class AstIdentifier : public AstNode {
