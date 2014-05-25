@@ -59,13 +59,16 @@ AstParentNode* ParsePrimary::inject_invocation(AstNode* node, const char *str)
 		std::vector<AstNode*> &newChildren = newRoot->children;
 		newChildren.push_back(node);
         
+        AstArgument *args;
         enum SymbolType type = get_symbol(str[0]);
         switch (type) {
             case SYMBOL_PAREN_RIGHT:
-                newRoot->strtail = str + 1;
+                args = new AstArgument();
+                args->strhead = args->strtail = newRoot->strtail = str + 1;
+                newRoot->children.push_back(args);
                 return newRoot;
             default:
-                AstArgument *args = parse_argument(str);
+                args = parse_argument(str);
                 newRoot->children.push_back(args);
                 str = args->strtail;
         }
