@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include "ast.h"
-#include "parser.h"
+#include "Parse.h"
 
 enum symbol_type Parse::get_type_of_next_symbol(char c)
 {

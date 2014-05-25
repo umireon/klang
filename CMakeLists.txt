@@ -6,7 +6,7 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
-set(PARSER_SRC src/parser.cpp src/ast.cpp src/ParseNumber.cpp src/ParseTerm.cpp src/ParseExpression.cpp src/ParseIdentifier.cpp src/ParseParen.cpp src/ParsePrimary.cpp)
+set(PARSER_SRC src/Parse.cpp src/ast.cpp src/ParseNumber.cpp src/ParseTerm.cpp src/ParseExpression.cpp src/ParseIdentifier.cpp src/ParseParen.cpp src/ParsePrimary.cpp)
 add_library(parser ${PARSER_SRC})
 
 add_executable(print_ast src/print_ast.cpp)

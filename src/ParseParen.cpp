@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "ast.h"
-#include "parser.h"
+#include "Parse.h"
 
 AstNode* ParseParen::parse_paren(const char *str)
 {

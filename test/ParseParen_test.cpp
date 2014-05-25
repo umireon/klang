@@ -1,7 +1,7 @@
 #include <iostream>
 #include <CppUTest/TestHarness.h>
 
-#include "../src/parser.h"
+#include "../src/Parse.h"
 #include "../src/ast.h"
 
 TEST_GROUP(ParseParen)

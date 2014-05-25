@@ -1,7 +1,7 @@
 #include <sstream>
 
 #include "ast.h"
-#include "parser.h"
+#include "Parse.h"
 
 AstNode* ParseExpression::parse_expression(const char *str)
 {

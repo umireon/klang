@@ -1,6 +1,6 @@
 #include <CppUTest/TestHarness.h>
 
-#include "../src/parser.h"
+#include "../src/Parse.h"
 
 TEST_GROUP(Parser)
 {

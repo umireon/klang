@@ -1,5 +1,5 @@
 #include "ast.h"
-#include "parser.h"
+#include "Parse.h"
 
 AstIdentifier* ParseIdentifier::parse_identifier(const char *str)
 {
