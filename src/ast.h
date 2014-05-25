@@ -96,8 +96,6 @@ public:
 
     virtual ~AstNode() {}
     virtual int size() { return 0; }
-	virtual long get_long(Binding* b) { return 0; }
-	virtual double get_double(Binding* b) { return 0; }
 	virtual std::string get_string();
 	virtual Object* evaluate(Binding* b) { return NULL; }
 };
