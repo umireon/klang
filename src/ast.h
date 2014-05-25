@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <map>
 
 #pragma once
 
@@ -28,6 +29,8 @@ enum node_type {
 
 class Binding
 {
+public:
+	std::map<std::string, double> variableTable;
 };
 
 class AstNode
@@ -132,9 +135,13 @@ public:
 class AstIdentifier : public AstNode {
 public:
     AstIdentifier() { type = AST_IDENTIFIER; }
+	long get_long(Binding* b);
+	double get_double(Binding* b);
 };
 
 class AstAssignment : public AstParentNode {
 public:
     AstAssignment() { type = AST_ASSIGNMENT; }
+	long get_long(Binding* b);
+	double get_double(Binding* b);
 };

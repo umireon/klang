@@ -8,6 +8,7 @@ using namespace std;
 
 int main(int argc, const char **argv)
 {
+    Binding b;
     while (true) {
         Parse p;
         string line;
@@ -15,8 +16,7 @@ int main(int argc, const char **argv)
         cin >> line;
         AstNode *ast = p.parse(line.c_str());
         
-        cout << "long: " << ast->get_long(new Binding()) << endl;
-        cout << "double: " << ast->get_double(new Binding()) << endl;
+        cout << "double: " << ast->get_double(&b) << endl;
     }
 }
 

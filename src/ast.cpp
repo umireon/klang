@@ -201,3 +201,27 @@ double AstFloat::get_double(Binding* b)
 {
 	return strtod(get_string().c_str(), NULL);
 }
+
+long AstIdentifier::get_long(Binding* b)
+{
+    return b->variableTable[get_string()];
+}
+
+double AstIdentifier::get_double(Binding* b)
+{
+    return b->variableTable[get_string()];
+}
+
+long AstAssignment::get_long(Binding* b)
+{
+    long value = children.at(1)->get_long(b);
+    b->variableTable[children.at(0)->get_string()] = value;
+    return value;
+}
+
+double AstAssignment::get_double(Binding* b)
+{
+    double value = children.at(1)->get_double(b);
+    b->variableTable[children.at(0)->get_string()] = value;
+    return value;
+}
