@@ -11,10 +11,14 @@ AstNode::~AstNode(void)
 }
 
 
+long AstParen::get_long()
+{
+	return children.at(0)->get_long();
+}
+
 long AstInteger::get_long()
 {
-	std::string s(strhead, strtail - strhead);
-	return strtol(s.c_str(), NULL, 0);
+	return strtol(get_string().c_str(), NULL, 0);
 }
 
 double AstInteger::get_double()
@@ -30,6 +34,5 @@ long AstFloat::get_long()
 
 double AstFloat::get_double()
 {
-	std::string s(strhead, strtail - strhead);
-	return strtod(s.c_str(), NULL);
+	return strtod(get_string().c_str(), NULL);
 }

@@ -8,15 +8,20 @@ TEST_GROUP(ParseNumber)
 {
 };
 
-TEST_GROUP(parse_number)
+TEST(ParseNumber, Number)
 {
-};
+    ParseNumber p;
+    AstNumber *num = p.parse_number("2");
+    CHECK(dynamic_cast<AstNumber*>(num));
+
+    delete num;
+}
 
 TEST(ParseNumber, NoChildren)
 {
     ParseNumber p;
     AstNumber *num;
-    num = p.parse_number("02");
+    num = p.parse_number("2");
     CHECK_EQUAL(0, num->size());
 
     delete num;

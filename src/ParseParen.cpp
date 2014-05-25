@@ -7,6 +7,7 @@
 
 AstNode* ParseParen::parse_paren(const char *str)
 {
+	AstParen* paren = new AstParen();
 	const char *s = str;
 	enum symbol_type type;
 
@@ -24,6 +25,7 @@ AstNode* ParseParen::parse_paren(const char *str)
 	ParseExpression p;
 	AstNode *expr = p.parse_expression(s);
 	s = expr->strtail;
+	paren->children.push_back(expr);
 
 	type = get_symbol(s[0]);
 	switch (type) {
@@ -36,10 +38,10 @@ AstNode* ParseParen::parse_paren(const char *str)
         throw std::invalid_argument(os.str());
 	}
 
-	expr->strhead = str;
-	expr->strtail = s;
+	paren->strhead = str;
+	paren->strtail = s;
 
-	return expr;
+	return paren;
 }
 
 enum symbol_type ParseParen::get_symbol(char c)

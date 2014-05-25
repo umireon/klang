@@ -69,8 +69,6 @@ AstNode* Parse::parse_number(const char *str)
 
 AstNode* Parse::parse_element(const char *str)
 {
-	AstNode *elem = new AstElement();
-	elem->strhead = str;
 	enum symbol_type type = get_type_of_next_symbol(str[0]);
 
 	switch (type) {

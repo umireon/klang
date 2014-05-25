@@ -41,6 +41,16 @@ public:
 	{
 		return children.size();
 	}
+	virtual long get_long(){
+		return 0;
+	}
+	virtual double get_double(){
+		return 0;
+	}
+	virtual std::string get_string(){
+		std::string s(strhead, strtail - strhead);
+		return s;
+	}
 };
 
 class AstStatement : public AstNode
@@ -140,6 +150,7 @@ public:
 	{
 		this->type = AST_PAREN;
 	}
+	long get_long();
 };
 
 class AstNumber : public AstNode
