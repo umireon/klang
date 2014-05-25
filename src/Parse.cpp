@@ -6,7 +6,7 @@
 #include "ast.h"
 #include "Parse.h"
 
-enum symbol_type Parse::get_type_of_next_symbol(char c)
+enum Parse::SymbolType Parse::get_type_of_next_symbol(char c)
 {
 	char dc = c | 0x20;
 
@@ -88,7 +88,7 @@ AstNode* Parse::parse_expression(const char *str)
 
 AstNode* Parse::parse_statement(const char *str)
 {
-	enum symbol_type type = this->get_type_of_next_symbol(str[0]);
+	enum SymbolType type = this->get_type_of_next_symbol(str[0]);
 
 	switch (type) {
 	case SYMBOL_NUMBER_ZERO:

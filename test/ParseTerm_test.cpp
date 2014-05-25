@@ -153,22 +153,56 @@ TEST(ParseTerm, Complex)
 {
     ParseTerm p;
 
-    AstDivision *term = dynamic_cast<AstDivision*>(p.parse_term("1*2**3/4"));
+    AstReminder *term = dynamic_cast<AstReminder*>(p.parse_term("1*2**3/4%5"));
     CHECK(term);
     std::vector<AstNode*> &children = term->children;
 
-    AstMultiplication *term0 = dynamic_cast<AstMultiplication*>(children[0]);
+    AstDivision *term0 = dynamic_cast<AstDivision*>(children[0]);
     CHECK(term0);
     std::vector<AstNode*> &children0 = term0->children;
-    
-    AstPower *term01 = dynamic_cast<AstPower*>(children0[1]);
-    CHECK(term01);
-    std::vector<AstNode*> &children01 = term01->children;
 
-    CHECK_EQUAL(1, children0[0]->get_long());
-    CHECK_EQUAL(2, children01[0]->get_long());
-    CHECK_EQUAL(3, children01[1]->get_long());
-    CHECK_EQUAL(4, children[1]->get_long());
+    AstMultiplication *term00 = dynamic_cast<AstMultiplication*>(children0[0]);
+    CHECK(term00);
+    std::vector<AstNode*> &children00 = term00->children;
+    
+    AstPower *term001 = dynamic_cast<AstPower*>(children00[1]);
+    CHECK(term001);
+    std::vector<AstNode*> &children001 = term001->children;
+
+    CHECK_EQUAL(1, children00[0]->get_long());
+    CHECK_EQUAL(2, children001[0]->get_long());
+    CHECK_EQUAL(3, children001[1]->get_long());
+    CHECK_EQUAL(4, children0[1]->get_long());
+    CHECK_EQUAL(5, children[1]->get_long());
+
+    delete term;
+}
+
+TEST(ParseTerm, Whitespace)
+{
+    ParseTerm p;
+
+    AstReminder *term = dynamic_cast<AstReminder*>(p.parse_term("1 * 2 ** 3 / 4 % 5"));
+    CHECK(term);
+    std::vector<AstNode*> &children = term->children;
+
+    AstDivision *term0 = dynamic_cast<AstDivision*>(children[0]);
+    CHECK(term0);
+    std::vector<AstNode*> &children0 = term0->children;
+
+    AstMultiplication *term00 = dynamic_cast<AstMultiplication*>(children0[0]);
+    CHECK(term00);
+    std::vector<AstNode*> &children00 = term00->children;
+    
+    AstPower *term001 = dynamic_cast<AstPower*>(children00[1]);
+    CHECK(term001);
+    std::vector<AstNode*> &children001 = term001->children;
+
+    CHECK_EQUAL(1, children00[0]->get_long());
+    CHECK_EQUAL(2, children001[0]->get_long());
+    CHECK_EQUAL(3, children001[1]->get_long());
+    CHECK_EQUAL(4, children0[1]->get_long());
+    CHECK_EQUAL(5, children[1]->get_long());
 
     delete term;
 }

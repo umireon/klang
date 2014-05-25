@@ -14,13 +14,12 @@ void print_ast(AstNode *node, int depth)
 
     cout << indent << "- type: " << typeid(*node).name() << endl;
     cout << indent << "  str: " << str << endl;
-    cout << indent << "  value: " << node->get_long() << endl;
 
     int size = node->size();
     if (size > 0) {
         AstParentNode *root = static_cast<AstParentNode*>(node);
         
-        cout << indent << "  children: " << root->get_long() << endl;
+        cout << indent << "  children: " << endl;
         
         for (int i = 0; i < size; i++) {
             print_ast(root->children[i], depth + 1);

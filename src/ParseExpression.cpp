@@ -8,20 +8,13 @@ AstNode* ParseExpression::parse_expression(const char *str)
 {
 	AstNode *expr;
 	const char *s = str;
-	enum symbol_type type;
+	enum SymbolType type;
 
 	type = get_symbol(str[0]);
 	switch (type) {
-	case SYMBOL_NUMBER_ZERO:
-	case SYMBOL_NUMBER_OCT:
-	case SYMBOL_NUMBER_DEC:
-	case SYMBOL_SIGN_MINUS:
+	case SYMBOL_FOLLOW:
 	case SYMBOL_SIGN_PLUS:
-	case SYMBOL_PAREN_LEFT:
-	case SYMBOL_ALPHABET_HEXUPPER:
-	case SYMBOL_ALPHABET_HEXLOWER:
-	case SYMBOL_ALPHABET_X:
-	case SYMBOL_ALPHABET:
+	case SYMBOL_SIGN_MINUS:
 		ParseTerm p;
 		expr = p.parse_term(str);
 		s = expr->strtail;
@@ -33,6 +26,7 @@ AstNode* ParseExpression::parse_expression(const char *str)
 	}
 
 	while (1) {
+		s = scan_lexical_symbol(s);
 		type = get_symbol(s[0]);
 		switch (type) {
 		case SYMBOL_SIGN_PLUS:
@@ -57,6 +51,8 @@ AstAddition* ParseExpression::chain_addition(AstNode* root, const char *str)
 	std::vector<AstNode*> &newChildren = newRoot->children;
 
 	newChildren.push_back(root);
+
+	str = scan_lexical_symbol(str);
 	ParseTerm p;
 	AstNode *term = p.parse_term(str);
 	newChildren.push_back(term);
@@ -73,6 +69,8 @@ AstSubtraction* ParseExpression::chain_subtraction(AstNode* root, const char *st
 	std::vector<AstNode*> &newChildren = newRoot->children;
 
 	newChildren.push_back(root);
+
+	str = scan_lexical_symbol(str);
 	ParseTerm p;
 	AstNode *term = p.parse_term(str);
 	newChildren.push_back(term);
@@ -82,45 +80,28 @@ AstSubtraction* ParseExpression::chain_subtraction(AstNode* root, const char *st
 	return newRoot;
 }
 
-enum symbol_type ParseExpression::get_symbol(char c)
+const char* ParseExpression::scan_lexical_symbol(const char* str)
 {
-	char dc = c | 0x20;
+	enum SymbolType type;
 
-	if (c == '0') {
-		return SYMBOL_NUMBER_ZERO;
-	} else if ('1' <= c && c <= '7') {
-		return SYMBOL_NUMBER_OCT;
-	} else if (c == '8' || c == '9') {
-		return SYMBOL_NUMBER_DEC;
-	} else if ('A' <= c && c <= 'F') {
-		return SYMBOL_ALPHABET_HEXUPPER;
-	} else if ('a' <= c && c <= 'f') {
-		return SYMBOL_ALPHABET_HEXLOWER;
-	} else if (dc == 'x') {
-		return SYMBOL_ALPHABET_X;
-	} else if ('g' <= dc && dc <= 'z') {
-		return SYMBOL_ALPHABET;
-	} else if (c == '*') {
-		return SYMBOL_OP_ASTERISK;
-	} else if (c == '/') {
-		return SYMBOL_OP_SLASH;
-	} else if (c == '%') {
-		return SYMBOL_OP_PERCENT;
-	} else if (c == '+') {
+	do {
+		type = get_symbol(str[0]);
+		str++;
+	} while (type == SYMBOL_WHITESPACE);
+
+	return str - 1;
+}
+
+enum ParseExpression::SymbolType ParseExpression::get_symbol(char c)
+{
+	switch (c) {
+	case ' ':
+		return SYMBOL_WHITESPACE;
+	case '+':
 		return SYMBOL_SIGN_PLUS;
-	} else if (c == '+') {
-		return SYMBOL_SIGN_PLUS;
-	} else if (c == '-') {
+	case '-':
 		return SYMBOL_SIGN_MINUS;
-	} else if (c == '(') {
-		return SYMBOL_PAREN_LEFT;
-	} else if (c == ')') {
-		return SYMBOL_PAREN_RIGHT;
-	} else if (c == '.') {
-		return SYMBOL_DOT;
-	} else if (c == '\0') {
-		return SYMBOL_NULL;
-	} else {
-		return SYMBOL_UNKNOWN;
+	default:
+		return SYMBOL_FOLLOW;
 	}
 }

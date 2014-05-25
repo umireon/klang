@@ -9,7 +9,7 @@ AstNumber* ParseNumber::parse_number(const char* str)
 {
 	AstNumber* num;
     
-	enum symbol_type type = get_symbol(str[0]);
+	enum SymbolType type = get_symbol(str[0]);
 	switch (type) {
         case SYMBOL_NUMBER_ZERO:
             num = read_number_hex_or_oct(str+1);
@@ -18,8 +18,7 @@ AstNumber* ParseNumber::parse_number(const char* str)
         case SYMBOL_NUMBER_DEC:
             num = read_number_dec_or_float(str);
             break;
-        case SYMBOL_SIGN_PLUS:
-        case SYMBOL_SIGN_MINUS:
+        case SYMBOL_SIGN:
             num = read_number_signed(str+1);
             break;
         default:
@@ -35,7 +34,7 @@ AstNumber* ParseNumber::parse_number(const char* str)
 
 AstNumber* ParseNumber::read_number_signed(const char *str)
 {
-	enum symbol_type type = get_symbol(str[0]);
+	enum SymbolType type = get_symbol(str[0]);
     
 	switch (type) {
         case SYMBOL_NUMBER_ZERO:
@@ -52,7 +51,7 @@ AstNumber* ParseNumber::read_number_signed(const char *str)
 
 AstInteger* ParseNumber::read_number_hex_or_oct(const char* str)
 {
-	enum symbol_type type = get_symbol(str[0]);
+	enum SymbolType type = get_symbol(str[0]);
     
 	switch (type) {
         case SYMBOL_ALPHABET_X:
@@ -67,14 +66,13 @@ AstHexdecimal* ParseNumber::read_number_hex(const char *str)
 	AstHexdecimal *hex = new AstHexdecimal();
     
 	while (1) {
-		enum symbol_type type = get_symbol(str[0]);
+		enum SymbolType type = get_symbol(str[0]);
         
 		switch (type) {
             case SYMBOL_NUMBER_ZERO:
             case SYMBOL_NUMBER_OCT:
             case SYMBOL_NUMBER_DEC:
-            case SYMBOL_ALPHABET_HEXUPPER:
-            case SYMBOL_ALPHABET_HEXLOWER:
+            case SYMBOL_ALPHABET_HEX:
                 str++;
                 break;
             default:
@@ -89,7 +87,7 @@ AstOctal* ParseNumber::read_number_oct(const char *str)
 	AstOctal *oct = new AstOctal();
     
 	while (1) {
-		enum symbol_type type = get_symbol(str[0]);
+		enum SymbolType type = get_symbol(str[0]);
         
 		switch (type) {
             case SYMBOL_NUMBER_ZERO:
@@ -106,7 +104,7 @@ AstOctal* ParseNumber::read_number_oct(const char *str)
 AstNumber* ParseNumber::read_number_dec_or_float(const char* str)
 {
 	while (1) {
-		enum symbol_type type = get_symbol(str[0]);
+		enum SymbolType type = get_symbol(str[0]);
         
 		switch (type) {
             case SYMBOL_NUMBER_ZERO:
@@ -134,7 +132,7 @@ AstFloat* ParseNumber::read_number_float(const char *str)
 	AstFloat *flt = new AstFloat();
     
 	while (1) {
-		enum symbol_type type = get_symbol(str[0]);
+		enum SymbolType type = get_symbol(str[0]);
         
 		switch (type) {
             case SYMBOL_NUMBER_ZERO:
@@ -149,30 +147,31 @@ AstFloat* ParseNumber::read_number_float(const char *str)
 	}
 }
 
-enum symbol_type ParseNumber::get_symbol(char c)
+enum ParseNumber::SymbolType ParseNumber::get_symbol(char c)
 {
-	if (c == '0') {
-		return SYMBOL_NUMBER_ZERO;
-	} else if ('1' <= c && c <= '7') {
+	if ('1' <= c && c <= '7') {
 		return SYMBOL_NUMBER_OCT;
-	} else if (c == '8' || c == '9') {
-		return SYMBOL_NUMBER_DEC;
 	} else if ('A' <= c && c <= 'F') {
-		return SYMBOL_ALPHABET_HEXUPPER;
+		return SYMBOL_ALPHABET_HEX;
 	} else if ('a' <= c && c <= 'f') {
-		return SYMBOL_ALPHABET_HEXLOWER;
-	} else if (c == 'x' || c == 'X') {
-		return SYMBOL_ALPHABET_X;
-	} else if (c == '.') {
-		return SYMBOL_DOT;
-	} else if (c == '+') {
-		return SYMBOL_SIGN_PLUS;
-	} else if (c == '-') {
-		return SYMBOL_SIGN_MINUS;
-	} else if (c == '\0') {
-		return SYMBOL_NULL;
-	} else {
-		return SYMBOL_FOLLOW;
-	}
-}
+		return SYMBOL_ALPHABET_HEX;
+    }
 
+    switch (c) {
+    case '0':
+        return SYMBOL_NUMBER_ZERO;
+    case '8':
+    case '9':
+        return SYMBOL_NUMBER_DEC;
+    case 'x':
+    case 'X':
+        return SYMBOL_ALPHABET_X;
+    case '.':
+        return SYMBOL_DOT;
+    case '+':
+    case '-':
+        return SYMBOL_SIGN;
+    default:
+        return SYMBOL_FOLLOW;
+    }
+}

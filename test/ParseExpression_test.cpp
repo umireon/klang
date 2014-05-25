@@ -81,3 +81,42 @@ TEST(ParseExpression, 3ElemSubtraction)
     
     delete expr;
 }
+
+TEST(ParseExpression, Complex)
+{
+    ParseExpression p;
+
+    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_expression("2+3-4"));
+    CHECK(expr);
+    std::vector<AstNode*> &children = expr->children;
+    
+    AstAddition *expr0 = dynamic_cast<AstAddition*>(children[0]);
+    CHECK(expr0);
+    std::vector<AstNode*> &children0 = expr0->children;
+
+    CHECK_EQUAL(2, children0[0]->get_long());
+    CHECK_EQUAL(3, children0[1]->get_long());
+    CHECK_EQUAL(4, children[1]->get_long());
+    
+    delete expr;
+}
+
+TEST(ParseExpression, Whitespace)
+{
+    ParseExpression p;
+
+    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_expression("2 + 3 - 4"));
+    CHECK(expr);
+    std::vector<AstNode*> &children = expr->children;
+    
+    AstAddition *expr0 = dynamic_cast<AstAddition*>(children[0]);
+    CHECK(expr0);
+    std::vector<AstNode*> &children0 = expr0->children;
+
+    CHECK_EQUAL(2, children0[0]->get_long());
+    CHECK_EQUAL(3, children0[1]->get_long());
+    CHECK_EQUAL(4, children[1]->get_long());
+    
+    delete expr;
+}
+
