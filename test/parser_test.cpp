@@ -6,7 +6,7 @@ TEST_GROUP(Parser)
 {
 };
 
-TEST(Parser, EmptyStatementForEmptyString)
+/*TEST(Parser, EmptyStatementForEmptyString)
 {
 	Parse p;
     AstNode *stmt = p.parse("");
@@ -14,3 +14,4 @@ TEST(Parser, EmptyStatementForEmptyString)
     CHECK(stmt->children.empty());
     delete stmt;
 }
+*/

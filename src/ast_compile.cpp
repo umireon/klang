@@ -7,22 +7,29 @@
 
 using namespace std;
 
-void print_ast(AstNode *root, int depth)
+void print_ast(AstNode *node, int depth)
 {
     string indent = string(depth * 4, ' ');
-    string str = string(root->strhead, root->strtail - root->strhead);
-
-    cout << indent << "- type: " << typeid(*root).name() << endl;
+    string str = node->get_string();
+    
+    cout << indent << "- type: " << typeid(*node).name() << endl;
     cout << indent << "  str: " << str << endl;
-    cout << indent << "  value: " << root->value << endl;
-
-    for (int i = 0; i < root->children.size(); i++) {
-        print_ast(root->children.at(i), depth + 1);
+    cout << indent << "  value: " << node->get_long() << endl;
+    
+    int size = node->size();
+    if (size > 0) {
+        AstParentNode *root = static_cast<AstParentNode*>(node);
+        
+        cout << indent << "  children: " << root->get_long() << endl;
+        
+        for (int i = 0; i < size; i++) {
+            print_ast(root->children[i], depth + 1);
+        }
     }
 }
 
 AstNode* ast_reduce(AstNode* root)
-{
+{/*
     vector<AstNode*> &children = root->children;
     int size = children.size();
 
@@ -85,7 +92,7 @@ AstNode* ast_reduce(AstNode* root)
             return newRoot;
         }
         break;
-    }
+    }*/
 
     return root;
 }

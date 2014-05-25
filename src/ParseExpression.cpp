@@ -50,9 +50,9 @@ AstNode* ParseExpression::parse_expression(const char *str)
 }
 
 
-AstNode* ParseExpression::chain_addition(AstNode* root, const char *str)
+AstAddition* ParseExpression::chain_addition(AstNode* root, const char *str)
 {
-	AstNode *newRoot = new AstAddition();
+	AstAddition *newRoot = new AstAddition();
 	newRoot->strhead = root->strhead;
 	std::vector<AstNode*> &newChildren = newRoot->children;
 
@@ -66,9 +66,9 @@ AstNode* ParseExpression::chain_addition(AstNode* root, const char *str)
 	return newRoot;
 }
 
-AstNode* ParseExpression::chain_subtraction(AstNode* root, const char *str)
+AstSubtraction* ParseExpression::chain_subtraction(AstNode* root, const char *str)
 {
-	AstNode *newRoot = new AstSubtraction();
+	AstSubtraction *newRoot = new AstSubtraction();
 	newRoot->strhead = root->strhead;
 	std::vector<AstNode*> &newChildren = newRoot->children;
 

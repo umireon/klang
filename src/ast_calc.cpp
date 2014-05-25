@@ -8,12 +8,12 @@ using namespace std;
 
 int ast_calc(AstNode *root);
 
-int compute_number(AstNode *num)
+/*int compute_number(AstNumber *num)
 {
     return num->value;
 }
 
-int compute_addition(AstNode *add)
+int compute_addition(AstAddition *add)
 {
     vector<AstNode*> children = add->children;
     int size = children.size();
@@ -23,7 +23,7 @@ int compute_addition(AstNode *add)
     return x + y;
 }
 
-int compute_subtraction(AstNode *sub)
+int compute_subtraction(AstSubtraction *sub)
 {
     vector<AstNode*> children = sub->children;
     int size = children.size();
@@ -33,7 +33,7 @@ int compute_subtraction(AstNode *sub)
     return x - y;
 }
 
-int compute_multiplication(AstNode *mul)
+int compute_multiplication(AstMultiplication *mul)
 {
     vector<AstNode*> children = mul->children;
     int size = children.size();
@@ -43,7 +43,7 @@ int compute_multiplication(AstNode *mul)
     return x * y;
 }
 
-int compute_division(AstNode *dv)
+int compute_division(AstDivision *dv)
 {
     vector<AstNode*> children = dv->children;
     int size = children.size();
@@ -53,19 +53,19 @@ int compute_division(AstNode *dv)
     return x / y;
 }
 
-int compute_paren(AstNode *dv)
+int compute_paren(AstParentNode *dv)
 {
     vector<AstNode*> children = dv->children;
     int size = children.size();
 
     return ast_calc(children[1]);
-}
+}*/
 
 int ast_calc(AstNode *root)
 {
     int value = 0;
 
-    switch (root->type) {
+    /*switch (root->type) {
         case AST_NUMBER:
             return compute_number(root);
         case AST_ADDITION:
@@ -78,18 +78,18 @@ int ast_calc(AstNode *root)
             return compute_division(root);
         case AST_PAREN:
             return compute_paren(root);
-    }
+    }*/
 
-    vector<AstNode*> children = root->children;
+    /*vector<AstNode*> children = root->children;
     int size = children.size();
 
     if (size == 1) {
         return ast_calc(children[0]);
     } else {
         cout << "Unexpected " << root->strhead << endl;
-    }
+    }*/
 
-    return value;
+    return 0;
 }
 
 int main(int argc, const char **argv)

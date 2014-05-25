@@ -2,14 +2,17 @@
 #include <sstream>
 #include "ast.h"
 
-AstNode::~AstNode(void)
+std::string AstNode::get_string() {
+    return std::string(strhead, strtail - strhead);
+}
+
+AstParentNode::~AstParentNode(void)
 {
 	int size = children.size();
 	for (int i = 0; i < size; i++) {
 		delete children.at(i);
 	}
 }
-
 
 long AstParen::get_long()
 {

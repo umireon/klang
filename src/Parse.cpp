@@ -88,10 +88,6 @@ AstNode* Parse::parse_expression(const char *str)
 
 AstNode* Parse::parse_statement(const char *str)
 {
-	AstNode *stmt;
-	stmt = new AstStatement();
-	stmt->strhead = str;
-
 	enum symbol_type type = this->get_type_of_next_symbol(str[0]);
 
 	switch (type) {
@@ -105,16 +101,8 @@ AstNode* Parse::parse_statement(const char *str)
 	case SYMBOL_ALPHABET_HEXLOWER:
 	case SYMBOL_ALPHABET_X:
 	case SYMBOL_ALPHABET:
-		stmt->children.push_back(this->parse_expression(str));
+		return this->parse_expression(str);
 	}
-
-	if (stmt->children.size() == 0) {
-		stmt->strtail = str;
-	} else {
-		stmt->strtail = (*stmt->children.rbegin())->strtail;
-	}
-
-	return stmt;
 }
 
 AstNode* Parse::parse(const char *str)

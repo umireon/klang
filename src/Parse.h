@@ -59,11 +59,11 @@ public:
 	AstNode* parse_term(const char *str);
 protected:
 	enum symbol_type get_symbol(char c);
-	AstNode* parse_power_or_multiplication(const char *str);
-	AstNode* chain_power(AstNode* root, const char *str);
-	AstNode* chain_multiplication(AstNode* root, const char *str);
-	AstNode* chain_division(AstNode* root, const char* str);
-	AstNode* chain_reminder(AstNode* root, const char* str);
+	AstParentNode* parse_power_or_multiplication(const char *str);
+	AstParentNode* chain_power(AstNode* root, const char *str);
+	AstMultiplication* chain_multiplication(AstNode* root, const char *str);
+	AstDivision* chain_division(AstNode* root, const char* str);
+	AstReminder* chain_reminder(AstNode* root, const char* str);
 };
 
 class ParseExpression {
@@ -71,8 +71,8 @@ public:
 	AstNode* parse_expression(const char *str);
 protected:
 	enum symbol_type get_symbol(char c);
-	AstNode* chain_addition(AstNode* root, const char *str);
-	AstNode* chain_subtraction(AstNode* root, const char* str);
+	AstAddition* chain_addition(AstNode* root, const char *str);
+	AstSubtraction* chain_subtraction(AstNode* root, const char* str);
 };
 
 class ParseIdentifier {
@@ -84,7 +84,7 @@ protected:
 
 class ParseParen {
 public:
-	AstNode* parse_paren(const char *str);
+	AstParen* parse_paren(const char *str);
 protected:
 	enum symbol_type get_symbol(char c);
 };

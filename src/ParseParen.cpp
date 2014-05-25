@@ -5,7 +5,7 @@
 #include "ast.h"
 #include "Parse.h"
 
-AstNode* ParseParen::parse_paren(const char *str)
+AstParen* ParseParen::parse_paren(const char *str)
 {
 	AstParen* paren = new AstParen();
 	const char *s = str;
