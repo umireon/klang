@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include "ast.h"
 #include "parser.h"
 
@@ -78,22 +79,22 @@ AstNode* Parse::parse_element(const char *str)
 	case SYMBOL_NUMBER_DEC:
 	case SYMBOL_SIGN_MINUS:
 	case SYMBOL_SIGN_PLUS:
-		elem->children.push_back(parse_number(str));
+		return parse_number(str);
 		break;
 	case SYMBOL_PAREN_LEFT:
-		elem->children.push_back(parse_paren(str));
+		return parse_paren(str);
 		break;
 	case SYMBOL_ALPHABET_HEXUPPER:
 	case SYMBOL_ALPHABET_HEXLOWER:
 	case SYMBOL_ALPHABET_X:
 	case SYMBOL_ALPHABET:
-		elem->children.push_back(parse_identifier(str));
+		return parse_identifier(str);
 		break;
+	default:
+        std::ostringstream os;
+        os << "Unexpected character: " << str[0] << std::endl;
+        throw std::invalid_argument(os.str());
 	}
-
-	elem->strtail = elem->children.at(0)->strtail;
-
-	return elem;
 }
 
 AstNode* Parse::parse_term(const char *str)
