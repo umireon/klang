@@ -98,3 +98,10 @@ public:
 protected:
 	enum symbol_type get_symbol(char c);
 };
+
+class ParsePrimary {
+public:
+	AstNode* parse_primary(const char *str);
+protected:
+	enum symbol_type get_symbol(char c);
+};
