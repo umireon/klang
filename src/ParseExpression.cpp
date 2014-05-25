@@ -21,7 +21,8 @@ AstNode* ParseExpression::parse_expression(const char *str)
 	case SYMBOL_ALPHABET_HEXLOWER:
 	case SYMBOL_ALPHABET_X:
 	case SYMBOL_ALPHABET:
-		expr = pt.parse_term(str);
+		ParseTerm p;
+		expr = p.parse_term(str);
 		s = expr->strtail;
 		break;
 	default:
@@ -55,7 +56,8 @@ AstNode* ParseExpression::chain_addition(AstNode* root, const char *str)
 	std::vector<AstNode*> &newChildren = newRoot->children;
 
 	newChildren.push_back(root);
-	AstNode *term = pt.parse_term(str);
+	ParseTerm p;
+	AstNode *term = p.parse_term(str);
 	newChildren.push_back(term);
 
 	newRoot->strtail = term->strtail;
@@ -70,7 +72,8 @@ AstNode* ParseExpression::chain_subtraction(AstNode* root, const char *str)
 	std::vector<AstNode*> &newChildren = newRoot->children;
 
 	newChildren.push_back(root);
-	AstNode *term = pt.parse_term(str);
+	ParseTerm p;
+	AstNode *term = p.parse_term(str);
 	newChildren.push_back(term);
 
 	newRoot->strtail = term->strtail;

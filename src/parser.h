@@ -23,6 +23,21 @@ enum symbol_type {
 	SYMBOL_OP_PERCENT,
 };
 
+class Parse
+{
+public:
+	enum symbol_type get_type_of_next_symbol(char c);
+
+	AstNode* parse(const char *str);
+	AstNode* parse_statement(const char *str);
+	AstNode* parse_expression(const char *str);
+	AstNode* parse_term(const char *str);
+	AstNode* parse_primary(const char *str);
+	AstNode* parse_paren(const char *str);
+	AstNode* parse_identifier(const char *str);
+	AstNode* parse_number(const char *str);
+};
+
 class ParseNumber {
 public:
 	AstNumber* parse_number(const char *str);
@@ -39,27 +54,6 @@ protected:
 	AstFloat* read_number_float(const char *str);
 };
 
-class ParseTerm;
-
-class Parse
-{
-public:
-	enum symbol_type get_type_of_next_symbol(char c);
-
-	AstNode* parse(const char *str);
-	AstNode* parse_statement(const char *str);
-	AstNode* parse_expression(const char *str);
-	AstNode* parse_term(const char *str);
-	AstNode* parse_element(const char *str);
-	AstNode* parse_paren(const char *str);
-	AstNode* parse_paren_left(const char *str);
-	AstNode* parse_paren_right(const char *str);
-	AstNode* parse_identifier(const char *str);
-	AstNode* parse_number(const char *str);
-private:
-	ParseNumber pn;
-};
-
 class ParseTerm {
 public:
 	AstNode* parse_term(const char *str);
@@ -70,8 +64,6 @@ protected:
 	AstNode* chain_multiplication(AstNode* root, const char *str);
 	AstNode* chain_division(AstNode* root, const char* str);
 	AstNode* chain_reminder(AstNode* root, const char* str);
-private:
-	Parse p;
 };
 
 class ParseExpression {
@@ -81,8 +73,6 @@ protected:
 	enum symbol_type get_symbol(char c);
 	AstNode* chain_addition(AstNode* root, const char *str);
 	AstNode* chain_subtraction(AstNode* root, const char* str);
-private:
-	ParseTerm pt;
 };
 
 class ParseIdentifier {

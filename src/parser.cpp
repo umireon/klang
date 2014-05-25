@@ -64,35 +64,14 @@ AstNode* Parse::parse_paren(const char *str)
 
 AstNode* Parse::parse_number(const char *str)
 {
-	return pn.parse_number(str);
+	ParseNumber p;
+	return p.parse_number(str);
 }
 
-AstNode* Parse::parse_element(const char *str)
+AstNode* Parse::parse_primary(const char *str)
 {
-	enum symbol_type type = get_type_of_next_symbol(str[0]);
-
-	switch (type) {
-	case SYMBOL_NUMBER_ZERO:
-	case SYMBOL_NUMBER_OCT:
-	case SYMBOL_NUMBER_DEC:
-	case SYMBOL_SIGN_MINUS:
-	case SYMBOL_SIGN_PLUS:
-		return parse_number(str);
-		break;
-	case SYMBOL_PAREN_LEFT:
-		return parse_paren(str);
-		break;
-	case SYMBOL_ALPHABET_HEXUPPER:
-	case SYMBOL_ALPHABET_HEXLOWER:
-	case SYMBOL_ALPHABET_X:
-	case SYMBOL_ALPHABET:
-		return parse_identifier(str);
-		break;
-	default:
-        std::ostringstream os;
-        os << "Unexpected character: " << str[0] << std::endl;
-        throw std::invalid_argument(os.str());
-	}
+	ParsePrimary p;
+	return p.parse_primary(str);
 }
 
 AstNode* Parse::parse_term(const char *str)
