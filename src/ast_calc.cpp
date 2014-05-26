@@ -54,6 +54,10 @@ int main(int argc, const char **argv)
 
         AstNode *ast = p.parse(line);
 
+        if (ast == NULL) {
+            continue;
+        }
+
         Object* res = ast->evaluate(&b);
 
         if (Integer* i = dynamic_cast<Integer*>(res)) {
@@ -64,7 +68,7 @@ int main(int argc, const char **argv)
 	        cout << "Float: " << f->to_f() << endl;
         }
         
-        if (KFunction* func = dynamic_cast<KFunction*>(res)) {
+        if (dynamic_cast<KFunction*>(res)) {
 	        cout << "Function" << endl;
         }
         

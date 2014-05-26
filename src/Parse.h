@@ -5,6 +5,8 @@
 class Parse
 {
 public:
+	AstNode* parse(const char *str);
+protected:
 	enum SymbolType {
 		SYMBOL_NUMBER_ZERO,
 		SYMBOL_NUMBER_OCT,
@@ -28,16 +30,10 @@ public:
 		SYMBOL_WHITESPACE,
 	};
 
-	enum SymbolType get_type_of_next_symbol(char c);
+	enum SymbolType get_symbol(char c);
+	const char* scan_lexical_symbol(const char* str);
 
-	AstNode* parse(const char *str);
 	AstNode* parse_statement(const char *str);
-	AstNode* parse_expression(const char *str);
-	AstNode* parse_term(const char *str);
-	AstNode* parse_primary(const char *str);
-	AstNode* parse_paren(const char *str);
-	AstNode* parse_identifier(const char *str);
-	AstNode* parse_number(const char *str);
 };
 
 class ParseNumber {
