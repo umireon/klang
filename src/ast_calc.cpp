@@ -12,6 +12,31 @@
 using namespace std;
 using namespace boost::numeric;
 
+class FuncMatrix : public KFunction {
+    KMatrix* invoke(std::vector<KObject*> args) {
+        KMatrix *kmat = new KMatrix();
+
+        KVector *kvect = dynamic_cast<KVector*>(args[0]);
+        long nrow = static_cast<KNumber*>(args[1])->to_i();
+        long ncol = static_cast<KNumber*>(args[2])->to_i();
+
+        dvector::iterator iter = kvect->vect.begin();
+
+        dmatrix m = dmatrix(nrow, ncol);
+
+        for (long i = 0; i < nrow; i++) {
+            for (long j = 0; j < ncol; j++) {
+                m(i,j) = *iter;
+                iter++;
+            }
+        }
+
+        kmat->mat = m;
+
+        return kmat;
+    }
+};
+
 class FuncC : public KFunction {
 	KVector* invoke(std::vector<KObject*> args) {
         std::vector<KObject*>::iterator iter = args.begin();
@@ -77,6 +102,7 @@ int main(int argc, const char **argv)
     FuncLog10 kLog10;
     FuncExit kExit;
     FuncC kC;
+    FuncMatrix kMatrix;
 
     Binding b;
     char *line;
@@ -84,6 +110,7 @@ int main(int argc, const char **argv)
     b.set_local(std::string("log10"), &kLog10);
     b.set_local(std::string("exit"), &kExit);
     b.set_local(std::string("c"), &kC);
+    b.set_local(std::string("matrix"), &kMatrix);
 
     while (true) {
         Parse p;

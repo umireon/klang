@@ -7,6 +7,9 @@
 
 using namespace boost::numeric;
 
+typedef boost::numeric::ublas::matrix<double> dmatrix;
+typedef boost::numeric::ublas::vector<double> dvector;
+
 class KObject {
 public:
 	virtual std::string to_string() { return std::string("Object"); }
