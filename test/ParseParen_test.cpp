@@ -1,8 +1,8 @@
 #include <iostream>
 #include <CppUTest/TestHarness.h>
 
-#include "parser/Parse.h"
-#include "parser/ast.h"
+#include "parser.h"
+#include "ast.h"
 
 using std::string;
 

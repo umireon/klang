@@ -1,7 +1,7 @@
 #include <CppUTest/TestHarness.h>
 #include <limits.h>
 
-#include "parser/Parse.h"
+#include "parser.h"
 
 TEST_GROUP(ParseIdentifier)
 {

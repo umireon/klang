@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include "ast.h"
-#include "Parse.h"
+#include "parser.h"
 
 AstNode* ParseAssignment::parse_assignment(const char *str)
 {

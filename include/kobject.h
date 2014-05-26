@@ -1,5 +1,8 @@
+#pragma once
+
 #include <map>
 
+#include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 
 using namespace boost::numeric;
@@ -14,6 +17,13 @@ class KVector : public KObject {
 public:
     ublas::vector<double> vect;
 	virtual std::string to_string() { return std::string("Vector"); }
+    std::string to_s();
+};
+
+class KMatrix : public KObject {
+public:
+    ublas::matrix<double> mat;
+	virtual std::string to_string() { return std::string("Matrix"); }
     std::string to_s();
 };
 
@@ -56,16 +66,4 @@ class KFunction : public KObject {
 public:
 	virtual KObject* invoke(std::vector<KObject*> args) = 0;
 	std::string to_string() { return std::string("Function"); }
-};
-
-class Binding : public KObject
-{
-public:
-	std::map<std::string, long> variableTable;
-	std::map<std::string, KObject*> locals;
-    
-	KObject* get_local(std::string name);
-	void set_local(std::string name, KObject* value);
-    
-	KFunction* get_function(std::string name);
 };

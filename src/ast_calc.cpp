@@ -6,8 +6,8 @@
 #include <editline/readline.h>
 #include <boost/numeric/ublas/vector.hpp>
 
-#include "parser/ast.h"
-#include "parser/Parse.h"
+#include "ast.h"
+#include "parser.h"
 
 using namespace std;
 using namespace boost::numeric;

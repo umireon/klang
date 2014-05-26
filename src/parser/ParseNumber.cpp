@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "ast.h"
-#include "Parse.h"
+#include "parser.h"
 
 AstNumber* ParseNumber::parse_number(const char* str)
 {
