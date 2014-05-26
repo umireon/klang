@@ -6,12 +6,9 @@ TEST_GROUP(Parser)
 {
 };
 
-/*TEST(Parser, EmptyStatementForEmptyString)
+TEST(Parser, EmptyStatementForEmptyString)
 {
 	Parse p;
     AstNode *stmt = p.parse("");
-    CHECK_EQUAL(AST_STATEMENT, stmt->type);
-    CHECK(stmt->children.empty());
-    delete stmt;
+    CHECK_EQUAL(NULL, stmt);
 }
-*/
