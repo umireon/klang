@@ -5,13 +5,10 @@
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 
-using namespace boost::numeric;
-
 typedef boost::numeric::ublas::matrix<double> dmatrix;
 typedef boost::numeric::ublas::vector<double> dvector;
 
-class KFloat;
-class KNumber;
+using namespace boost::numeric;
 
 class KObject {
 public:
@@ -26,26 +23,6 @@ public:
 
 	virtual KObject* op_mul(KObject* right) { return new KObject(); }
 	virtual std::string to_s() { return std::string("Object"); }
-};
-
-class KVector : public KObject {
-public:
-	KVector() { type = VECTOR; }
-
-	KVector* op_mul(KNumber* right);
-	KFloat* op_mul(KVector* right);
-	KObject* op_mul(KObject* right);
-
-    dvector vect;
-    std::string to_s();
-};
-
-class KMatrix : public KObject {
-public:
-	KMatrix() { type = MATRIX; }
-
-    ublas::matrix<double> mat;
-    std::string to_s();
 };
 
 class KNumber : public KObject {
@@ -79,6 +56,26 @@ public:
     std::string to_s();
 private:
 	double value;
+};
+
+class KVector : public KObject {
+public:
+	KVector() { type = VECTOR; }
+
+	KVector* op_mul(KNumber* right);
+	KFloat* op_mul(KVector* right);
+	KObject* op_mul(KObject* right);
+
+    dvector vect;
+    std::string to_s();
+};
+
+class KMatrix : public KObject {
+public:
+	KMatrix() { type = MATRIX; }
+
+    ublas::matrix<double> mat;
+    std::string to_s();
 };
 
 class KFunction : public KObject {
