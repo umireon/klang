@@ -79,7 +79,7 @@ public:
 class AstMultiplication : public AstParentNode {
 public:
     AstMultiplication() { type = AST_MULTIPLICATION; }
-	KNumber* evaluate(Binding* b);
+	KObject* evaluate(Binding* b);
 };
 
 class AstDivision : public AstParentNode {

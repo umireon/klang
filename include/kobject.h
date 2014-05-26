@@ -10,63 +10,78 @@ using namespace boost::numeric;
 typedef boost::numeric::ublas::matrix<double> dmatrix;
 typedef boost::numeric::ublas::vector<double> dvector;
 
+class KFloat;
+class KNumber;
+
 class KObject {
 public:
-	virtual std::string to_string() { return std::string("Object"); }
+	enum Type {
+		INTEGER,
+		FLOAT,
+		VECTOR,
+		MATRIX
+	};
+
+	enum Type type;
+
+	virtual KObject* op_mul(KObject* right) { return new KObject(); }
 	virtual std::string to_s() { return std::string("Object"); }
 };
 
 class KVector : public KObject {
 public:
-    ublas::vector<double> vect;
-	virtual std::string to_string() { return std::string("Vector"); }
+	KVector() { type = VECTOR; }
+
+	KVector* op_mul(KNumber* right);
+	KFloat* op_mul(KVector* right);
+	KObject* op_mul(KObject* right);
+
+    dvector vect;
     std::string to_s();
 };
 
 class KMatrix : public KObject {
 public:
+	KMatrix() { type = MATRIX; }
+
     ublas::matrix<double> mat;
-	virtual std::string to_string() { return std::string("Matrix"); }
     std::string to_s();
 };
 
 class KNumber : public KObject {
 public:
-	enum Type {
-		INTEGER,
-		FLOAT
-	};
-    
-	enum Type type;
-    
 	virtual ~KNumber() {}
-	virtual std::string to_string() { return std::string("Number"); }
 	virtual long to_i() = 0;
 	virtual double to_f() = 0;
 };
 
 class KInteger : public KNumber {
 public:
-	long value;
-    
 	KInteger(long v) { type = INTEGER; value = v; }
+
+	KInteger* op_mul(KInteger* right);
+	KObject* op_mul(KObject* right);
 	long to_i() { return value; }
-	double to_f() { return value; }
-	std::string to_string() { return std::string("Integer"); }
+	double to_f() { return static_cast<double>(value); }
+    std::string to_s();
+private:
+	long value;
 };
 
 class KFloat : public KNumber {
 public:
-	double value;
-    
 	KFloat(double v) { type = FLOAT; value = v; }
-	long to_i() { return value; }
+
+	KFloat* op_mul(KNumber* right);
+	KObject* op_mul(KObject* right);
+	long to_i() { return static_cast<long>(value); }
 	double to_f() { return value; }
-	std::string to_string() { return std::string("Float"); }
+    std::string to_s();
+private:
+	double value;
 };
 
 class KFunction : public KObject {
 public:
 	virtual KObject* invoke(std::vector<KObject*> args) = 0;
-	std::string to_string() { return std::string("Function"); }
 };
