@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src
+END
+config.h.in
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/config.h.in
+END
+history.c
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/history.c
+END
+histedit.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/histedit.h
+END
+libedit_test_dll.c
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/libedit_test_dll.c
+END
+el_globals.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/el_globals.h
+END
+libedit.def
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/libedit.def
+END
+fn_complete.c
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/fn_complete.c
+END
+libedit_test.c
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/p/mingweditline/code/!svn/ver/7/mingweditline/trunk/src/libedit_test.c
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/p/mingweditline/code/!svn/ver/8/mingweditline/trunk/src/CMakeLists.txt
+END
+editline.c
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/p/mingweditline/code/!svn/ver/8/mingweditline/trunk/src/editline.c
+END
