@@ -21,6 +21,7 @@ public:
 
 	enum Type type;
 
+	virtual ~KObject() {}
 	virtual KObject* op_mul(KObject* right) { return new KObject(); }
 	virtual std::string to_s() { return std::string("Object"); }
 };
@@ -37,10 +38,10 @@ public:
 	KInteger(long v) { type = INTEGER; value = v; }
 
 	KInteger* op_mul(KInteger* right);
-	KObject* op_mul(KObject* right);
-	long to_i() { return value; }
-	double to_f() { return static_cast<double>(value); }
-    std::string to_s();
+	virtual KObject* op_mul(KObject* right);
+	virtual long to_i() { return value; }
+	virtual double to_f() { return static_cast<double>(value); }
+    virtual std::string to_s();
 private:
 	long value;
 };
@@ -50,10 +51,10 @@ public:
 	KFloat(double v) { type = FLOAT; value = v; }
 
 	KFloat* op_mul(KNumber* right);
-	KObject* op_mul(KObject* right);
-	long to_i() { return static_cast<long>(value); }
-	double to_f() { return value; }
-    std::string to_s();
+	virtual KObject* op_mul(KObject* right);
+	virtual long to_i() { return static_cast<long>(value); }
+	virtual double to_f() { return value; }
+    virtual std::string to_s();
 private:
 	double value;
 };
@@ -64,10 +65,10 @@ public:
 
 	KVector* op_mul(KNumber* right);
 	KFloat* op_mul(KVector* right);
-	KObject* op_mul(KObject* right);
+	virtual KObject* op_mul(KObject* right);
 
     dvector vect;
-    std::string to_s();
+    virtual std::string to_s();
 };
 
 class KMatrix : public KObject {
@@ -75,7 +76,7 @@ public:
 	KMatrix() { type = MATRIX; }
 
     ublas::matrix<double> mat;
-    std::string to_s();
+    virtual std::string to_s();
 };
 
 class KFunction : public KObject {

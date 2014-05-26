@@ -67,43 +67,43 @@ public:
 class AstAddition : public AstParentNode {
 public:
     AstAddition() { type = AST_ADDITION; }
-	KNumber* evaluate(Binding* b);
+	virtual KNumber* evaluate(Binding* b);
 };
 
 class AstSubtraction : public AstParentNode {
 public:
     AstSubtraction() { type = AST_SUBTRACTION; }
-	KNumber* evaluate(Binding* b);
+	virtual KNumber* evaluate(Binding* b);
 };
 
 class AstMultiplication : public AstParentNode {
 public:
     AstMultiplication() { type = AST_MULTIPLICATION; }
-	KObject* evaluate(Binding* b);
+	virtual KObject* evaluate(Binding* b);
 };
 
 class AstDivision : public AstParentNode {
 public:
     AstDivision() { type = AST_DIVISION; }
-	KNumber* evaluate(Binding* b);
+	virtual KNumber* evaluate(Binding* b);
 };
 
 class AstReminder : public AstParentNode {
 public:
     AstReminder() { type = AST_REMINDER; }
-	KInteger* evaluate(Binding* b);
+	virtual KInteger* evaluate(Binding* b);
 };
 
 class AstPower : public AstParentNode {
 public:
     AstPower() { type = AST_POWER; }
-	KNumber* evaluate(Binding* b);
+	virtual KNumber* evaluate(Binding* b);
 };
 
 class AstParen : public AstParentNode {
 public:
     AstParen() { type = AST_PAREN; }
-	KObject* evaluate(Binding* b);
+	virtual KObject* evaluate(Binding* b);
 };
 
 class AstNumber : public AstNode {
@@ -115,7 +115,7 @@ public:
 class AstInteger : public AstNumber {
 public:
     AstInteger() { type = AST_INTEGER; }
-	KInteger* evaluate(Binding* b);
+	virtual KInteger* evaluate(Binding* b);
 };
 
 class AstHexdecimal : public AstInteger {
@@ -130,25 +130,25 @@ class AstDecimal : public AstInteger {
 class AstFloat : public AstNumber {
 public:
     AstFloat() { type = AST_FLOAT; }
-	KFloat* evaluate(Binding* b);
+	virtual KFloat* evaluate(Binding* b);
 };
 
 class AstIdentifier : public AstNode {
 public:
     AstIdentifier() { type = AST_IDENTIFIER; }
-	KObject* evaluate(Binding* b);
+	virtual KObject* evaluate(Binding* b);
 };
 
 class AstAssignment : public AstParentNode {
 public:
     AstAssignment() { type = AST_ASSIGNMENT; }
-	KObject* evaluate(Binding* b);
+	virtual KObject* evaluate(Binding* b);
 };
 
 class AstInvocation : public AstParentNode {
 public:
     AstInvocation() { type = AST_INVOCATION; }
-    KObject* evaluate(Binding* b);
+    virtual KObject* evaluate(Binding* b);
 };
 
 class AstArgument : public AstParentNode {
