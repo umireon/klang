@@ -3,7 +3,7 @@
 
 #include <boost/numeric/ublas/vector.hpp>
 
-#include "KObject.h"
+#include "kobject.h"
 
 using namespace boost::numeric;
 
