@@ -6,10 +6,50 @@
 #include "ast.h"
 #include "Parse.h"
 
-enum Parse::SymbolType Parse::get_type_of_next_symbol(char c)
+AstNode* Parse::parse(const char *str)
+{
+    str = scan_lexical_symbol(str);
+	return this->parse_statement(str);
+}
+
+AstNode* Parse::parse_statement(const char *str)
+{
+	enum SymbolType type = get_symbol(str[0]);
+    
+	switch (type) {
+        case SYMBOL_NUMBER_ZERO:
+        case SYMBOL_NUMBER_OCT:
+        case SYMBOL_NUMBER_DEC:
+        case SYMBOL_SIGN_MINUS:
+        case SYMBOL_SIGN_PLUS:
+        case SYMBOL_PAREN_LEFT:
+        case SYMBOL_ALPHABET_HEXUPPER:
+        case SYMBOL_ALPHABET_HEXLOWER:
+        case SYMBOL_ALPHABET_X:
+        case SYMBOL_ALPHABET:
+            ParseExpression p;
+            return p.parse_expression(str);
+        default:
+            return NULL;
+	}
+}
+
+const char* Parse::scan_lexical_symbol(const char* str)
+{
+	enum SymbolType type;
+    
+	do {
+		type = get_symbol(str[0]);
+		str++;
+	} while (type == SYMBOL_WHITESPACE);
+    
+	return str - 1;
+}
+
+enum Parse::SymbolType Parse::get_symbol(char c)
 {
 	char dc = c | 0x20;
-
+    
 	if (c == '0') {
 		return SYMBOL_NUMBER_ZERO;
 	} else if ('1' <= c && c <= '7') {
@@ -48,64 +88,4 @@ enum Parse::SymbolType Parse::get_type_of_next_symbol(char c)
 		printf("Unknown Symbol: %d\n", c);
 		return SYMBOL_UNKNOWN;
 	}
-}
-
-AstNode* Parse::parse_identifier(const char *str)
-{
-	ParseIdentifier p;
-	return p.parse_identifier(str);
-}
-
-AstNode* Parse::parse_paren(const char *str)
-{
-	ParseParen p;
-	return p.parse_paren(str);
-}
-
-AstNode* Parse::parse_number(const char *str)
-{
-	ParseNumber p;
-	return p.parse_number(str);
-}
-
-AstNode* Parse::parse_primary(const char *str)
-{
-	ParsePrimary p;
-	return p.parse_primary(str);
-}
-
-AstNode* Parse::parse_term(const char *str)
-{
-	ParseTerm pt;
-	return pt.parse_term(str);
-}
-
-AstNode* Parse::parse_expression(const char *str)
-{
-	ParseExpression p;
-	return p.parse_expression(str);
-}
-
-AstNode* Parse::parse_statement(const char *str)
-{
-	enum SymbolType type = this->get_type_of_next_symbol(str[0]);
-
-	switch (type) {
-	case SYMBOL_NUMBER_ZERO:
-	case SYMBOL_NUMBER_OCT:
-	case SYMBOL_NUMBER_DEC:
-	case SYMBOL_SIGN_MINUS:
-	case SYMBOL_SIGN_PLUS:
-	case SYMBOL_PAREN_LEFT:
-	case SYMBOL_ALPHABET_HEXUPPER:
-	case SYMBOL_ALPHABET_HEXLOWER:
-	case SYMBOL_ALPHABET_X:
-	case SYMBOL_ALPHABET:
-		return this->parse_expression(str);
-	}
-}
-
-AstNode* Parse::parse(const char *str)
-{
-	return this->parse_statement(str);
 }
