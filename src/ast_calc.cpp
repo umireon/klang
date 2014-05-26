@@ -14,6 +14,10 @@ class FuncLog : public KFunction {
 	Object* invoke(std::vector<Object*> args) {
 		Number *num = dynamic_cast<Number*>(args.at(0));
         
+        if (args.size() != 1) {
+			throw std::invalid_argument("Arity: 1");
+        }
+
 		if (!num) {
 			throw std::invalid_argument("Argument1 is not a number.");
 		}
@@ -25,7 +29,11 @@ class FuncLog : public KFunction {
 class FuncLog10 : public KFunction {
 	Object* invoke(std::vector<Object*> args) {
 		Number *num = dynamic_cast<Number*>(args.at(0));
-
+        
+        if (args.size() != 1) {
+			throw std::invalid_argument("Arity: 1");
+        }
+        
 		if (!num) {
 			throw std::invalid_argument("Argument1 is not a number.");
 		}
@@ -52,28 +60,35 @@ int main(int argc, const char **argv)
         line = readline("> ");
         add_history(line);
 
-        AstNode *ast = p.parse(line);
+        try {
+            AstNode *ast = p.parse(line);
+            
+            if (ast == NULL) {
+                continue;
+            }
 
-        if (ast == NULL) {
+            Object* res = ast->evaluate(&b);
+            
+            if (Integer* i = dynamic_cast<Integer*>(res)) {
+                cout << "Integer: " << i->to_i() << endl;
+            }
+            
+            if (Float* f = dynamic_cast<Float*>(res)) {
+                cout << "Float: " << f->to_f() << endl;
+            }
+            
+            if (KFunction* func = dynamic_cast<KFunction*>(res)) {
+                std::vector<Object*> args;
+                func->invoke(args);
+                cout << "Function" << endl;
+            }
+            
+            if (res == NULL) {
+                cout << "NULL" << endl;
+            }
+        } catch (std::exception& e) {
+            std::cerr << e.what();
             continue;
-        }
-
-        Object* res = ast->evaluate(&b);
-
-        if (Integer* i = dynamic_cast<Integer*>(res)) {
-	        cout << "Integer: " << i->to_i() << endl;
-        }
-
-        if (Float* f = dynamic_cast<Float*>(res)) {
-	        cout << "Float: " << f->to_f() << endl;
-        }
-        
-        if (dynamic_cast<KFunction*>(res)) {
-	        cout << "Function" << endl;
-        }
-        
-        if (res == NULL) {
-	        cout << "NULL" << endl;
         }
     }
 }
