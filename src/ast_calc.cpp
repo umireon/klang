@@ -11,39 +11,39 @@
 using namespace std;
 
 class FuncLog : public KFunction {
-	Object* invoke(std::vector<Object*> args) {
-		Number *num = dynamic_cast<Number*>(args.at(0));
+	KObject* invoke(std::vector<KObject*> args) {
+		KNumber *num = dynamic_cast<KNumber*>(args.at(0));
         
         if (args.size() != 1) {
 			throw std::invalid_argument("Arity: 1");
         }
 
 		if (!num) {
-			throw std::invalid_argument("Argument1 is not a number.");
+			throw std::invalid_argument("Argument1 is not a KNumber.");
 		}
 
-		return new Float(log(num->to_f()));
+		return new KFloat(log(num->to_f()));
 	}
 };
 
 class FuncLog10 : public KFunction {
-	Object* invoke(std::vector<Object*> args) {
-		Number *num = dynamic_cast<Number*>(args.at(0));
+	KObject* invoke(std::vector<KObject*> args) {
+		KNumber *num = dynamic_cast<KNumber*>(args.at(0));
         
         if (args.size() != 1) {
 			throw std::invalid_argument("Arity: 1");
         }
         
 		if (!num) {
-			throw std::invalid_argument("Argument1 is not a number.");
+			throw std::invalid_argument("Argument1 is not a KNumber.");
 		}
 
-		return new Float(log10(num->to_f()));
+		return new KFloat(log10(num->to_f()));
 	}
 };
 
 class FuncExit : public KFunction {
-	Object* invoke(std::vector<Object*> args) {
+	KObject* invoke(std::vector<KObject*> args) {
 		exit(0);
 	}
 };
@@ -72,18 +72,18 @@ int main(int argc, const char **argv)
                 continue;
             }
 
-            Object* res = ast->evaluate(&b);
+            KObject* res = ast->evaluate(&b);
             
-            if (Integer* i = dynamic_cast<Integer*>(res)) {
+            if (KInteger* i = dynamic_cast<KInteger*>(res)) {
                 cout << "Integer: " << i->to_i() << endl;
             }
             
-            if (Float* f = dynamic_cast<Float*>(res)) {
-                cout << "Float: " << f->to_f() << endl;
+            if (KFloat* f = dynamic_cast<KFloat*>(res)) {
+                cout << "KFloat: " << f->to_f() << endl;
             }
             
             if (KFunction* func = dynamic_cast<KFunction*>(res)) {
-                std::vector<Object*> args;
+                std::vector<KObject*> args;
                 func->invoke(args);
                 cout << "Function" << endl;
             }

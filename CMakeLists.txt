@@ -6,8 +6,12 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
+find_package(Boost)
+include_directories(${Boost_INCLUDE_DIR})
+
 file(GLOB PARSER_SRC "${CMAKE_SOURCE_DIR}/src/parser/*")
 add_library(parser ${PARSER_SRC})
+target_link_libraries(parser ${Boost_LIBRARIES})
 include_directories("${CMAKE_SOURCE_DIR}/src")
 
 add_executable(print_ast src/print_ast.cpp)
