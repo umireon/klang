@@ -4,11 +4,34 @@
 #include <stdexcept>
 #include <stdlib.h>
 #include <editline/readline.h>
+#include <boost/numeric/ublas/vector.hpp>
 
 #include "parser/ast.h"
 #include "parser/Parse.h"
 
 using namespace std;
+using namespace boost::numeric;
+
+class FuncC : public KFunction {
+	KVector* invoke(std::vector<KObject*> args) {
+        std::vector<KObject*>::iterator iter = args.begin();
+        KVector *kv = new KVector();
+        ublas::vector<double> &vect = kv->vect;
+        ublas::vector<double>::iterator viter = vect.begin();
+        
+        vect.resize(args.size());
+
+        for (int i = 0; i < args.size(); i++) {
+            KNumber *knum = dynamic_cast<KNumber*>(args[i]);
+            if (knum == NULL) {
+                throw std::invalid_argument(std::string("not a number"));
+            }
+            vect[i] = knum->to_f();
+        }
+
+		return kv;
+	}
+};
 
 class FuncLog : public KFunction {
 	KObject* invoke(std::vector<KObject*> args) {
@@ -53,12 +76,14 @@ int main(int argc, const char **argv)
     FuncLog kLog;
     FuncLog10 kLog10;
     FuncExit kExit;
+    FuncC kC;
 
     Binding b;
     char *line;
     b.set_local(std::string("log"), &kLog);
     b.set_local(std::string("log10"), &kLog10);
     b.set_local(std::string("exit"), &kExit);
+    b.set_local(std::string("c"), &kC);
 
     while (true) {
         Parse p;
@@ -90,6 +115,8 @@ int main(int argc, const char **argv)
             
             if (res == NULL) {
                 cout << "NULL" << endl;
+            } else {
+                cout << res->to_s() << endl;
             }
         } catch (std::exception& e) {
             std::cerr << e.what();

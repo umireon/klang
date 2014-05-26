@@ -1,3 +1,5 @@
+#include <map>
+
 #include <boost/numeric/ublas/vector.hpp>
 
 using namespace boost::numeric;
@@ -5,12 +7,14 @@ using namespace boost::numeric;
 class KObject {
 public:
 	virtual std::string to_string() { return std::string("Object"); }
+	virtual std::string to_s() { return std::string("Object"); }
 };
 
 class KVector : public KObject {
 public:
     ublas::vector<double> vect;
 	virtual std::string to_string() { return std::string("Vector"); }
+    std::string to_s();
 };
 
 class KNumber : public KObject {
