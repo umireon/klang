@@ -8,33 +8,33 @@ AstIdentifier* ParseIdentifier::parse_identifier(const char *str)
 {
 	AstIdentifier *ident = new AstIdentifier();
 	ident->strhead = str;
-
+    
 	enum SymbolType type = get_symbol(str[0]);
-
+    
 	switch (type) {
-	case SYMBOL_ALPHABET_LOWER:
-	case SYMBOL_ALPHABET_UPPER:
-		str++;
-		break;
-	case SYMBOL_NUMBER:
-	case SYMBOL_FOLLOW:
-        std::ostringstream os;
-        os << "Unexpected character: " << str[0] << std::endl;
-        throw std::invalid_argument(os.str());
+        case SYMBOL_ALPHABET_LOWER:
+        case SYMBOL_ALPHABET_UPPER:
+            str++;
+            break;
+        case SYMBOL_NUMBER:
+        case SYMBOL_FOLLOW:
+            std::ostringstream os;
+            os << "Unexpected character: " << str[0] << std::endl;
+            throw std::invalid_argument(os.str());
 	}
-
+    
 	while (1) {
 		type = get_symbol(str[0]);
-
+        
 		switch (type) {
-		case SYMBOL_ALPHABET_LOWER:
-		case SYMBOL_ALPHABET_UPPER:
-		case SYMBOL_NUMBER:
-			str++;
-			break;
-		case SYMBOL_FOLLOW:
-			ident->strtail = str;
-			return ident;
+            case SYMBOL_ALPHABET_LOWER:
+            case SYMBOL_ALPHABET_UPPER:
+            case SYMBOL_NUMBER:
+                str++;
+                break;
+            case SYMBOL_FOLLOW:
+                ident->strtail = str;
+                return ident;
 		}
 	}
 }

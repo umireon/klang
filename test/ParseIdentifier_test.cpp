@@ -23,7 +23,7 @@ TEST(ParseIdentifier, CanRead4LetterIdentifier)
     ident = p.parse_identifier("abcd");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);
     CHECK_EQUAL(4, ident->strtail - ident->strhead);
-
+    
     delete ident;
 }
 
@@ -34,6 +34,6 @@ TEST(ParseIdentifier, CanRead4AlnumIdentifier)
     ident = p.parse_identifier("a2xd");
     CHECK_EQUAL(AST_IDENTIFIER, ident->type);
     CHECK_EQUAL(4, ident->strtail - ident->strhead);
-
+    
     delete ident;
 }

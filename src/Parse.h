@@ -29,10 +29,10 @@ protected:
 		SYMBOL_OP_PERCENT,
 		SYMBOL_WHITESPACE,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
 	const char* scan_lexical_symbol(const char* str);
-
+    
 	AstNode* parse_statement(const char *str);
 };
 
@@ -50,15 +50,15 @@ protected:
 		SYMBOL_DOT,
 		SYMBOL_FOLLOW,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
-
+    
 	AstNumber* read_number_signed(const char *str);
-
+    
 	AstNumber* read_number_hex_or_oct_or_float(const char *str);
 	AstHexdecimal* read_number_hex(const char *str);
 	AstOctal* read_number_oct(const char *str);
-
+    
 	AstNumber* read_number_dec_or_float(const char *str);
 	AstDecimal* read_number_dec(const char *str);
 	AstFloat* read_number_float(const char *str);
@@ -75,10 +75,10 @@ protected:
 		SYMBOL_FOLLOW,
 		SYMBOL_WHITESPACE,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
 	const char* scan_lexical_symbol(const char* str);
-
+    
 	AstParentNode* parse_power_or_multiplication(const char *str);
 	AstParentNode* chain_power(AstNode* root, const char *str);
 	AstMultiplication* chain_multiplication(AstNode* root, const char *str);
@@ -102,10 +102,10 @@ protected:
 		SYMBOL_FOLLOW,
 		SYMBOL_WHITESPACE,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
 	const char* scan_lexical_symbol(const char* str);
-
+    
 	AstParentNode* chain_assignment(AstNode* root, const char *str);
 };
 
@@ -119,10 +119,10 @@ protected:
 		SYMBOL_FOLLOW,
 		SYMBOL_WHITESPACE,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
 	const char* scan_lexical_symbol(const char* str);
-
+    
 	AstAddition* chain_addition(AstNode* root, const char *str);
 	AstSubtraction* chain_subtraction(AstNode* root, const char* str);
 };
@@ -137,7 +137,7 @@ protected:
 		SYMBOL_ALPHABET_LOWER,
 		SYMBOL_FOLLOW,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
 };
 
@@ -151,7 +151,7 @@ protected:
 		SYMBOL_FOLLOW,
 		SYMBOL_WHITESPACE,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
 	const char* scan_lexical_symbol(const char* str);
 };
@@ -169,10 +169,10 @@ protected:
 		SYMBOL_FOLLOW,
 		SYMBOL_WHITESPACE,
 	};
-
+    
 	enum SymbolType get_symbol(char c);
 	const char* scan_lexical_symbol(const char* str);
-
+    
 	AstNode* parse_identifier_or_invocation(const char *str);
 	AstParentNode* inject_invocation(AstNode* node, const char *str);
 	AstArgument* parse_argument(const char *str);

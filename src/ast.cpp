@@ -38,7 +38,7 @@ Number* AstAddition::evaluate(Binding* b)
     double valuef = 0;
     bool isfloat = false;
     std::vector<AstNode*>::iterator iter = children.begin();
-
+    
     while (iter != children.end()) {
         Object *obj = (*iter)->evaluate(b);
         Number *num = static_cast<Number*>(obj);
@@ -47,7 +47,7 @@ Number* AstAddition::evaluate(Binding* b)
         isfloat = isfloat || (num->type == Number::FLOAT);
         iter++;
     }
-
+    
     if (isfloat) {
         return new Float(valuef);
     } else {
@@ -61,11 +61,11 @@ Number* AstSubtraction::evaluate(Binding* b)
     Object *obj = (*iter)->evaluate(b);
     Number *num = static_cast<Number*>(obj);
     iter++;
-
+    
     long valuei = num->to_i();
     double valuef = num->to_f();
     bool isfloat = num->type == Number::FLOAT;
-
+    
     while (iter != children.end()) {
         obj = (*iter)->evaluate(b);
         num = static_cast<Number*>(obj);
@@ -74,7 +74,7 @@ Number* AstSubtraction::evaluate(Binding* b)
         isfloat = isfloat || (num->type == Number::FLOAT);
         iter++;
     }
-
+    
     if (isfloat) {
         return new Float(valuef);
     } else {
@@ -88,11 +88,11 @@ Number* AstMultiplication::evaluate(Binding* b)
     Object *obj = (*iter)->evaluate(b);
     Number *num = static_cast<Number*>(obj);
     iter++;
-
+    
     long valuei = num->to_i();
     double valuef = num->to_f();
     bool isfloat = num->type == Number::FLOAT;
-
+    
     while (iter != children.end()) {
         obj = (*iter)->evaluate(b);
         num = static_cast<Number*>(obj);
@@ -101,7 +101,7 @@ Number* AstMultiplication::evaluate(Binding* b)
         isfloat = isfloat || (num->type == Number::FLOAT);
         iter++;
     }
-
+    
     if (isfloat) {
         return new Float(valuef);
     } else {
@@ -115,11 +115,11 @@ Number* AstDivision::evaluate(Binding* b)
     Object *obj = (*iter)->evaluate(b);
     Number *num = static_cast<Number*>(obj);
     iter++;
-
+    
     long valuei = num->to_i();
     double valuef = num->to_f();
     bool isfloat = num->type == Number::FLOAT;
-
+    
     while (iter != children.end()) {
         obj = (*iter)->evaluate(b);
         num = static_cast<Number*>(obj);
@@ -130,7 +130,7 @@ Number* AstDivision::evaluate(Binding* b)
         isfloat = isfloat || (num->type == Number::FLOAT);
         iter++;
     }
-
+    
     if (isfloat) {
         return new Float(valuef);
     } else {
@@ -144,16 +144,16 @@ Integer* AstReminder::evaluate(Binding* b)
     Object *obj = (*iter)->evaluate(b);
     Number *num = static_cast<Number*>(obj);
     iter++;
-
+    
     long value = num->to_i();
-
+    
     while (iter != children.end()) {
         obj = (*iter)->evaluate(b);
         num = static_cast<Number*>(obj);
         value %= num->to_i();
         iter++;
     }
-
+    
     return new Integer(value);
 }
 
@@ -161,7 +161,7 @@ Number* AstPower::evaluate(Binding* b)
 {
     Number *baseNum = static_cast<Number*>(children.at(0)->evaluate(b));
     Number *eNum = static_cast<Number*>(children.at(1)->evaluate(b));
-
+    
     if (baseNum->type == Number::FLOAT || eNum->type == Number::FLOAT) {
         return new Float(pow(baseNum->to_f(), eNum->to_i()));
     } else {
@@ -208,9 +208,9 @@ Object* AstInvocation::evaluate(Binding* b)
 {
     AstIdentifier *ident = static_cast<AstIdentifier*>(children.at(0));
     AstArgument *astArgs = static_cast<AstArgument*>(children.at(1));
-
+    
     std::string name = ident->get_string();
-
+    
     std::vector<Object*> args;
     std::vector<AstNode*> &astChildren = astArgs->children;
     std::vector<AstNode*>::iterator iter = astChildren.begin();
@@ -218,7 +218,7 @@ Object* AstInvocation::evaluate(Binding* b)
         args.push_back((*iter)->evaluate(b));
         iter++;
     }
-
+    
     KFunction *func = b->get_function(name);
     return func->invoke(args);
 }

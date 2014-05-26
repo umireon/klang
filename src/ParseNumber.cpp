@@ -158,22 +158,22 @@ enum ParseNumber::SymbolType ParseNumber::get_symbol(char c)
 	} else if ('a' <= c && c <= 'f') {
 		return SYMBOL_ALPHABET_HEX;
     }
-
+    
     switch (c) {
-    case '0':
-        return SYMBOL_NUMBER_ZERO;
-    case '8':
-    case '9':
-        return SYMBOL_NUMBER_DEC;
-    case 'x':
-    case 'X':
-        return SYMBOL_ALPHABET_X;
-    case '.':
-        return SYMBOL_DOT;
-    case '+':
-    case '-':
-        return SYMBOL_SIGN;
-    default:
-        return SYMBOL_FOLLOW;
+        case '0':
+            return SYMBOL_NUMBER_ZERO;
+        case '8':
+        case '9':
+            return SYMBOL_NUMBER_DEC;
+        case 'x':
+        case 'X':
+            return SYMBOL_ALPHABET_X;
+        case '.':
+            return SYMBOL_DOT;
+        case '+':
+        case '-':
+            return SYMBOL_SIGN;
+        default:
+            return SYMBOL_FOLLOW;
     }
 }
