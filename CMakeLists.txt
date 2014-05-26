@@ -15,7 +15,14 @@ target_link_libraries(print_ast parser)
 
 add_executable(ast_calc src/ast_calc.cpp)
 target_link_libraries(ast_calc parser)
+
+if (MSVC)
+add_subdirectory(vendors/wineditline)
+target_link_libraries(ast_calc edit_static)
+include_directories(${WinEditLine_SOURCE_DIR}/include)
+else ()
 target_link_libraries(ast_calc edit)
+endif ()
 
 add_executable(ast_compile src/ast_compile.cpp)
 target_link_libraries(ast_compile parser)
