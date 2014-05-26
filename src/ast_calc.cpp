@@ -50,11 +50,16 @@ class FuncExit : public KFunction {
 
 int main(int argc, const char **argv)
 {
+    FuncLog kLog;
+    FuncLog10 kLog10;
+    FuncExit kExit;
+
     Binding b;
     char *line;
-    b.set_local(std::string("log"), new FuncLog());
-    b.set_local(std::string("log10"), new FuncLog10());
-    b.set_local(std::string("exit"), new FuncExit());
+    b.set_local(std::string("log"), &kLog);
+    b.set_local(std::string("log10"), &kLog10);
+    b.set_local(std::string("exit"), &kExit);
+
     while (true) {
         Parse p;
         line = readline("> ");
