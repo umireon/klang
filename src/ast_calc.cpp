@@ -3,13 +3,14 @@
 #include <math.h>
 #include <stdexcept>
 #include <stdlib.h>
+#include <editline/readline.h>
 
 #include "ast.h"
 #include "Parse.h"
 
 using namespace std;
 
-class FuncLog : public Function {
+class FuncLog : public KFunction {
 	Object* invoke(std::vector<Object*> args) {
 		Number *num = dynamic_cast<Number*>(args.at(0));
 
@@ -21,7 +22,7 @@ class FuncLog : public Function {
 	}
 };
 
-class FuncLog10 : public Function {
+class FuncLog10 : public KFunction {
 	Object* invoke(std::vector<Object*> args) {
 		Number *num = dynamic_cast<Number*>(args.at(0));
 
@@ -33,7 +34,7 @@ class FuncLog10 : public Function {
 	}
 };
 
-class FuncExit : public Function {
+class FuncExit : public KFunction {
 	Object* invoke(std::vector<Object*> args) {
 		exit(0);
 	}
@@ -42,15 +43,16 @@ class FuncExit : public Function {
 int main(int argc, const char **argv)
 {
     Binding b;
-    char line_buf[1024];
+    char *line;
     b.set_local(std::string("log"), new FuncLog());
     b.set_local(std::string("log10"), new FuncLog10());
     b.set_local(std::string("exit"), new FuncExit());
     while (true) {
         Parse p;
-        cout << "> ";
-        cin.getline(line_buf, sizeof(line_buf));
-        AstNode *ast = p.parse(line_buf);
+        line = readline("> ");
+        add_history(line);
+
+        AstNode *ast = p.parse(line);
 
         Object* res = ast->evaluate(&b);
 
@@ -62,7 +64,7 @@ int main(int argc, const char **argv)
 	        cout << "Float: " << f->to_f() << endl;
         }
         
-        if (Function* func = dynamic_cast<Function*>(res)) {
+        if (KFunction* func = dynamic_cast<KFunction*>(res)) {
 	        cout << "Function" << endl;
         }
         
