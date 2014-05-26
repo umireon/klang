@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include "ast.h"
-#include "Parse.h"
+#include "parser.h"
 
 AstNode* Parse::parse(const char *str)
 {

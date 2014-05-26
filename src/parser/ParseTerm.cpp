@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "ast.h"
-#include "Parse.h"
+#include "parser.h"
 
 AstNode* ParseTerm::parse_term(const char *str)
 {

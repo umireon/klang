@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include "ast.h"
-#include "Parse.h"
+#include "parser.h"
 
 AstIdentifier* ParseIdentifier::parse_identifier(const char *str)
 {
