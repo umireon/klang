@@ -6,8 +6,7 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
-
-set(PARSER_SRC src/Parse.cpp src/ast.cpp src/ParseNumber.cpp src/ParseTerm.cpp src/ParseExpression.cpp src/ParseIdentifier.cpp src/ParseParen.cpp src/ParsePrimary.cpp src/ParseArithExpression.cpp src/ParseAssignment.cpp)
+file(GLOB PARSER_SRC src/*)
 add_library(parser ${PARSER_SRC})
 
 add_executable(print_ast src/print_ast.cpp)
@@ -38,7 +37,7 @@ if (UNIT_TEST)
     enable_testing()
 
     set(TESTS OFF CACHE BOOL "CppUTest test")
-    add_subdirectory(lib/cpputest)
+    add_subdirectory(vendors/cpputest)
     include_directories(${CppUTest_SOURCE_DIR}/include)
 
     file(GLOB TestSourceFiles test/*.cpp)
@@ -54,7 +53,7 @@ endif()
 if (INTEGRATION_TEST)
     enable_testing()
 
-    add_subdirectory(lib/igloo EXCLUDE_FROM_ALL)
+    add_subdirectory(vendors/igloo EXCLUDE_FROM_ALL)
     include_directories(${igloo_SOURCE_DIR})
 
     file(GLOB SpecSourceFiles spec/*.cpp)
