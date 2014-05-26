@@ -2,7 +2,7 @@
 #include <cfloat>
 #include <limits.h>
 
-#include "../src/Parse.h"
+#include "parser/Parse.h"
 
 TEST_GROUP(ParseNumber)
 {

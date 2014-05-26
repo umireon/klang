@@ -2,8 +2,8 @@
 #include <string>
 #include <typeinfo>
 
-#include "ast.h"
-#include "Parse.h"
+#include "parser/ast.h"
+#include "parser/Parse.h"
 
 using namespace std;
 

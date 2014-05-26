@@ -6,8 +6,9 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
-file(GLOB PARSER_SRC src/*)
+file(GLOB PARSER_SRC "${CMAKE_SOURCE_DIR}/src/parser/*")
 add_library(parser ${PARSER_SRC})
+include_directories("${CMAKE_SOURCE_DIR}/src")
 
 add_executable(print_ast src/print_ast.cpp)
 target_link_libraries(print_ast parser)
