@@ -14,10 +14,10 @@ void Binding::set_local(std::string name, Object* value)
     locals[name] = value;
 }
 
-Function* Binding::get_function(std::string name)
+KFunction* Binding::get_function(std::string name)
 {
     Object* func = get_local(name);
-    return static_cast<Function*>(func);
+    return static_cast<KFunction*>(func);
 }
 
 std::string AstNode::get_string() {
@@ -219,6 +219,6 @@ Object* AstInvocation::evaluate(Binding* b)
         iter++;
     }
 
-    Function *func = b->get_function(name);
+    KFunction *func = b->get_function(name);
     return func->invoke(args);
 }

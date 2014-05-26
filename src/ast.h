@@ -69,7 +69,7 @@ public:
 	std::string to_string() { return std::string("Float"); }
 };
 
-class Function : public Object {
+class KFunction : public Object {
 public:
 	virtual Object* invoke(std::vector<Object*> args) = 0;
 	std::string to_string() { return std::string("Function"); }
@@ -84,7 +84,7 @@ public:
 	Object* get_local(std::string name);
 	void set_local(std::string name, Object* value);
 
-	Function* get_function(std::string name);
+	KFunction* get_function(std::string name);
 };
 
 class AstNode : public Object
