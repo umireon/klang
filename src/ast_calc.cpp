@@ -13,7 +13,7 @@ using namespace std;
 class FuncLog : public KFunction {
 	Object* invoke(std::vector<Object*> args) {
 		Number *num = dynamic_cast<Number*>(args.at(0));
-
+        
 		if (!num) {
 			throw std::invalid_argument("Argument1 is not a number.");
 		}

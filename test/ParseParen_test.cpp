@@ -49,7 +49,7 @@ TEST(ParseParen, NestedParen)
     
     AstParen *paren0 = dynamic_cast<AstParen*>(paren->children.at(0));
     CHECK(paren0);
-
+    
     CHECK_EQUAL(string("1"), paren0->children.at(0)->get_string());
     delete paren;
 }

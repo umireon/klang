@@ -22,7 +22,7 @@ TEST(ParseNumber, Number)
     ParseNumber p;
     AstNumber *num = p.parse_number("2");
     CHECK(dynamic_cast<AstNumber*>(num));
-
+    
     delete num;
 }
 
@@ -32,7 +32,7 @@ TEST(ParseNumber, NoChildren)
     AstNumber *num;
     num = p.parse_number("2");
     CHECK_EQUAL(0, num->size());
-
+    
     delete num;
 }
 
@@ -56,7 +56,7 @@ TEST(ParseNumber, Zero)
     Number* val = num->evaluate(b);
     CHECK_EQUAL(0, val->to_i());
     DOUBLES_EQUAL(0, val->to_f(), DBL_EPSILON);
-
+    
     delete num;
     delete val;
 }
@@ -69,7 +69,7 @@ TEST(ParseNumber, PlainOctal)
     Number* val = num->evaluate(b);
     CHECK_EQUAL(63, val->to_i());
     DOUBLES_EQUAL(63, val->to_f(), DBL_EPSILON);
-
+    
     delete num;
     delete val;
 }
@@ -82,7 +82,7 @@ TEST(ParseNumber, PlainHexdecimal)
     Number* val = num->evaluate(b);
     CHECK_EQUAL(4, val->to_i());
     DOUBLES_EQUAL(4, val->to_f(), DBL_EPSILON);
-
+    
     delete num;
     delete val;
 }
@@ -95,7 +95,7 @@ TEST(ParseNumber, ZeroFloat)
     Number* val = num->evaluate(b);
     CHECK_EQUAL(0, val->to_i());
     DOUBLES_EQUAL(0.4, val->to_f(), DBL_EPSILON);
-
+    
     delete num;
     delete val;
 }
@@ -108,7 +108,7 @@ TEST(ParseNumber, PlainFloat)
     Number* val = num->evaluate(b);
     CHECK_EQUAL(1, val->to_i());
     DOUBLES_EQUAL(1.4, val->to_f(), DBL_EPSILON);
-
+    
     delete num;
     delete val;
 }
@@ -173,7 +173,7 @@ TEST(ParseNumber, PositiveFloat)
     Number* val = num->evaluate(b);
     CHECK_EQUAL(1, val->to_i());
     DOUBLES_EQUAL(1.4, val->to_f(), DBL_EPSILON);
-
+    
     delete num;
     delete val;
 }
@@ -238,7 +238,7 @@ TEST(ParseNumber, NegativeFloat)
     Number* val = num->evaluate(b);
     CHECK_EQUAL(-1, val->to_i());
     DOUBLES_EQUAL(-1.4, val->to_f(), DBL_EPSILON);
-
+    
     delete num;
     delete val;
 }

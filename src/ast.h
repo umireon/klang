@@ -40,9 +40,9 @@ public:
 		INTEGER,
 		FLOAT
 	};
-
+    
 	enum Type type;
-
+    
 	virtual ~Number() {}
 	virtual std::string to_string() { return std::string("Number"); }
 	virtual long to_i() = 0;
@@ -52,7 +52,7 @@ public:
 class Integer : public Number {
 public:
 	long value;
-
+    
 	Integer(long v) { type = INTEGER; value = v; }
 	long to_i() { return value; }
 	double to_f() { return value; }
@@ -62,7 +62,7 @@ public:
 class Float : public Number {
 public:
 	double value;
-
+    
 	Float(double v) { type = FLOAT; value = v; }
 	long to_i() { return value; }
 	double to_f() { return value; }
@@ -80,10 +80,10 @@ class Binding
 public:
 	std::map<std::string, long> variableTable;
 	std::map<std::string, Object*> locals;
-
+    
 	Object* get_local(std::string name);
 	void set_local(std::string name, Object* value);
-
+    
 	KFunction* get_function(std::string name);
 };
 
@@ -93,7 +93,7 @@ public:
 	enum node_type type;
 	const char *strhead;
 	const char *strtail;
-
+    
     virtual ~AstNode() {}
     virtual int size() { return 0; }
 	virtual std::string get_string();

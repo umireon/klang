@@ -11,10 +11,10 @@ void print_ast(AstNode *node, int depth)
 {
     string indent = string(depth * 4, ' ');
     string str = node->get_string();
-
+    
     cout << indent << "- type: " << typeid(*node).name() << endl;
     cout << indent << "  str: " << str << endl;
-
+    
     int size = node->size();
     if (size > 0) {
         AstParentNode *root = static_cast<AstParentNode*>(node);
@@ -38,12 +38,12 @@ int main(int argc, const char **argv)
         cout << "Usage: " << argv[0] << " <expression>" << endl;
         return 1;
     }
-
+    
     Parse p;
     AstNode *ast = p.parse(argv[1]);
-
+    
     print_ast(ast, 0);
-
+    
     return 0;
 }
 
