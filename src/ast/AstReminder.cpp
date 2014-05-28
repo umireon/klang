@@ -2,21 +2,15 @@
 
 #include "ast.h"
 
-KInteger* AstReminder::evaluate(Binding* b)
+KObject* AstReminder::evaluate(Binding* b)
 {
-    std::vector<AstNode*>::iterator iter = children.begin();
-    KObject *obj = (*iter)->evaluate(b);
-    KNumber *num = static_cast<KNumber*>(obj);
-    iter++;
-    
-    long value = num->to_i();
-    
-    while (iter != children.end()) {
-        obj = (*iter)->evaluate(b);
-        num = static_cast<KNumber*>(obj);
-        value %= num->to_i();
-        iter++;
-    }
-    
-    return new KInteger(value);
+    KObject *lhs = children[0]->evaluate(b);
+    KObject *rhs = children[1]->evaluate(b);
+
+    KObject *retval = lhs->op_rem(rhs);
+
+    delete lhs;
+    delete rhs;
+
+    return retval;
 }

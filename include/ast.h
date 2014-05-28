@@ -67,13 +67,13 @@ public:
 class AstAddition : public AstParentNode {
 public:
     AstAddition() { type = AST_ADDITION; }
-	KNumber* evaluate(Binding* b);
+	KObject* evaluate(Binding* b);
 };
 
 class AstSubtraction : public AstParentNode {
 public:
     AstSubtraction() { type = AST_SUBTRACTION; }
-	KNumber* evaluate(Binding* b);
+	KObject* evaluate(Binding* b);
 };
 
 class AstMultiplication : public AstParentNode {
@@ -85,13 +85,13 @@ public:
 class AstDivision : public AstParentNode {
 public:
     AstDivision() { type = AST_DIVISION; }
-	KNumber* evaluate(Binding* b);
+	KObject* evaluate(Binding* b);
 };
 
 class AstReminder : public AstParentNode {
 public:
     AstReminder() { type = AST_REMINDER; }
-	KInteger* evaluate(Binding* b);
+	KObject* evaluate(Binding* b);
 };
 
 class AstPower : public AstParentNode {

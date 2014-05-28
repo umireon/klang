@@ -11,5 +11,8 @@ KObject* AstMultiplication::evaluate(Binding* b)
 
     KObject *retval = lhs->op_mul(rhs);
 
+    delete lhs;
+    delete rhs;
+
     return retval;
 }
