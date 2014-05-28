@@ -7,61 +7,61 @@
 
 using std::string;
 
-TEST_GROUP(AstAddition)
+TEST_GROUP(AstDivision)
 {
 };
 
-TEST(AstAddition, IntInt)
+TEST(AstDivision, IntInt)
 {
 	Binding b;
     Parse p;
-    AstNode *expr = p.parse("2+3");
+    AstNode *expr = p.parse("7/2");
 
     KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
-    CHECK_EQUAL(res->to_i(), 5);
+    CHECK_EQUAL(res->to_i(), 3);
     delete res;
     
     delete expr;
 }
 
-TEST(AstAddition, IntFloat)
+TEST(AstDivision, IntFloat)
 {
 	Binding b;
     Parse p;
-    AstNode *expr = p.parse("2+3.0");
+    AstNode *expr = p.parse("7/2.0");
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), 5.0, DBL_EPSILON);
+    DOUBLES_EQUAL(res->to_f(), 3.5, DBL_EPSILON);
     delete res;
     
     delete expr;
 }
 
-TEST(AstAddition, FloatInt)
+TEST(AstDivision, FloatInt)
 {
 	Binding b;
     Parse p;
-    AstNode *expr = p.parse("2.0+3");
+    AstNode *expr = p.parse("7.0/2");
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), 5.0, DBL_EPSILON);
+    DOUBLES_EQUAL(res->to_f(), 3.5, DBL_EPSILON);
     delete res;
     
     delete expr;
 }
 
-TEST(AstAddition, FloatFloat)
+TEST(AstDivision, FloatFloat)
 {
 	Binding b;
     Parse p;
-    AstNode *expr = p.parse("2.0+3.0");
+    AstNode *expr = p.parse("7.0/2.0");
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), 5.0, DBL_EPSILON);
+    DOUBLES_EQUAL(res->to_f(), 3.5, DBL_EPSILON);
     delete res;
     
     delete expr;
