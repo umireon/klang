@@ -20,13 +20,16 @@ public:
 	};
 
 	enum Type type;
+    
+    KObject(enum Type t) : type(t) {};
 
-	virtual KObject* op_mul(KObject* right) { return new KObject(); }
+	virtual KObject* op_mul(KObject* right) = 0;
 	virtual std::string to_s() { return std::string("Object"); }
 };
 
 class KNumber : public KObject {
 public:
+    KNumber(enum Type t) : KObject(t) {};
 	virtual ~KNumber() {}
 	virtual long to_i() = 0;
 	virtual double to_f() = 0;
@@ -34,7 +37,9 @@ public:
 
 class KInteger : public KNumber {
 public:
-	KInteger(long v) { type = INTEGER; value = v; }
+    KInteger() : KNumber(INTEGER) {};
+	KInteger(long v) : KNumber(INTEGER), value(v) {};
+    KInteger(KInteger &kint) : KInteger(kint.value) {};
 
 	KInteger* op_mul(KInteger* right);
 	KObject* op_mul(KObject* right);
