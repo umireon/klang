@@ -45,7 +45,7 @@ TEST(AstMultiplication, FloatInt)
     Parse p;
     AstNode *expr = p.parse("2.0*3");
 
-    KInteger *res = dynamic_cast<KInteger*>(expr->evaluate(&b));
+    KFloat *res = dynamic_cast<KFloat*>(expr->evaluate(&b));
     CHECK(res);
     DOUBLES_EQUAL(res->to_f(), 6.0, DBL_EPSILON);
     delete res;
