@@ -14,11 +14,15 @@ KVector* KVector::op_mul(KNumber *right)
 	return kvect;
 }
 
-KFloat* KVector::op_mul(KVector *right)
+KVector* KVector::op_mul(KVector *right)
 {
-	double newValue = inner_prod(vect, right->vect);
-	KFloat *kflt = new KFloat(newValue);
-	return kflt;
+	dvector newValue(right->vect.size());
+    
+    for (int i = 0; i < vect.size(); i++) {
+        newValue[i] = vect[i] * right->vect[i];
+    }
+    
+	return new KVector(newValue);
 }
 
 KObject* KVector::op_mul(KObject *right)

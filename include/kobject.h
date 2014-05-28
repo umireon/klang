@@ -75,7 +75,7 @@ public:
     std::string to_s();
 
 	KVector* op_mul(KNumber* right);
-	KFloat* op_mul(KVector* right);
+	KVector* op_mul(KVector* right);
 };
 
 class KMatrix : public KObject {
