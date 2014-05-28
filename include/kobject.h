@@ -23,7 +23,11 @@ public:
 	virtual ~KObject() {}
 
     virtual enum Type get_type() = 0;
+	virtual KObject* op_add(KObject* right) { throw std::invalid_argument(std::string("op_add is not defined."));}
+	virtual KObject* op_sub(KObject* right) { throw std::invalid_argument(std::string("op_sub is not defined."));}
 	virtual KObject* op_mul(KObject* right) { throw std::invalid_argument(std::string("op_mul is not defined."));}
+	virtual KObject* op_div(KObject* right) { throw std::invalid_argument(std::string("op_div is not defined."));}
+	virtual KObject* op_rem(KObject* right) { throw std::invalid_argument(std::string("op_rem is not defined."));}
 	virtual std::string to_s() { return std::string("Object"); }
 };
 
@@ -39,12 +43,14 @@ public:
 	KInteger(long v) : value(v) {};
 
     virtual enum Type get_type() { return INTEGER; }
+	virtual KObject* op_add(KObject* right);
 	virtual KObject* op_mul(KObject* right);
     virtual std::string to_s();
 
 	virtual long to_i() { return value; }
 	virtual double to_f() { return static_cast<double>(value); }
 
+	KInteger* op_add(KInteger* right);
 	KInteger* op_mul(KInteger* right);
 private:
 	long value;
