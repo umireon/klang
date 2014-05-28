@@ -23,9 +23,9 @@ target_link_libraries(parser ast)
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
-#add_executable(print_ast src/print_ast.cpp)
-#target_link_libraries(print_ast parser kobject ast)
-#target_link_libraries(print_ast ${Boost_LIBRARIES})
+add_executable(print_ast src/print_ast.cpp)
+target_link_libraries(print_ast parser kobject ast)
+target_link_libraries(print_ast ${Boost_LIBRARIES})
 
 add_executable(ast_calc src/ast_calc.cpp)
 target_link_libraries(ast_calc parser kobject ast)
@@ -39,8 +39,8 @@ else ()
     target_link_libraries(ast_calc edit)
 endif ()
 
-#add_executable(ast_compile src/ast_compile.cpp)
-#target_link_libraries(ast_compile parser)
+add_executable(ast_compile src/ast_compile.cpp)
+target_link_libraries(ast_compile parser)
 
 set(serial "0.0.0")
 
