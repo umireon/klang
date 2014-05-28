@@ -19,7 +19,7 @@ TEST(AstSubtraction, IntInt)
 
     KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
-    CHECK_EQUAL(res->to_i(), -1);
+    CHECK_EQUAL(-1, res->to_i());
     delete res;
     
     delete expr;
@@ -33,7 +33,7 @@ TEST(AstSubtraction, IntFloat)
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), -1.0, DBL_EPSILON);
+    DOUBLES_EQUAL(-1.0, res->to_f(), DBL_EPSILON);
     delete res;
     
     delete expr;
@@ -47,7 +47,7 @@ TEST(AstSubtraction, FloatInt)
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), -1.0, DBL_EPSILON);
+    DOUBLES_EQUAL(-1.0, res->to_f(), DBL_EPSILON);
     delete res;
     
     delete expr;
@@ -61,7 +61,7 @@ TEST(AstSubtraction, FloatFloat)
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), -1.0, DBL_EPSILON);
+    DOUBLES_EQUAL(-1.0, res->to_f(), DBL_EPSILON);
     delete res;
     
     delete expr;

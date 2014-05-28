@@ -10,6 +10,8 @@ typedef boost::numeric::ublas::vector<double> dvector;
 
 using namespace boost::numeric;
 
+class KFloat;
+
 class KObject {
 public:
 	enum Type {
@@ -44,14 +46,22 @@ public:
 
     virtual enum Type get_type() { return INTEGER; }
 	virtual KObject* op_add(KObject* right);
+	virtual KObject* op_sub(KObject* right);
 	virtual KObject* op_mul(KObject* right);
+	virtual KObject* op_div(KObject* right);
+	virtual KObject* op_rem(KObject* right);
     virtual std::string to_s();
 
 	virtual long to_i() { return value; }
 	virtual double to_f() { return static_cast<double>(value); }
 
 	KInteger* op_add(KInteger* right);
+	KInteger* op_sub(KInteger* right);
+	KFloat* op_sub(KFloat* right);
 	KInteger* op_mul(KInteger* right);
+	KInteger* op_div(KInteger* right);
+	KFloat* op_div(KFloat* right);
+	KInteger* op_rem(KNumber* right);
 private:
 	long value;
 };
@@ -61,13 +71,21 @@ public:
 	KFloat(double v) : value(v) {}
     
     enum Type get_type() { return FLOAT; }
-	KObject* op_mul(KObject* right);
-    std::string to_s();
+	virtual KObject* op_add(KObject* right);
+	virtual KObject* op_sub(KObject* right);
+	virtual KObject* op_mul(KObject* right);
+	virtual KObject* op_div(KObject* right);
+	virtual KObject* op_rem(KObject* right);
+    virtual std::string to_s();
 
 	long to_i() { return static_cast<long>(value); }
 	double to_f() { return value; }
 
+	KFloat* op_add(KNumber* right);
+	KFloat* op_sub(KNumber* right);
 	KFloat* op_mul(KNumber* right);
+	KFloat* op_div(KNumber* right);
+	KInteger* op_rem(KNumber* right);
 private:
 	double value;
 };

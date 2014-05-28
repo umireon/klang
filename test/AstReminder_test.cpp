@@ -19,7 +19,7 @@ TEST(AstReminder, IntInt)
 
     KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
-    CHECK_EQUAL(res->to_i(), 1);
+    CHECK_EQUAL(1, res->to_i());
     delete res;
     
     delete expr;
@@ -33,7 +33,7 @@ TEST(AstReminder, IntFloat)
 
     KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
-    CHECK_EQUAL(res->to_i(), 1);
+    CHECK_EQUAL(1, res->to_i());
     delete res;
     
     delete expr;
@@ -47,7 +47,7 @@ TEST(AstReminder, FloatInt)
 
     KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
-    CHECK_EQUAL(res->to_i(), 1);
+    CHECK_EQUAL(1, res->to_i());
     delete res;
     
     delete expr;
@@ -61,7 +61,7 @@ TEST(AstReminder, FloatFloat)
 
     KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
-    CHECK_EQUAL(res->to_i(), 1);
+    CHECK_EQUAL(1, res->to_i());
     delete res;
     
     delete expr;

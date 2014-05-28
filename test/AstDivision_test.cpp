@@ -19,7 +19,7 @@ TEST(AstDivision, IntInt)
 
     KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
-    CHECK_EQUAL(res->to_i(), 3);
+    CHECK_EQUAL(3, res->to_i());
     delete res;
     
     delete expr;
@@ -33,7 +33,7 @@ TEST(AstDivision, IntFloat)
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), 3.5, DBL_EPSILON);
+    DOUBLES_EQUAL(3.5, res->to_f(), DBL_EPSILON);
     delete res;
     
     delete expr;
@@ -47,7 +47,7 @@ TEST(AstDivision, FloatInt)
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), 3.5, DBL_EPSILON);
+    DOUBLES_EQUAL(3.5, res->to_f(), DBL_EPSILON);
     delete res;
     
     delete expr;
@@ -61,7 +61,7 @@ TEST(AstDivision, FloatFloat)
 
     KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(res->to_f(), 3.5, DBL_EPSILON);
+    DOUBLES_EQUAL(3.5, res->to_f(), DBL_EPSILON);
     delete res;
     
     delete expr;
