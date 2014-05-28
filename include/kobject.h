@@ -36,12 +36,12 @@ class KInteger : public KNumber {
 public:
 	KInteger(long v) : value(v) {};
 
-    enum Type get_type() { return INTEGER; }
-	KObject* op_mul(KObject* right);
-    std::string to_s();
+    virtual enum Type get_type() { return INTEGER; }
+	virtual KObject* op_mul(KObject* right);
+    virtual std::string to_s();
 
-	long to_i() { return value; }
-	double to_f() { return static_cast<double>(value); }
+	virtual long to_i() { return value; }
+	virtual double to_f() { return static_cast<double>(value); }
 
 	KInteger* op_mul(KInteger* right);
 private:
