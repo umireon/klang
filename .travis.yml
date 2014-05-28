@@ -14,5 +14,5 @@ before_script:
   - cmake -DTEST=ON ..
 
 script: 
-  - make
+  - make VERBOSE=1
   - ctest -E CppUTest
