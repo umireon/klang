@@ -20,6 +20,8 @@ public:
         FUNCTION
 	};
 
+	virtual ~KObject() {}
+
     virtual enum Type get_type() = 0;
 	virtual KObject* op_mul(KObject* right) { throw std::invalid_argument(std::string("op_mul is not defined."));}
 	virtual std::string to_s() { return std::string("Object"); }
