@@ -22,5 +22,5 @@ make test
 
 # 実行
 ```
-bin/calc
+./ast_calc
 ```
