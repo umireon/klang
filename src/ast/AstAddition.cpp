@@ -1,6 +1,5 @@
 #include "kobject.h"
 
-#include "kobject.h"
 #include "ast.h"
 
 KNumber* AstAddition::evaluate(Binding* b)
