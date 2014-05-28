@@ -1,5 +1,10 @@
 [![Build Status](https://travis-ci.org/umireon/klang.svg?branch=master)](https://travis-ci.org/umireon/klang)
 
+# 依存ライブラリ
+- Boost
+- libedit
+- CMake
+
 # TDD
 ```
 bundle install
