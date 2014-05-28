@@ -14,7 +14,7 @@ file(GLOB KOBJECT_SRC "${CMAKE_SOURCE_DIR}/src/kobject/*" "${CMAKE_SOURCE_DIR}/i
 file(GLOB AST_SRC "${CMAKE_SOURCE_DIR}/src/ast/*" "${CMAKE_SOURCE_DIR}/include/ast.h")
 
 add_library(parser ${PARSER_SRC})
-add_library(kobject ${KOBJECT_SRC})
+add_library(kobj ${KOBJECT_SRC})
 add_library(ast ${AST_SRC})
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
@@ -24,7 +24,7 @@ include_directories("${CMAKE_SOURCE_DIR}/include")
 #target_link_libraries(print_ast ${Boost_LIBRARIES})
 
 add_executable(ast_calc src/ast_calc.cpp)
-target_link_libraries(ast_calc parser kobject ast)
+target_link_libraries(ast_calc parser kobj ast)
 target_link_libraries(ast_calc ${Boost_LIBRARIES})
 
 if (MSVC)
@@ -75,7 +75,7 @@ if (INTEGRATION_TEST)
 
     file(GLOB SpecSourceFiles spec/*.cpp)
     add_executable(runSpec ${SpecSourceFiles})
-    target_link_libraries(runSpec parser kobject ast)
+    target_link_libraries(runSpec parser kobj ast)
     target_link_libraries(runSpec ${Boost_LIBRARIES})
     add_test(Spec runSpec)
 endif ()
