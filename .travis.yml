@@ -11,7 +11,7 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - cmake -DTEST=ON ..
+  - cmake ..
 
 script: 
   - make VERBOSE=1
