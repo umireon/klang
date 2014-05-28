@@ -14,7 +14,7 @@ KNumber* AstAddition::evaluate(Binding* b)
         KNumber *num = static_cast<KNumber*>(obj);
         valuei += num->to_i();
         valuef += num->to_f();
-        isfloat = isfloat || (num->type == KNumber::FLOAT);
+        isfloat = isfloat || (num->get_type() == KNumber::FLOAT);
         iter++;
     }
     

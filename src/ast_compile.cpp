@@ -2,7 +2,7 @@
 #include <string>
 #include <typeinfo>
 
-#include "parser/ast.h"
+#include "ast.h"
 #include "parser.h"
 
 using namespace std;

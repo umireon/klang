@@ -13,9 +13,13 @@ file(GLOB PARSER_SRC "${CMAKE_SOURCE_DIR}/src/parser/*" "${CMAKE_SOURCE_DIR}/inc
 file(GLOB KOBJECT_SRC "${CMAKE_SOURCE_DIR}/src/kobject/*" "${CMAKE_SOURCE_DIR}/include/kobject.h")
 file(GLOB AST_SRC "${CMAKE_SOURCE_DIR}/src/ast/*" "${CMAKE_SOURCE_DIR}/include/ast.h")
 
-add_library(parser ${PARSER_SRC})
 add_library(kobject ${KOBJECT_SRC})
+
 add_library(ast ${AST_SRC})
+target_link_libraries(ast kobject)
+
+add_library(parser ${PARSER_SRC})
+target_link_libraries(parser ast)
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
@@ -35,8 +39,8 @@ else ()
     target_link_libraries(ast_calc edit)
 endif ()
 
-#add_executable(ast_compile src/ast_compile.cpp)
-#target_link_libraries(ast_compile parser)
+add_executable(ast_compile src/ast_compile.cpp)
+target_link_libraries(ast_compile parser)
 
 set(serial "0.0.0")
 

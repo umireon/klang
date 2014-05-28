@@ -14,8 +14,6 @@ using namespace boost::numeric;
 
 class FuncMatrix : public KFunction {
     KMatrix* invoke(std::vector<KObject*> args) {
-        KMatrix *kmat = new KMatrix();
-
         KVector *kvect = dynamic_cast<KVector*>(args[0]);
         long nrow = static_cast<KNumber*>(args[1])->to_i();
         long ncol = static_cast<KNumber*>(args[2])->to_i();
@@ -31,20 +29,13 @@ class FuncMatrix : public KFunction {
             }
         }
 
-        kmat->mat = m;
-
-        return kmat;
+        return new KMatrix(m);
     }
 };
 
 class FuncC : public KFunction {
 	KVector* invoke(std::vector<KObject*> args) {
-        std::vector<KObject*>::iterator iter = args.begin();
-        KVector *kv = new KVector();
-        ublas::vector<double> &vect = kv->vect;
-        ublas::vector<double>::iterator viter = vect.begin();
-        
-        vect.resize(args.size());
+        dvector vect(args.size());
 
         for (int i = 0; i < args.size(); i++) {
             KNumber *knum = dynamic_cast<KNumber*>(args[i]);
@@ -54,7 +45,7 @@ class FuncC : public KFunction {
             vect[i] = knum->to_f();
         }
 
-		return kv;
+		return new KVector(vect);
 	}
 };
 

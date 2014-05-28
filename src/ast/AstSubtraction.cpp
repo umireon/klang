@@ -11,14 +11,14 @@ KNumber* AstSubtraction::evaluate(Binding* b)
     
     long valuei = num->to_i();
     double valuef = num->to_f();
-    bool isfloat = num->type == KNumber::FLOAT;
+    bool isfloat = num->get_type() == KNumber::FLOAT;
     
     while (iter != children.end()) {
         obj = (*iter)->evaluate(b);
         num = static_cast<KNumber*>(obj);
         valuei -= num->to_i();
         valuef -= num->to_f();
-        isfloat = isfloat || (num->type == KNumber::FLOAT);
+        isfloat = isfloat || (num->get_type() == KNumber::FLOAT);
         iter++;
     }
     
