@@ -12,6 +12,7 @@ KNumber* AstSubtraction::evaluate(Binding* b)
     long valuei = num->to_i();
     double valuef = num->to_f();
     bool isfloat = num->get_type() == KNumber::FLOAT;
+    delete obj;
     
     while (iter != children.end()) {
         obj = (*iter)->evaluate(b);
@@ -20,6 +21,7 @@ KNumber* AstSubtraction::evaluate(Binding* b)
         valuef -= num->to_f();
         isfloat = isfloat || (num->get_type() == KNumber::FLOAT);
         iter++;
+        delete obj;
     }
     
     if (isfloat) {

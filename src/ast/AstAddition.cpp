@@ -16,6 +16,7 @@ KNumber* AstAddition::evaluate(Binding* b)
         valuef += num->to_f();
         isfloat = isfloat || (num->get_type() == KNumber::FLOAT);
         iter++;
+        delete obj;
     }
     
     if (isfloat) {

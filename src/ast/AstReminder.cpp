@@ -10,12 +10,14 @@ KInteger* AstReminder::evaluate(Binding* b)
     iter++;
     
     long value = num->to_i();
+    delete obj;
     
     while (iter != children.end()) {
         obj = (*iter)->evaluate(b);
         num = static_cast<KNumber*>(obj);
         value %= num->to_i();
         iter++;
+        delete obj;
     }
     
     return new KInteger(value);
