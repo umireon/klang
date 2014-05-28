@@ -14,7 +14,7 @@ KFloat* KFloat::op_mul(KNumber *right)
 
 KObject* KFloat::op_mul(KObject *right)
 {
-	switch (right->type) {
+	switch (right->get_type()) {
 		case INTEGER:
 		case FLOAT:
 			return op_mul(static_cast<KNumber*>(right));

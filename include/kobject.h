@@ -16,20 +16,17 @@ public:
 		INTEGER,
 		FLOAT,
 		VECTOR,
-		MATRIX
+		MATRIX,
+        FUNCTION
 	};
 
-	enum Type type;
-    
-    KObject(enum Type t) : type(t) {};
-
-	virtual KObject* op_mul(KObject* right) = 0;
+    virtual enum Type get_type() = 0;
+	virtual KObject* op_mul(KObject* right) { throw std::invalid_argument(std::string("op_mul is not defined."));}
 	virtual std::string to_s() { return std::string("Object"); }
 };
 
 class KNumber : public KObject {
 public:
-    KNumber(enum Type t) : KObject(t) {};
 	virtual ~KNumber() {}
 	virtual long to_i() = 0;
 	virtual double to_f() = 0;
@@ -37,53 +34,65 @@ public:
 
 class KInteger : public KNumber {
 public:
-    KInteger() : KNumber(INTEGER) {};
-	KInteger(long v) : KNumber(INTEGER), value(v) {};
-    KInteger(KInteger &kint) : KInteger(kint.value) {};
+	KInteger(long v) : value(v) {};
 
-	KInteger* op_mul(KInteger* right);
+    enum Type get_type() { return INTEGER; }
 	KObject* op_mul(KObject* right);
+    std::string to_s();
+
 	long to_i() { return value; }
 	double to_f() { return static_cast<double>(value); }
-    std::string to_s();
+
+	KInteger* op_mul(KInteger* right);
 private:
 	long value;
 };
 
 class KFloat : public KNumber {
 public:
-	KFloat(double v) { type = FLOAT; value = v; }
-
-	KFloat* op_mul(KNumber* right);
+	KFloat(double v) : value(v) {}
+    
+    enum Type get_type() { return FLOAT; }
 	KObject* op_mul(KObject* right);
+    std::string to_s();
+
 	long to_i() { return static_cast<long>(value); }
 	double to_f() { return value; }
-    std::string to_s();
+
+	KFloat* op_mul(KNumber* right);
 private:
 	double value;
 };
 
 class KVector : public KObject {
 public:
-	KVector() { type = VECTOR; }
+    dvector vect;
+
+	KVector(dvector v) : vect(v) {}
+
+    enum Type get_type() { return VECTOR; }
+	KObject* op_mul(KObject* right);
+    std::string to_s();
 
 	KVector* op_mul(KNumber* right);
 	KFloat* op_mul(KVector* right);
-	KObject* op_mul(KObject* right);
-
-    dvector vect;
-    std::string to_s();
 };
 
 class KMatrix : public KObject {
 public:
-	KMatrix() { type = MATRIX; }
+    dmatrix mat;
 
-    ublas::matrix<double> mat;
+    KMatrix(dmatrix m) : mat(m) {};
+    
+    enum Type get_type() { return MATRIX; }
+	KObject* op_mul(KObject* right) { return NULL; };
     std::string to_s();
 };
 
 class KFunction : public KObject {
 public:
+    enum Type get_type() { return FUNCTION; }
+    std::string to_s() { return std::string("Function"); }
+
 	virtual KObject* invoke(std::vector<KObject*> args) = 0;
 };

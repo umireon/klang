@@ -14,7 +14,7 @@ KInteger* KInteger::op_mul(KInteger *right)
 
 KObject* KInteger::op_mul(KObject *right)
 {
-	switch (right->type) {
+	switch (right->get_type()) {
 		case INTEGER:
 			return op_mul(static_cast<KInteger*>(right));
 		case FLOAT:
