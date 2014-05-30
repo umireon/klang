@@ -16,6 +16,7 @@
 #include "kfunc/FuncLog10.h"
 #include "kfunc/FuncMatrix.h"
 #include "kfunc/triangle.h"
+#include "kfunc/factorial.h"
 
 using namespace std;
 using namespace boost::numeric;
@@ -40,6 +41,11 @@ int main(int argc, const char **argv)
     FuncArccos kArccos;
     FuncArctan kArctan;
 
+    FuncFact kFact;
+    FuncPerm kPerm;
+    FuncComb kComb;
+    FuncHmpr kHmpr;
+
     Binding b;
     char *line;
     b.set_local(std::string("log"), &kLog);
@@ -59,6 +65,15 @@ int main(int argc, const char **argv)
     b.set_local(std::string("arcsin"), &kArcsin);
     b.set_local(std::string("arccos"), &kArccos);
     b.set_local(std::string("arctan"), &kArctan);
+
+    b.set_local(std::string("fact"), &kArcsin);
+    b.set_local(std::string("arccos"), &kArccos);
+    b.set_local(std::string("arctan"), &kArctan);
+
+    b.set_local(std::string("fact"), &kFact);
+    b.set_local(std::string("perm"), &kPerm);
+    b.set_local(std::string("comb"), &kComb);
+    b.set_local(std::string("hmpr"), &kHmpr);
 
     while (true) {
         Parse p;
