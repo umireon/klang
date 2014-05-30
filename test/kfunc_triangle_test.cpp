@@ -74,35 +74,35 @@ TEST(kfunc_triangle, TanFloat)
 
 TEST(kfunc_triangle, SinhFloat)
 {
-    expr = p.parse("sinh(1.57)");
+    expr = p.parse("sinh(1.0)");
     res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(1.0, res->to_f(), 0.01);
+    DOUBLES_EQUAL(1.17, res->to_f(), 0.01);
 }
 
 TEST(kfunc_triangle, CoshFloat)
 {
-    expr = p.parse("cosh(0.0)");
+    expr = p.parse("cosh(1.0)");
     res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(1.0, res->to_f(), 0.01);
+    DOUBLES_EQUAL(1.54, res->to_f(), 0.01);
 }
 
 TEST(kfunc_triangle, TanhFloat)
 {
-    expr = p.parse("tanh(0.785)");
+    expr = p.parse("tanh(1)");
     res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(1.0, res->to_f(), 0.01);
+    DOUBLES_EQUAL(0.761, res->to_f(), 0.001);
 }
 
 
 TEST(kfunc_triangle, ArcsinFloat)
 {
-    expr = p.parse("arcsin(1.57)");
+    expr = p.parse("arcsin(1.0)");
     res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(1.0, res->to_f(), 0.01);
+    DOUBLES_EQUAL(1.57, res->to_f(), 0.01);
 }
 
 TEST(kfunc_triangle, ArccosFloat)
@@ -110,14 +110,14 @@ TEST(kfunc_triangle, ArccosFloat)
     expr = p.parse("arccos(0.0)");
     res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(1.0, res->to_f(), 0.01);
+    DOUBLES_EQUAL(1.57, res->to_f(), 0.01);
 }
 
 TEST(kfunc_triangle, ArctanFloat)
 {
-    expr = p.parse("arctan(0.785)");
+    expr = p.parse("arctan(1.0)");
     res = dynamic_cast<KFloat *>(expr->evaluate(&b));
     CHECK(res);
-    DOUBLES_EQUAL(1.0, res->to_f(), 0.01);
+    DOUBLES_EQUAL(0.785, res->to_f(), 0.01);
 
 }
