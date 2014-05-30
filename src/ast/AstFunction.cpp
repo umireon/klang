@@ -9,7 +9,6 @@ AstFunction::~AstFunction(void)
 {
 	delete astParam;
 	delete body;
-	delete identName;
 }
 
 KFunctionAst* AstFunction::evaluate(Binding *b)
@@ -33,17 +32,5 @@ KFunctionAst* AstFunction::evaluate(Binding *b)
 		iter++;
 	}
 
-	KFunctionAst *f = new KFunctionAst(body, paramNames);
-
-	if (identName != NULL) {
-		if (identName->get_identifier_type() != AstIdentifier::NAME) {
-	        std::ostringstream os;
-	        os << "Reserved word for Parameter: " << identName->get_string() << std::endl;
-	        throw std::invalid_argument(os.str());
-		}
-
-		b->set_local(identName->get_string(), f);
-	}
-
-	return f;
+	return new KFunctionAst(*b, body, paramNames);
 }

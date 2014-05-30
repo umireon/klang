@@ -22,7 +22,3 @@ KObject* KFunctionAst::invoke(std::vector<KObject*> args) {
 
 	return body->evaluate(&b);
 }
-
-void KFunctionAst::bind(Binding &b) {
-	binding = b;
-}

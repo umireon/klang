@@ -5,7 +5,6 @@
 #include "ast/AstFunction.h"
 #include "parser.h"
 #include "parser/ParseParameter.h"
-#include "parser/ParseIdentifier.h"
 #include "parser/ParseFunction.h"
 
 AstFunction *ParseFunction::parse_function(const char *str)
@@ -13,23 +12,10 @@ AstFunction *ParseFunction::parse_function(const char *str)
     AstFunction *astFunc = new AstFunction();
     astFunc->strhead = str;
 
-    AstIdentifier *identName;
-    ParseIdentifier pi;
-    switch (get_symbol(str[0])) {
-        case SYMBOL_PAREN_LEFT:
-            astFunc->identName = NULL;
-            break;
-        default:
-            identName = pi.parse_identifier(str);
-            astFunc->identName = identName;
-            str = identName->strtail;
-    }
-
     AstParameter *astParam;
-    ParseParameter pp;
-    str = scan(str);
     switch (get_symbol(str[0])) {
         case SYMBOL_PAREN_LEFT:
+            ParseParameter pp;
             astParam = pp.parse_parameter(str);
             astFunc->astParam = astParam;
             str = astParam->strtail;
