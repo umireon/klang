@@ -11,7 +11,7 @@ public:
 	AstNode *body;
 	std::vector<std::string> paramNames;
 
-	KFunctionAst(Binding b, AstNode *n, std::vector<std::string> p) : binding(b), body(n), paramNames(p) {};
+	KFunctionAst(AstNode *n, std::vector<std::string> p) : body(n), paramNames(p) {};
 	virtual ~KFunctionAst();
 
     enum Type get_type() { return FUNCTION; }
@@ -19,4 +19,6 @@ public:
 	virtual KFunctionAst *clone() const { return new KFunctionAst(*this); }
 
 	KObject* invoke(std::vector<KObject*> args);
+
+	void bind(Binding &b);
 };
