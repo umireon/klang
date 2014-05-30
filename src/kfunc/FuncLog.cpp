@@ -3,15 +3,15 @@
 #include "kfunc/FuncLog.h"
 
 KObject* FuncLog::invoke(std::vector<KObject*> args) {
-    dvector vect(args.size());
-
-    for (int i = 0; i < args.size(); i++) {
-        KNumber *knum = dynamic_cast<KNumber*>(args[i]);
-        if (knum == NULL) {
-            throw std::invalid_argument(std::string("not a number"));
-        }
-        vect[i] = knum->to_f();
+    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
+    
+    if (args.size() != 1) {
+        throw std::invalid_argument("Arity: 1");
+    }
+    
+    if (!num) {
+        throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KVector(vect);
+    return new KFloat(log10(num->to_f()));
 }

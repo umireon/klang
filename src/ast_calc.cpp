@@ -15,6 +15,8 @@
 #include "kfunc/FuncLog.h"
 #include "kfunc/FuncLog10.h"
 #include "kfunc/FuncMatrix.h"
+#include "kfunc/triangle.h"
+#include "kfunc/factorial.h"
 
 using namespace std;
 using namespace boost::numeric;
@@ -27,6 +29,23 @@ int main(int argc, const char **argv)
     FuncC kC;
     FuncMatrix kMatrix;
 
+    FuncSin kSin;
+    FuncCos kCos;
+    FuncTan kTan;
+
+    FuncSinh kSinh;
+    FuncCosh kCosh;
+    FuncTanh kTanh;
+
+    FuncArcsin kArcsin;
+    FuncArccos kArccos;
+    FuncArctan kArctan;
+
+    FuncFact kFact;
+    FuncPerm kPerm;
+    FuncComb kComb;
+    FuncHmpr kHmpr;
+
     Binding b;
     char *line;
     b.set_local(std::string("log"), &kLog);
@@ -34,6 +53,27 @@ int main(int argc, const char **argv)
     b.set_local(std::string("exit"), &kExit);
     b.set_local(std::string("c"), &kC);
     b.set_local(std::string("matrix"), &kMatrix);
+
+    b.set_local(std::string("sin"), &kSin);
+    b.set_local(std::string("cos"), &kCos);
+    b.set_local(std::string("tan"), &kTan);
+
+    b.set_local(std::string("sinh"), &kSinh);
+    b.set_local(std::string("cosh"), &kCosh);
+    b.set_local(std::string("tanh"), &kTanh);
+
+    b.set_local(std::string("arcsin"), &kArcsin);
+    b.set_local(std::string("arccos"), &kArccos);
+    b.set_local(std::string("arctan"), &kArctan);
+
+    b.set_local(std::string("fact"), &kArcsin);
+    b.set_local(std::string("arccos"), &kArccos);
+    b.set_local(std::string("arctan"), &kArctan);
+
+    b.set_local(std::string("fact"), &kFact);
+    b.set_local(std::string("perm"), &kPerm);
+    b.set_local(std::string("comb"), &kComb);
+    b.set_local(std::string("hmpr"), &kHmpr);
 
     while (true) {
         Parse p;
