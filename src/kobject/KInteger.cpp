@@ -78,6 +78,21 @@ KObject* KInteger::op_rem(KObject *right)
 	}
 }
 
+KObject* KInteger::op_pow(KObject *right)
+{
+	switch (right->get_type()) {
+		case INTEGER:
+			return op_pow(static_cast<KInteger*>(right));
+		case FLOAT:
+			return op_pow(static_cast<KFloat*>(right));
+		case VECTOR:
+			return right->op_pow(this);
+			break;
+		default:
+			throw std::invalid_argument(std::string("Unsupported RHS"));
+	}
+}
+
 std::string KInteger::to_s(void)
 {
     std::ostringstream os;
@@ -125,4 +140,21 @@ KInteger* KInteger::op_rem(KNumber *right)
 {
 	long newValue = value % right->to_i();
 	return new KInteger(newValue);
+}
+
+KInteger* KInteger::op_pow(KInteger *right)
+{
+    long base = value;
+    long num = right->to_i();
+    long value = 1;
+    for (int i = 0; i < num; i++) {
+        value *= base;
+    }
+    return new KInteger(value);
+}
+
+KFloat* KInteger::op_pow(KFloat *right)
+{
+	double newValue = pow(value, right->to_f());
+	return new KFloat(newValue);
 }

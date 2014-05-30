@@ -97,7 +97,7 @@ public:
 class AstPower : public AstParentNode {
 public:
     AstPower() { type = AST_POWER; }
-	KNumber* evaluate(Binding* b);
+	KObject* evaluate(Binding* b);
 };
 
 class AstParen : public AstParentNode {

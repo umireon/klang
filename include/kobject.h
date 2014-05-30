@@ -30,6 +30,7 @@ public:
 	virtual KObject* op_mul(KObject* right) { throw std::invalid_argument(std::string("op_mul is not defined."));}
 	virtual KObject* op_div(KObject* right) { throw std::invalid_argument(std::string("op_div is not defined."));}
 	virtual KObject* op_rem(KObject* right) { throw std::invalid_argument(std::string("op_rem is not defined."));}
+	virtual KObject* op_pow(KObject* right) { throw std::invalid_argument(std::string("op_pow is not defined."));}
 	virtual std::string to_s() { return std::string("Object"); }
 };
 
@@ -50,6 +51,7 @@ public:
 	virtual KObject* op_mul(KObject* right);
 	virtual KObject* op_div(KObject* right);
 	virtual KObject* op_rem(KObject* right);
+	virtual KObject* op_pow(KObject* right);
     virtual std::string to_s();
 
 	virtual long to_i() { return value; }
@@ -62,6 +64,8 @@ public:
 	KInteger* op_div(KInteger* right);
 	KFloat* op_div(KFloat* right);
 	KInteger* op_rem(KNumber* right);
+	KInteger* op_pow(KInteger* right);
+	KFloat* op_pow(KFloat* right);
 private:
 	long value;
 };
@@ -76,6 +80,7 @@ public:
 	virtual KObject* op_mul(KObject* right);
 	virtual KObject* op_div(KObject* right);
 	virtual KObject* op_rem(KObject* right);
+	virtual KObject* op_pow(KObject* right);
     virtual std::string to_s();
 
 	long to_i() { return static_cast<long>(value); }
@@ -86,6 +91,7 @@ public:
 	KFloat* op_mul(KNumber* right);
 	KFloat* op_div(KNumber* right);
 	KInteger* op_rem(KNumber* right);
+	KFloat* op_pow(KNumber* right);
 private:
 	double value;
 };
