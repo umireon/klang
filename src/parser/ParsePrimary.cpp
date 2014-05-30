@@ -32,7 +32,7 @@ AstNode* ParsePrimary::parse_identifier_or_invocation(const char *str)
 {
 	ParseIdentifier pi;
 	AstIdentifier *ident = pi.parse_identifier(str);
-    
+
 	str = ident->strtail;
 	str = scan_lexical_symbol(str);
 	enum SymbolType type = get_symbol(str[0]);
