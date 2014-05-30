@@ -13,7 +13,9 @@ class Binding
 public:
 	std::map<std::string, long> variableTable;
 	std::map<std::string, KObject *> locals;
-    
+
+	virtual ~Binding();
+
 	KObject* get_local(std::string name);
 	void set_local(std::string name, KObject *value);
     

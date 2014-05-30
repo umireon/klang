@@ -1,4 +1,17 @@
-#include "ast.h"
+#include <map>
+
+#include "kobject.h"
+#include "Binding.h"
+
+Binding::~Binding()
+{
+	std::map<std::string, KObject *>::iterator iter = locals.begin();
+
+	while (iter != locals.end()) {
+		delete iter->second;
+		iter++;
+	}
+}
 
 KObject* Binding::get_local(std::string name)
 {
