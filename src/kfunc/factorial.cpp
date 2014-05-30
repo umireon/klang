@@ -15,6 +15,8 @@ KObject* FuncFact::invoke(std::vector<KObject*> args) {
 
 	long fact = factorial(num->to_i());
 
+	delete num;
+
 	return new KInteger(fact);
 }
 
@@ -49,6 +51,9 @@ KObject* FuncPerm::invoke(std::vector<KObject*> args) {
 	n=num1->to_i();
 	r=num2->to_i();
 
+	delete num1;
+	delete num2;
+
 	return new KInteger(factorial(n)/factorial(n-r));
 }
 
@@ -67,8 +72,12 @@ KObject* FuncComb::invoke(std::vector<KObject*> args) {
 	if (!num2) {
 		throw std::invalid_argument("Argument2 is not a KNumber.");
 	}
+
 	n=num1->to_i();
 	r=num2->to_i();
+
+	delete num1;
+	delete num2;
 
 	return new KInteger(factorial(n)/factorial(r)/factorial(n-r));
 }
@@ -88,8 +97,12 @@ KObject* FuncHmpr::invoke(std::vector<KObject*> args) {
 	if (!num2) {
 		throw std::invalid_argument("Argument2 is not a KNumber.");
 	}
+
 	n=num1->to_i();
 	r=num2->to_i();
+
+	delete num1;
+	delete num2;
 
 	return new KInteger(factorial(n+r-1)/factorial(r));
 }
