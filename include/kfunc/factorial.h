@@ -15,9 +15,10 @@ public:
 class FuncComb : public FuncFact {
 public:
 	virtual KObject *invoke(std::vector<KObject*> args);
+	long combination(long n, long r);
 };
 
-class FuncHmpr : public FuncFact {
+class FuncHmpr : public FuncComb {
 public:
 	virtual KObject *invoke(std::vector<KObject*> args);
 };

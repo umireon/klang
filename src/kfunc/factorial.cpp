@@ -20,7 +20,6 @@ KObject* FuncFact::invoke(std::vector<KObject*> args) {
 	return new KInteger(fact);
 }
 
-
 long FuncFact::factorial(long n){
 	long fact = 1;
 
@@ -31,6 +30,7 @@ long FuncFact::factorial(long n){
 
 	return fact;
 }
+
 
 KObject* FuncPerm::invoke(std::vector<KObject*> args) {
 	KNumber *num1 = dynamic_cast<KNumber*>(args.at(0));
@@ -79,8 +79,13 @@ KObject* FuncComb::invoke(std::vector<KObject*> args) {
 	delete num1;
 	delete num2;
 
-	return new KInteger(factorial(n)/factorial(r)/factorial(n-r));
+	return new KInteger(combination(n, r));
 }
+
+long FuncComb::combination(long n, long r){
+	return factorial(n) / factorial(r) / factorial(n-r);
+}
+
 
 KObject* FuncHmpr::invoke(std::vector<KObject*> args) {
 	KNumber *num1 = dynamic_cast<KNumber*>(args.at(0));
@@ -104,5 +109,5 @@ KObject* FuncHmpr::invoke(std::vector<KObject*> args) {
 	delete num1;
 	delete num2;
 
-	return new KInteger(factorial(n+r-1)/factorial(r));
+	return new KInteger(combination(n+r-1, r));
 }
