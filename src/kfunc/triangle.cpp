@@ -13,7 +13,11 @@ KObject* FuncSin::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(sin(num->to_f()));
+    double newValue = sin(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 KObject* FuncCos::invoke(std::vector<KObject*> args) {
@@ -27,7 +31,11 @@ KObject* FuncCos::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(cos(num->to_f()));
+    double newValue = cos(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 KObject* FuncTan::invoke(std::vector<KObject*> args) {
@@ -41,7 +49,11 @@ KObject* FuncTan::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(tan(num->to_f()));
+    double newValue = tan(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 
@@ -56,7 +68,11 @@ KObject* FuncSinh::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(sinh(num->to_f()));
+    double newValue = sinh(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 KObject* FuncCosh::invoke(std::vector<KObject*> args) {
@@ -70,7 +86,11 @@ KObject* FuncCosh::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(cosh(num->to_f()));
+    double newValue = cosh(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 KObject* FuncTanh::invoke(std::vector<KObject*> args) {
@@ -84,7 +104,11 @@ KObject* FuncTanh::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(tanh(num->to_f()));
+    double newValue = tanh(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 KObject* FuncArcsin::invoke(std::vector<KObject*> args) {
@@ -98,7 +122,11 @@ KObject* FuncArcsin::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(asin(num->to_f()));
+    double newValue = asin(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 KObject* FuncArccos::invoke(std::vector<KObject*> args) {
@@ -112,7 +140,11 @@ KObject* FuncArccos::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(acos(num->to_f()));
+    double newValue = acos(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }
 
 KObject* FuncArctan::invoke(std::vector<KObject*> args) {
@@ -126,5 +158,9 @@ KObject* FuncArctan::invoke(std::vector<KObject*> args) {
         throw std::invalid_argument("Argument1 is not a KNumber.");
     }
 
-    return new KFloat(atan(num->to_f()));
+    double newValue = atan(num->to_f());
+
+    delete num;
+
+    return new KFloat(newValue);
 }

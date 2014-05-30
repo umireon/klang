@@ -49,7 +49,7 @@ KObject* FuncPerm::invoke(std::vector<KObject*> args) {
 	n=num1->to_i();
 	r=num2->to_i();
 
-	return new KInteger(factorial(n)/factorial(r));
+	return new KInteger(factorial(n)/factorial(n-r));
 }
 
 KObject* FuncComb::invoke(std::vector<KObject*> args) {
