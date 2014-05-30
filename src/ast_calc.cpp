@@ -98,8 +98,8 @@ int main(int argc, const char **argv)
             }
             
             if (KFunction* func = dynamic_cast<KFunction*>(res)) {
-                std::vector<KObject*> args;
-                func->invoke(args);
+                //std::vector<KObject*> args;
+                //func->invoke(args);
                 cout << "Function" << endl;
             }
             

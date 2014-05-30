@@ -149,23 +149,11 @@ public:
 	virtual KMatrix *clone() const { return new KMatrix(*this); }
 };
 
-class KFunction;
-
-class KWrappedFunction : public KObject {
-public:
-	KWrappedFunction(const KFunction &f) : base(f) {}
-    virtual enum Type get_type() { return FUNCTION; }
-    virtual std::string to_s() { return std::string("Function"); }
-	virtual KWrappedFunction *clone() const { return new KWrappedFunction(*this); }
-private:
-	const KFunction &base;
-};
-
 class KFunction : public KObject {
 public:
     virtual enum Type get_type() { return FUNCTION; }
     virtual std::string to_s() { return std::string("Function"); }
-	virtual KWrappedFunction *clone() const { return new KWrappedFunction(*this); }
+	virtual KFunction *clone() const = 0;
 
 	virtual KObject *invoke(std::vector<KObject*> args) = 0;
 };

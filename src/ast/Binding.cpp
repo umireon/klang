@@ -2,16 +2,16 @@
 
 KObject* Binding::get_local(std::string name)
 {
-	if (locals[name]->get_type() == KObject::FUNCTION) {
-		return NULL;
-	} else {
-	    return locals[name]->clone();
-	}
+    if (locals.count(name) == 1) {
+        return locals[name]->clone();
+    } else {
+        return NULL;
+    }
 }
 
 void Binding::set_local(std::string name, KObject* value)
 {
-    locals[name] = value;
+    locals[name] = value->clone();
 }
 
 KFunction* Binding::get_function(std::string name)
