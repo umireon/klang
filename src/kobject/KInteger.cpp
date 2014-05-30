@@ -14,7 +14,6 @@ KObject* KInteger::op_add(KObject *right)
 		case FLOAT:
 		case VECTOR:
 			return right->op_add(this);
-			break;
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}
@@ -29,7 +28,6 @@ KObject* KInteger::op_sub(KObject *right)
 			return op_sub(static_cast<KFloat *>(right));
 		case VECTOR:
 			return op_sub(static_cast<KVector *>(right));
-			break;
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}
@@ -43,7 +41,6 @@ KObject* KInteger::op_mul(KObject *right)
 		case FLOAT:
 		case VECTOR:
 			return right->op_mul(this);
-			break;
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}
@@ -58,7 +55,6 @@ KObject* KInteger::op_div(KObject *right)
 			return op_div(static_cast<KFloat *>(right));
 		case VECTOR:
 			return op_div(static_cast<KVector *>(right));
-			break;
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}
@@ -72,7 +68,6 @@ KObject* KInteger::op_rem(KObject *right)
 			return op_rem(static_cast<KNumber *>(right));
 		case VECTOR:
 			return right->op_rem(this);
-			break;
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}
@@ -86,8 +81,7 @@ KObject* KInteger::op_pow(KObject *right)
 		case FLOAT:
 			return op_pow(static_cast<KFloat *>(right));
 		case VECTOR:
-			return right->op_pow(this);
-			break;
+			return op_pow(static_cast<KVector *>(right));
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}
@@ -172,4 +166,17 @@ KFloat* KInteger::op_pow(KFloat *right)
 {
 	double newValue = pow(value, right->to_f());
 	return new KFloat(newValue);
+}
+
+KVector* KInteger::op_pow(KVector *right)
+{
+	dvector &vect = right->vect;
+	dvector newValue(vect.size());
+	double base = to_f();
+
+    for (int i = 0; i < newValue.size(); i++) {
+        newValue[i] = pow(base, vect[i]);
+    }
+
+	return new KVector(newValue);
 }

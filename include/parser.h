@@ -175,6 +175,6 @@ protected:
 	const char* scan_lexical_symbol(const char* str);
     
 	AstNode* parse_identifier_or_invocation(const char *str);
-	AstParentNode* inject_invocation(AstNode* node, const char *str);
+	AstInvocation* wrap_with_invocation(AstIdentifier* node, const char *str);
 	AstArgument* parse_argument(const char *str);
 };

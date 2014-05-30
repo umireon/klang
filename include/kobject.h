@@ -71,6 +71,7 @@ public:
 	KInteger* op_rem(KNumber* right);
 	KInteger* op_pow(KInteger* right);
 	KFloat* op_pow(KFloat* right);
+	KVector* op_pow(KVector* right);
 private:
 	long value;
 };
@@ -99,6 +100,7 @@ public:
 	KVector* op_div(KVector* right);
 	KInteger* op_rem(KNumber* right);
 	KFloat* op_pow(KNumber* right);
+	KVector* op_pow(KVector* right);
 private:
 	double value;
 };

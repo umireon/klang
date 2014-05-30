@@ -78,7 +78,7 @@ KObject* KFloat::op_pow(KObject *right)
 		case FLOAT:
 			return op_pow(static_cast<KNumber *>(right));
 		case VECTOR:
-			return right->op_pow(this);
+			return op_pow(static_cast<KVector *>(right));
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}
@@ -140,4 +140,17 @@ KFloat* KFloat::op_pow(KNumber *right)
 {
 	double newValue = pow(value, right->to_f());
 	return new KFloat(newValue);
+}
+
+KVector* KFloat::op_pow(KVector *right)
+{
+	dvector &vect = right->vect;
+	dvector newValue(vect.size());
+	double base = to_f();
+
+    for (int i = 0; i < newValue.size(); i++) {
+        newValue[i] = pow(base, vect[i]);
+    }
+
+	return new KVector(newValue);
 }

@@ -2,13 +2,15 @@
 
 #include "ast.h"
 
+AstInvocation::~AstInvocation()
+{
+    delete ident;
+    delete astArgs;
+}
+
 KObject* AstInvocation::evaluate(Binding* b)
 {
-    AstIdentifier *ident = static_cast<AstIdentifier*>(children.at(0));
-    AstArgument *astArgs = static_cast<AstArgument*>(children.at(1));
-    
     std::string name = ident->get_string();
-    
     std::vector<KObject*> args;
     std::vector<AstNode*> &astChildren = astArgs->children;
     std::vector<AstNode*>::iterator iter = astChildren.begin();

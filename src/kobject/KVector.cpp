@@ -75,9 +75,9 @@ KObject* KVector::op_pow(KObject *right)
 	switch (right->get_type()) {
 		case INTEGER:
 		case FLOAT:
-			return op_rem(static_cast<KNumber*>(right));
+			return op_pow(static_cast<KNumber*>(right));
 		case VECTOR:
-			return op_div(static_cast<KVector*>(right));
+			return op_pow(static_cast<KVector*>(right));
 		default:
 			throw std::invalid_argument(std::string("Unsupported RHS"));
 	}

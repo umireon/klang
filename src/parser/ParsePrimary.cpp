@@ -31,7 +31,7 @@ AstNode* ParsePrimary::parse_primary(const char *str)
 AstNode* ParsePrimary::parse_identifier_or_invocation(const char *str)
 {
 	ParseIdentifier pi;
-	AstNode *ident = pi.parse_identifier(str);
+	AstIdentifier *ident = pi.parse_identifier(str);
     
 	str = ident->strtail;
 	str = scan_lexical_symbol(str);
@@ -40,24 +40,23 @@ AstNode* ParsePrimary::parse_identifier_or_invocation(const char *str)
         case SYMBOL_PAREN_LEFT:
             str++;
             str = scan_lexical_symbol(str);
-            return inject_invocation(ident, str);
+            return wrap_with_invocation(ident, str);
             break;
         default:
             return ident;
 	}
 }
 
-AstParentNode* ParsePrimary::inject_invocation(AstNode* node, const char *str)
+AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, const char *str)
 {
-	if (node->size() == 2) {
+	/*if (node->size() == 2) {
         AstParentNode *root = static_cast<AstParentNode*>(node);
 		root->children[1] = inject_invocation(root->children[1], str);
         return root;
-	} else {
+	} else {*/
 		AstInvocation *newRoot = new AstInvocation();
 		newRoot->strhead = node->strhead;
-		std::vector<AstNode*> &newChildren = newRoot->children;
-		newChildren.push_back(node);
+        newRoot->ident = node;
         
         AstArgument *args;
         enum SymbolType type = get_symbol(str[0]);
@@ -65,11 +64,11 @@ AstParentNode* ParsePrimary::inject_invocation(AstNode* node, const char *str)
             case SYMBOL_PAREN_RIGHT:
                 args = new AstArgument();
                 args->strhead = args->strtail = newRoot->strtail = str + 1;
-                newRoot->children.push_back(args);
+                newRoot->astArgs = args;
                 return newRoot;
             default:
                 args = parse_argument(str);
-                newRoot->children.push_back(args);
+                newRoot->astArgs = args;
                 str = args->strtail;
         }
         
@@ -83,7 +82,7 @@ AstParentNode* ParsePrimary::inject_invocation(AstNode* node, const char *str)
                 os << "Unexpected character: " << str[0] << std::endl;
                 throw std::invalid_argument(os.str());
 		}
-	}
+	//}
 }
 
 AstArgument* ParsePrimary::parse_argument(const char *str)
