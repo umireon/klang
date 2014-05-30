@@ -4,6 +4,8 @@
 
 #include "ast.h"
 #include "parser.h"
+#include "parser/ParseParameter.h"
+#include "parser/ParseFunction.h"
 
 AstNode* ParsePrimary::parse_primary(const char *str)
 {
@@ -30,21 +32,35 @@ AstNode* ParsePrimary::parse_primary(const char *str)
 
 AstNode* ParsePrimary::parse_identifier_or_invocation(const char *str)
 {
-	ParseIdentifier pi;
+    ParseIdentifier pi;
 	AstIdentifier *ident = pi.parse_identifier(str);
-    
+
 	str = ident->strtail;
 	str = scan_lexical_symbol(str);
 	enum SymbolType type = get_symbol(str[0]);
-	switch (type) {
-        case SYMBOL_PAREN_LEFT:
-            str++;
+
+    ParseFunction pf;
+    switch (ident->get_identifier_type()) {
+        case AstIdentifier::FUNCTION:
+            delete ident;
             str = scan_lexical_symbol(str);
-            return wrap_with_invocation(ident, str);
+            return pf.parse_function(str);
+        case AstIdentifier::NAME:
+            switch (type) {
+                case SYMBOL_PAREN_LEFT:
+                    str++;
+                    str = scan_lexical_symbol(str);
+                    return wrap_with_invocation(ident, str);
+                    break;
+                default:
+                    return ident;
+            }
             break;
         default:
-            return ident;
-	}
+            std::ostringstream os;
+            os << "Unexpected identifier: " << ident->get_string() << std::endl;
+            throw std::invalid_argument(os.str());
+    }
 }
 
 AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, const char *str)
