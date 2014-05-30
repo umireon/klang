@@ -7,10 +7,13 @@
 
 typedef boost::numeric::ublas::matrix<double> dmatrix;
 typedef boost::numeric::ublas::vector<double> dvector;
+typedef boost::numeric::ublas::scalar_vector<double> dscalar_vector;
 
 using namespace boost::numeric;
 
+class KInteger;
 class KFloat;
+class KVector;
 
 class KObject {
 public:
@@ -60,9 +63,11 @@ public:
 	KInteger* op_add(KInteger* right);
 	KInteger* op_sub(KInteger* right);
 	KFloat* op_sub(KFloat* right);
+	KVector* op_sub(KVector* right);
 	KInteger* op_mul(KInteger* right);
 	KInteger* op_div(KInteger* right);
 	KFloat* op_div(KFloat* right);
+	KVector* op_div(KVector* right);
 	KInteger* op_rem(KNumber* right);
 	KInteger* op_pow(KInteger* right);
 	KFloat* op_pow(KFloat* right);
@@ -88,8 +93,10 @@ public:
 
 	KFloat* op_add(KNumber* right);
 	KFloat* op_sub(KNumber* right);
+	KVector* op_sub(KVector* right);
 	KFloat* op_mul(KNumber* right);
 	KFloat* op_div(KNumber* right);
+	KVector* op_div(KVector* right);
 	KInteger* op_rem(KNumber* right);
 	KFloat* op_pow(KNumber* right);
 private:
@@ -102,12 +109,26 @@ public:
 
 	KVector(dvector v) : vect(v) {}
 
-    enum Type get_type() { return VECTOR; }
-	KObject* op_mul(KObject* right);
-    std::string to_s();
+    virtual enum Type get_type() { return VECTOR; }
+	virtual KObject* op_add(KObject* right);
+	virtual KObject* op_sub(KObject* right);
+	virtual KObject* op_mul(KObject* right);
+	virtual KObject* op_div(KObject* right);
+	virtual KObject* op_rem(KObject* right);
+	virtual KObject* op_pow(KObject* right);
+    virtual std::string to_s();
 
+	KVector* op_add(KNumber* right);
+	KVector* op_add(KVector* right);
+	KVector* op_sub(KNumber* right);
+	KVector* op_sub(KVector* right);
 	KVector* op_mul(KNumber* right);
 	KVector* op_mul(KVector* right);
+	KVector* op_div(KNumber* right);
+	KVector* op_div(KVector* right);
+	KVector* op_rem(KNumber* right);
+	KVector* op_pow(KNumber* right);
+	KVector* op_pow(KVector* right);
 };
 
 class KMatrix : public KObject {

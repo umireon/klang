@@ -11,6 +11,7 @@ KObject* FuncC::invoke(std::vector<KObject*> args) {
             throw std::invalid_argument(std::string("not a number"));
         }
         vect[i] = knum->to_f();
+        delete knum;
     }
 
 	return new KVector(vect);
