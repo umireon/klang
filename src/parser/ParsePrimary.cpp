@@ -49,40 +49,34 @@ AstNode* ParsePrimary::parse_identifier_or_invocation(const char *str)
 
 AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, const char *str)
 {
-	/*if (node->size() == 2) {
-        AstParentNode *root = static_cast<AstParentNode*>(node);
-		root->children[1] = inject_invocation(root->children[1], str);
-        return root;
-	} else {*/
-		AstInvocation *newRoot = new AstInvocation();
-		newRoot->strhead = node->strhead;
-        newRoot->ident = node;
-        
-        AstArgument *args;
-        enum SymbolType type = get_symbol(str[0]);
-        switch (type) {
-            case SYMBOL_PAREN_RIGHT:
-                args = new AstArgument();
-                args->strhead = args->strtail = newRoot->strtail = str + 1;
-                newRoot->astArgs = args;
-                return newRoot;
-            default:
-                args = parse_argument(str);
-                newRoot->astArgs = args;
-                str = args->strtail;
-        }
-        
-		type = get_symbol(str[0]);
-		switch (type) {
-            case SYMBOL_PAREN_RIGHT:
-                newRoot->strtail = str + 1;
-                return newRoot;
-            default:
-                std::ostringstream os;
-                os << "Unexpected character: " << str[0] << std::endl;
-                throw std::invalid_argument(os.str());
-		}
-	//}
+	AstInvocation *newRoot = new AstInvocation();
+	newRoot->strhead = node->strhead;
+    newRoot->ident = node;
+    
+    AstArgument *args;
+    enum SymbolType type = get_symbol(str[0]);
+    switch (type) {
+        case SYMBOL_PAREN_RIGHT:
+            args = new AstArgument();
+            args->strhead = args->strtail = newRoot->strtail = str + 1;
+            newRoot->astArgs = args;
+            return newRoot;
+        default:
+            args = parse_argument(str);
+            newRoot->astArgs = args;
+            str = args->strtail;
+    }
+    
+	type = get_symbol(str[0]);
+	switch (type) {
+        case SYMBOL_PAREN_RIGHT:
+            newRoot->strtail = str + 1;
+            return newRoot;
+        default:
+            std::ostringstream os;
+            os << "Unexpected character: " << str[0] << std::endl;
+            throw std::invalid_argument(os.str());
+	}
 }
 
 AstArgument* ParsePrimary::parse_argument(const char *str)
