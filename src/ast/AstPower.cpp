@@ -2,20 +2,15 @@
 
 #include "ast.h"
 
-KNumber* AstPower::evaluate(Binding* b)
+KObject* AstPower::evaluate(Binding* b)
 {
-    KNumber *baseNum = static_cast<KNumber*>(children.at(0)->evaluate(b));
-    KNumber *eNum = static_cast<KNumber*>(children.at(1)->evaluate(b));
-    
-    if (baseNum->get_type() == KNumber::FLOAT || eNum->get_type() == KNumber::FLOAT) {
-        return new KFloat(pow(baseNum->to_f(), eNum->to_i()));
-    } else {
-        long base = baseNum->to_i();
-        long num = eNum->to_i();
-        long value = 1;
-        for (int i = 0; i < num; i++) {
-            value *= base;
-        }
-        return new KInteger(value);
-    }
+    KObject *lhs = children[0]->evaluate(b);
+    KObject *rhs = children[1]->evaluate(b);
+
+    KObject *retval = lhs->op_pow(rhs);
+
+    delete lhs;
+    delete rhs;
+
+    return retval;
 }
