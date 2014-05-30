@@ -151,3 +151,4 @@ public:
 
 	virtual KObject* invoke(std::vector<KObject*> args) = 0;
 };
+

@@ -1,4 +1,6 @@
-#include <map>
+#include <sstream>
+#include <stdexcept>
+
 #include "kobject.h"
 
 #include "ast.h"

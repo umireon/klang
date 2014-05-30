@@ -61,8 +61,6 @@ if (UNIT_TEST)
     include_directories(${CppUTest_SOURCE_DIR}/include)
 
     file(GLOB TestSourceFiles test/*.cpp)
-    add_executable(runUnit ${TestSourceFiles})
-    set_target_properties(runUnit PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
     add_library(parser_test ${PARSER_SRC})
     add_library(kobject_test ${KOBJECT_SRC})
     add_library(ast_test ${AST_SRC})
@@ -71,9 +69,13 @@ if (UNIT_TEST)
     set_target_properties(kobject_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
     set_target_properties(ast_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
     set_target_properties(kfunc_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
+
+    add_executable(runUnit ${TestSourceFiles})
+    target_compile_options(runUnit PUBLIC "-include" "${CMAKE_SOURCE_DIR}/test/test_helper.h")
     target_link_libraries(runUnit ${Boost_LIBRARIES})
     target_link_libraries(runUnit CppUTest CppUTestExt)
     target_link_libraries(runUnit parser_test ast_test kobject_test kfunc_test)
+
     add_test(Unit runUnit)
 endif ()
 
