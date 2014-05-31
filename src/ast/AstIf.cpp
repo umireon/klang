@@ -1,8 +1,8 @@
 #include <vector>
 
 #include "kobject.h"
+#include "kobject/KNil.h"
 
-#include "ast/AstNode.h"
 #include "ast/AstIf.h"
 
 AstIf::~AstIf()
@@ -18,5 +18,30 @@ AstIf::~AstIf()
     while (iter != body.end()) {
         delete *iter;
         iter++;
+    }
+}
+
+KObject *AstIf::evaluate(Binding *b)
+{
+    for (int i = 0; i < cond.size(); i++) {
+        KObject *res = cond[i]->evaluate(b);
+        int value = 1;
+
+        if (res->get_type() == KObject::INTEGER) {
+            KInteger *kint = dynamic_cast<KInteger *>(res);
+            value = kint->to_i();
+        }
+
+        delete res;
+
+        if (value) {
+            return body[i]->evaluate(b);
+        }
+    }
+
+    if (cond.size() < body.size()) {
+        return body[cond.size()]->evaluate(b);
+    } else {
+        return new KNil();
     }
 }

@@ -13,5 +13,5 @@ public:
 
     virtual ~AstIf();
 
-    //virtual KObject *evaluate(Binding *b);
+    virtual KObject *evaluate(Binding *b);
 };
