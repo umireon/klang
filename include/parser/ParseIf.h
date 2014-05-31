@@ -7,6 +7,7 @@
 class ParseIf {
 public:
 	AstIf *parse_if(pstr_t str);
+
 private:
 	enum SymbolType {
 		SYMBOL_BRACE_LEFT,

@@ -1,5 +1,7 @@
 #include <CppUTest/TestHarness.h>
 
+#include <string>
+
 #include "ast/AstAddition.h"
 #include "ast/AstAssignment.h"
 #include "ast/AstCompound.h"
@@ -12,7 +14,7 @@ TEST_GROUP(ParseFunction)
 {
     ParseFunction p;
     AstFunction *astFunc;
-
+    
     void teardown()
     {
         delete astFunc;
@@ -21,40 +23,46 @@ TEST_GROUP(ParseFunction)
 
 TEST(ParseFunction, get_string)
 {
-    astFunc = p.parse_function("() 0");
-    CHECK_EQUAL(std::string("() 0"), astFunc->get_string());
+    std::string input("() 0");
+    astFunc = p.parse_function(input.begin());
+    CHECK_EQUAL(input, astFunc->get_string());
 }
 
 TEST(ParseFunction, Number)
 {
-    astFunc = p.parse_function("(a) 0");
+    std::string input("(a) 0");
+    astFunc = p.parse_function(input.begin());
     AstNumber *num = dynamic_cast<AstNumber *>(astFunc->body);
     CHECK(num);
 }
 
 TEST(ParseFunction, Identifier)
 {
-    astFunc = p.parse_function("(a) a");
+    std::string input("(a) a");
+    astFunc = p.parse_function(input.begin());
     AstIdentifier *ident = dynamic_cast<AstIdentifier *>(astFunc->body);
     CHECK(ident);
 }
 
 TEST(ParseFunction, ArithExpression)
 {
-    astFunc = p.parse_function("(a) a + b");
+    std::string input("(a) a + b");
+    astFunc = p.parse_function(input.begin());
     AstAddition *add = dynamic_cast<AstAddition *>(astFunc->body);
     CHECK(add);
 }
 
 TEST(ParseFunction, Assignment)
 {
-    astFunc = p.parse_function("(a) a = b");
+    std::string input("(a) a = b");
+    astFunc = p.parse_function(input.begin());
     AstAssignment *assign = dynamic_cast<AstAssignment *>(astFunc->body);
     CHECK(assign);
 }
 TEST(ParseFunction, Compound)
 {
-    astFunc = p.parse_function("(a) {\na\nb\n}");
+    std::string input("(a) {\na\nb\n}");
+    astFunc = p.parse_function(input.begin());
     AstCompound *com = dynamic_cast<AstCompound *>(astFunc->body);
     CHECK(com);
 }

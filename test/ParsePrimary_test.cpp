@@ -1,90 +1,94 @@
 #include <CppUTest/TestHarness.h>
-#include <limits.h>
 
-#include "parser.h"
+#include <string>
+
+#include "ast/AstNode.h"
+#include "ast/AstNumber.h"
+#include "ast/AstIdentifier.h"
+#include "ast/AstInvocation.h"
+#include "ast/AstParen.h"
+
+#include "parser/ParsePrimary.h"
 
 TEST_GROUP(ParsePrimary)
 {
+    ParsePrimary p;
+    AstNode *node;
+    
+    void teardown()
+    {
+        delete node;
+    }
 };
 
 TEST(ParsePrimary, Number)
 {
-	ParsePrimary p;
-    AstNode *prim = p.parse_primary("1");
-    CHECK(dynamic_cast<AstNumber*>(prim));
-    
-    delete prim;
+    std::string input("1");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstNumber *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, Paren)
 {
-    ParsePrimary p;
-    AstNode *prim = p.parse_primary("(1)");
-    CHECK(dynamic_cast<AstParen*>(prim));
-    
-    delete prim;
+    std::string input("(1)");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstParen *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, Identifier)
 {
-    ParsePrimary p;
-    AstNode *prim = p.parse_primary("a");
-    CHECK(dynamic_cast<AstIdentifier*>(prim));
-    
-    delete prim;
+    std::string input("a");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstIdentifier *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, 0ArgInvocation)
 {
-    ParsePrimary p;
-    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log()"));
-    CHECK(invoke);
-    
-    delete invoke;
+    std::string input("log()");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstInvocation *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, 0ArgInvocationWhitespace)
 {
-    ParsePrimary p;
-    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log ( )"));
-    CHECK(invoke);
-    
-    delete invoke;
+    std::string input("log ( )");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstInvocation *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, 1ArgInvocation)
 {
-    ParsePrimary p;
-    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log(1)"));
-    CHECK(invoke);
-    
-    delete invoke;
+    std::string input("log(1)");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstInvocation *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, 1ArgInvocationWhitespace)
 {
-    ParsePrimary p;
-    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log ( 1 )"));
-    CHECK(invoke);
-    
-    delete invoke;
+    std::string input("log ( 1 )");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstInvocation *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, 2ArgInvocation)
 {
-    ParsePrimary p;
-    AstInvocation *invoke = dynamic_cast<AstInvocation*>(p.parse_primary("log(1,2)"));
-    CHECK(invoke);
-    
-    delete invoke;
+    std::string input("log(1,2)");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstInvocation *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParsePrimary, 2ArgInvocationWhitespace)
 {
-    ParsePrimary p;
-    AstNode *node = p.parse_primary("log ( 1 , 2 )");
-    AstInvocation *invoke = dynamic_cast<AstInvocation*>(node);
-    CHECK(invoke);
-    
-    delete invoke;
+    std::string input("log ( 1 , 2 )");
+    node = p.parse_primary(input.begin());
+    CHECK(dynamic_cast<AstInvocation *>(node));
+    CHECK_EQUAL(input, node->get_string());
 }

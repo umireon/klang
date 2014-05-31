@@ -17,6 +17,7 @@ TEST_GROUP(ParseNumber)
     }
 };
 
+/*
 TEST(ParseNumber, Number)
 {
     ParseNumber p;
@@ -242,3 +243,4 @@ TEST(ParseNumber, NegativeFloat)
     delete num;
     delete val;
 }
+*/
