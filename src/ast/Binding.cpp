@@ -33,6 +33,21 @@ void Binding::set_local(std::string name, KObject* value)
 
 KFunction* Binding::get_function(std::string name)
 {
-    KObject* func = locals[name];
-    return dynamic_cast<KFunction*>(func);
+    if (locals.count(name) == 1) {
+        KFunction *f = dynamic_cast<KFunction *>(locals[name]);
+        
+        if (f == NULL) {
+            std::ostringstream os;
+            os << "Invoke with Object: " << name << std::endl;
+            throw std::invalid_argument(os.str());
+        }
+        
+        return f;
+    } else if (global != NULL) {
+        return global->get_function(name);
+    } else {
+        std::ostringstream os;
+        os << "Undefined function: " << name << std::endl;
+        throw std::invalid_argument(os.str());
+    }
 }

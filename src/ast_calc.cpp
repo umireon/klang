@@ -139,7 +139,7 @@ int main(int argc, const char **argv)
                 cout << res->to_s() << endl;
             }
         } catch (std::exception& e) {
-            std::cerr << e.what();
+            std::cerr << e.what() << std::endl;
         }
 
         buf.str("");
