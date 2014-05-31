@@ -13,8 +13,11 @@
 #include "parser.h"
 #include "kobject.h"
 
-#include "kfunc/FuncC.h"
 #include "kfunc/FuncExit.h"
+#include "kfunc/FuncPrint.h"
+#include "kfunc/FuncPuts.h"
+
+#include "kfunc/FuncC.h"
 #include "kfunc/FuncLog.h"
 #include "kfunc/FuncLog10.h"
 #include "kfunc/FuncMatrix.h"
@@ -26,9 +29,12 @@ using namespace boost::numeric;
 
 int main(int argc, const char **argv)
 {
+    FuncExit kExit;
+    FuncPrint kPrint;
+    FuncPuts kPuts;
+
     FuncLog kLog;
     FuncLog10 kLog10;
-    FuncExit kExit;
     FuncC kC;
     FuncMatrix kMatrix;
 
@@ -51,9 +57,12 @@ int main(int argc, const char **argv)
 
     Binding b;
     const char *line;
+    b.set_local(std::string("exit"), &kExit);
+    b.set_local(std::string("print"), &kPrint);
+    b.set_local(std::string("puts"), &kPuts);
+
     b.set_local(std::string("log"), &kLog);
     b.set_local(std::string("log10"), &kLog10);
-    b.set_local(std::string("exit"), &kExit);
     b.set_local(std::string("c"), &kC);
     b.set_local(std::string("matrix"), &kMatrix);
 
