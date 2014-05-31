@@ -1,6 +1,11 @@
 #include <CppUTest/TestHarness.h>
 
-#include "ast.h"
+#include "ast/AstAddition.h"
+#include "ast/AstAssignment.h"
+#include "ast/AstCompound.h"
+#include "ast/AstIdentifier.h"
+#include "ast/AstNumber.h"
+
 #include "parser/ParseFunction.h"
 
 TEST_GROUP(ParseFunction)
@@ -46,4 +51,10 @@ TEST(ParseFunction, Assignment)
     astFunc = p.parse_function("(a) a = b");
     AstAssignment *assign = dynamic_cast<AstAssignment *>(astFunc->body);
     CHECK(assign);
+}
+TEST(ParseFunction, Compound)
+{
+    astFunc = p.parse_function("(a) {\na\nb\n}");
+    AstCompound *com = dynamic_cast<AstCompound *>(astFunc->body);
+    CHECK(com);
 }

@@ -87,10 +87,7 @@ protected:
 	AstReminder* chain_reminder(AstNode* root, const char* str);
 };
 
-class ParseExpression {
-public:
-	AstNode* parse_expression(const char *str);
-};
+#include "parser/ParseExpression.h"
 
 class ParseAssignment {
 public:

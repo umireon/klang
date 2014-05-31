@@ -3,8 +3,11 @@
 #include <stdexcept>
 
 #include "ast/AstFunction.h"
-#include "parser.h"
+
+#include "parser/ParseCompound.h"
+#include "parser/ParseExpression.h"
 #include "parser/ParseParameter.h"
+
 #include "parser/ParseFunction.h"
 
 AstFunction *ParseFunction::parse_function(const char *str)
@@ -13,9 +16,9 @@ AstFunction *ParseFunction::parse_function(const char *str)
     astFunc->strhead = str;
 
     AstParameter *astParam;
+    ParseParameter pp;
     switch (get_symbol(str[0])) {
         case SYMBOL_PAREN_LEFT:
-            ParseParameter pp;
             astParam = pp.parse_parameter(str);
             astFunc->astParam = astParam;
             str = astParam->strtail;
@@ -27,8 +30,17 @@ AstFunction *ParseFunction::parse_function(const char *str)
     }
 
     str = scan(str);
+    AstNode *body;
     ParseExpression pe;
-    AstNode *body = pe.parse_expression(str);
+    ParseCompound pc;
+    switch (get_symbol(str[0])) {
+        case SYMBOL_BRACE_LEFT:
+            body = pc.parse_compound(str);
+            break;
+        default:
+            body = pe.parse_expression(str);
+    }
+
     astFunc->body = body;
     astFunc->strtail = body->strtail;
 
@@ -54,6 +66,8 @@ enum ParseFunction::SymbolType ParseFunction::get_symbol(char c)
             return SYMBOL_WHITESPACE;
         case '(':
             return SYMBOL_PAREN_LEFT;
+        case '{':
+            return SYMBOL_BRACE_LEFT;
         default:
             return SYMBOL_FOLLOW;
     }
