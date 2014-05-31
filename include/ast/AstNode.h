@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Binding.h"
 #include "kobject.h"
+#include "Binding.h"
 
 class AstNode
 {
@@ -12,5 +12,5 @@ public:
     virtual ~AstNode() {}
     virtual int size() { return 0; }
 	virtual std::string get_string();
-	virtual KObject* evaluate(Binding* b) { throw std::invalid_argument(std::string("evaluation not defined.")); }
+	virtual KObject *evaluate(Binding *b) { throw std::invalid_argument(std::string("evaluation not defined.")); }
 };

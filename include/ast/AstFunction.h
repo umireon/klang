@@ -10,5 +10,5 @@ public:
 	AstNode *body;
 
 	virtual ~AstFunction();
-	virtual KFunctionAst* evaluate(Binding *b);
+	virtual KFunctionAst *evaluate(Binding *b);
 };
