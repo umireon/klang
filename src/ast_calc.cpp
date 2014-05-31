@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <stdlib.h>
+#include <vector>
 #include <editline/readline.h>
 #include <boost/numeric/ublas/vector.hpp>
 
@@ -28,7 +29,7 @@
 using namespace std;
 using namespace boost::numeric;
 
-Binding make_world(Binding *b)
+void make_world(Binding *b)
 {
     FuncExit kExit;
     FuncPrint kPrint;
@@ -106,6 +107,7 @@ int main(int argc, const char **argv)
 {
     Binding binding;
     Binding *b = &binding;
+	std::vector<std::string> lines;
 
     make_world(b);
 
@@ -114,8 +116,12 @@ int main(int argc, const char **argv)
     ostringstream buf;
     while (true) {
         std::string prompt = create_prompt(lineno, depth);
-        std::string line(readline(prompt.c_str()));
-        lineno++;
+        std::string input_buf(readline(prompt.c_str()));
+		lineno++;
+
+		lines.push_back(input_buf);
+
+		std::string &line = lines.end()[-1];
         
         depth += std::count(line.begin(), line.end(), '{');
         depth -= std::count(line.begin(), line.end(), '}');
@@ -124,16 +130,17 @@ int main(int argc, const char **argv)
 
         if (depth > 0) {
             continue;
-        } else {
+		} else {
+			buf.str("");
             depth = 0;
         }
 
-        add_history(buf.str().c_str());
+		
+		add_history(const_cast<char *>(line.c_str()));
 
         try {
             Parse p;
-            AstNode *ast = p.parse(buf.str().begin());
-            buf.str("");
+			AstNode *ast = p.parse(line.begin());
             
             if (ast == NULL) {
                 continue;
