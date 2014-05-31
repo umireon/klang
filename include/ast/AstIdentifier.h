@@ -10,7 +10,10 @@ class AstIdentifier : public AstNode {
 public:
 	enum IdentifierType {
 		NAME,
-		FUNCTION
+		FUNCTION,
+        IF,
+        ELSE,
+        ELSIF
 	};
 
 	virtual KObject *evaluate(Binding *b);
