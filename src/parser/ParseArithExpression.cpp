@@ -4,10 +4,10 @@
 #include "ast.h"
 #include "parser.h"
 
-AstNode* ParseArithExpression::parse_arith_expression(const char *str)
+AstNode* ParseArithExpression::parse_arith_expression(pstr_t str)
 {
 	AstNode *expr;
-	const char *s = str;
+	pstr_t s = str;
 	enum SymbolType type;
     
 	type = get_symbol(str[0]);
@@ -44,7 +44,7 @@ AstNode* ParseArithExpression::parse_arith_expression(const char *str)
 }
 
 
-AstAddition* ParseArithExpression::chain_addition(AstNode* root, const char *str)
+AstAddition* ParseArithExpression::chain_addition(AstNode* root, pstr_t str)
 {
 	AstAddition *newRoot = new AstAddition();
 	newRoot->strhead = root->strhead;
@@ -62,7 +62,7 @@ AstAddition* ParseArithExpression::chain_addition(AstNode* root, const char *str
 	return newRoot;
 }
 
-AstSubtraction* ParseArithExpression::chain_subtraction(AstNode* root, const char *str)
+AstSubtraction* ParseArithExpression::chain_subtraction(AstNode* root, pstr_t str)
 {
 	AstSubtraction *newRoot = new AstSubtraction();
 	newRoot->strhead = root->strhead;
@@ -80,7 +80,7 @@ AstSubtraction* ParseArithExpression::chain_subtraction(AstNode* root, const cha
 	return newRoot;
 }
 
-const char* ParseArithExpression::scan_lexical_symbol(const char* str)
+pstr_t ParseArithExpression::scan_lexical_symbol(pstr_t str)
 {
 	enum SymbolType type;
     

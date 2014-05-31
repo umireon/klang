@@ -15,7 +15,7 @@ public:
 	virtual ~KFunctionAst();
 
     enum Type get_type() { return FUNCTION; }
-    std::string to_s() { return std::string("Function"); }
+    std::string to_s() { return std::string("Klang Function"); }
 	virtual KFunctionAst *clone() const { return new KFunctionAst(*this); }
 
 	KObject* invoke(std::vector<KObject*> args);

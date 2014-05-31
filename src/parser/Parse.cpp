@@ -6,13 +6,13 @@
 #include "ast.h"
 #include "parser.h"
 
-AstNode* Parse::parse(const char *str)
+AstNode* Parse::parse(pstr_t str)
 {
     str = scan_lexical_symbol(str);
 	return this->parse_statement(str);
 }
 
-AstNode* Parse::parse_statement(const char *str)
+AstNode* Parse::parse_statement(pstr_t str)
 {
 	enum SymbolType type = get_symbol(str[0]);
     
@@ -34,7 +34,7 @@ AstNode* Parse::parse_statement(const char *str)
 	}
 }
 
-const char* Parse::scan_lexical_symbol(const char* str)
+pstr_t Parse::scan_lexical_symbol(pstr_t str)
 {
 	enum SymbolType type;
     
@@ -82,7 +82,7 @@ enum Parse::SymbolType Parse::get_symbol(char c)
 		return SYMBOL_PAREN_RIGHT;
 	} else if (c == '.') {
 		return SYMBOL_DOT;
-	} else if (c == '\0') {
+	} else if (c == '\0' || c == '\r' || c == '\n') {
 		return SYMBOL_NULL;
 	} else {
 		printf("Unknown Symbol: %d\n", c);

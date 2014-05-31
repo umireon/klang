@@ -4,7 +4,7 @@
 #include "ast.h"
 #include "parser.h"
 
-AstNode* ParseAssignment::parse_assignment(const char *str)
+AstNode* ParseAssignment::parse_assignment(pstr_t str)
 {
 	ParseArithExpression p;
     
@@ -19,7 +19,7 @@ AstNode* ParseAssignment::parse_assignment(const char *str)
 	}
 }
 
-AstParentNode* ParseAssignment::chain_assignment(AstNode* node, const char *str)
+AstParentNode* ParseAssignment::chain_assignment(AstNode* node, pstr_t str)
 {
 	if (node->size() == 2) {
         AstParentNode *root = static_cast<AstParentNode*>(node);
@@ -43,7 +43,7 @@ AstParentNode* ParseAssignment::chain_assignment(AstNode* node, const char *str)
 	}
 }
 
-const char* ParseAssignment::scan_lexical_symbol(const char* str)
+pstr_t ParseAssignment::scan_lexical_symbol(pstr_t str)
 {
 	enum SymbolType type;
     

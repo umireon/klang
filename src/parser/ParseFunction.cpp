@@ -10,7 +10,7 @@
 
 #include "parser/ParseFunction.h"
 
-AstFunction *ParseFunction::parse_function(const char *str)
+AstFunction *ParseFunction::parse_function(pstr_t str)
 {
     AstFunction *astFunc = new AstFunction();
     astFunc->strhead = str;
@@ -47,7 +47,7 @@ AstFunction *ParseFunction::parse_function(const char *str)
     return astFunc;
 }
 
-const char* ParseFunction::scan(const char* str)
+pstr_t ParseFunction::scan(pstr_t str)
 {
 	enum SymbolType type;
     

@@ -2,11 +2,12 @@
 
 #include <vector>
 #include "ast.h"
+#include "parser/types.h"
 
 class Parse
 {
 public:
-	AstNode* parse(const char *str);
+	AstNode* parse(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_NUMBER_ZERO,
@@ -32,14 +33,14 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char* scan_lexical_symbol(const char* str);
+	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstNode* parse_statement(const char *str);
+	AstNode* parse_statement(pstr_t str);
 };
 
 class ParseNumber {
 public:
-	AstNumber* parse_number(const char *str);
+	AstNumber* parse_number(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_NUMBER_ZERO,
@@ -54,20 +55,20 @@ protected:
     
 	enum SymbolType get_symbol(char c);
     
-	AstNumber* read_number_signed(const char *str);
+	AstNumber* read_number_signed(pstr_t str);
     
-	AstNumber* read_number_hex_or_oct_or_float(const char *str);
-	AstHexdecimal* read_number_hex(const char *str);
-	AstOctal* read_number_oct(const char *str);
+	AstNumber* read_number_hex_or_oct_or_float(pstr_t str);
+	AstHexdecimal* read_number_hex(pstr_t str);
+	AstOctal* read_number_oct(pstr_t str);
     
-	AstNumber* read_number_dec_or_float(const char *str);
-	AstDecimal* read_number_dec(const char *str);
-	AstFloat* read_number_float(const char *str);
+	AstNumber* read_number_dec_or_float(pstr_t str);
+	AstDecimal* read_number_dec(pstr_t str);
+	AstFloat* read_number_float(pstr_t str);
 };
 
 class ParseTerm {
 public:
-	AstNode* parse_term(const char *str);
+	AstNode* parse_term(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_OP_ASTERISK,
@@ -78,20 +79,20 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char* scan_lexical_symbol(const char* str);
+	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstParentNode* parse_power_or_multiplication(const char *str);
-	AstParentNode* chain_power(AstNode* root, const char *str);
-	AstMultiplication* chain_multiplication(AstNode* root, const char *str);
-	AstDivision* chain_division(AstNode* root, const char* str);
-	AstReminder* chain_reminder(AstNode* root, const char* str);
+	AstParentNode* parse_power_or_multiplication(pstr_t str);
+	AstParentNode* chain_power(AstNode* root, pstr_t str);
+	AstMultiplication* chain_multiplication(AstNode* root, pstr_t str);
+	AstDivision* chain_division(AstNode* root, pstr_t str);
+	AstReminder* chain_reminder(AstNode* root, pstr_t str);
 };
 
 #include "parser/ParseExpression.h"
 
 class ParseAssignment {
 public:
-	AstNode* parse_assignment(const char *str);
+	AstNode* parse_assignment(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_OP_ASTERISK,
@@ -102,14 +103,14 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char* scan_lexical_symbol(const char* str);
+	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstParentNode* chain_assignment(AstNode* root, const char *str);
+	AstParentNode* chain_assignment(AstNode* root, pstr_t str);
 };
 
 class ParseArithExpression {
 public:
-	AstNode* parse_arith_expression(const char *str);
+	AstNode* parse_arith_expression(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_SIGN_PLUS,
@@ -119,17 +120,17 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char* scan_lexical_symbol(const char* str);
+	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstAddition* chain_addition(AstNode* root, const char *str);
-	AstSubtraction* chain_subtraction(AstNode* root, const char* str);
+	AstAddition* chain_addition(AstNode* root, pstr_t str);
+	AstSubtraction* chain_subtraction(AstNode* root, pstr_t str);
 };
 
 #include "parser/ParseIdentifier.h"
 
 class ParseParen {
 public:
-	AstParen* parse_paren(const char *str);
+	AstParen* parse_paren(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_PAREN_LEFT,
@@ -139,12 +140,12 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char* scan_lexical_symbol(const char* str);
+	pstr_t scan_lexical_symbol(pstr_t str);
 };
 
 class ParsePrimary {
 public:
-	AstNode* parse_primary(const char *str);
+	AstNode* parse_primary(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_FIRST_NUMBER,
@@ -157,9 +158,9 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char* scan_lexical_symbol(const char* str);
+	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstNode* parse_identifier_or_invocation(const char *str);
-	AstInvocation* wrap_with_invocation(AstIdentifier* node, const char *str);
-	AstArgument* parse_argument(const char *str);
+	AstNode* parse_identifier_or_invocation(pstr_t str);
+	AstInvocation* wrap_with_invocation(AstIdentifier* node, pstr_t str);
+	AstArgument* parse_argument(pstr_t str);
 };

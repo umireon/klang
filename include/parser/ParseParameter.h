@@ -2,9 +2,11 @@
 
 #include "ast/AstParameter.h"
 
+#include "parser/types.h"
+
 class ParseParameter {
 public:
-	AstParameter *parse_parameter(const char *str);
+	AstParameter *parse_parameter(pstr_t str);
 private:
 	enum SymbolType {
 		SYMBOL_PAREN_LEFT,
@@ -15,7 +17,7 @@ private:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char *scan(const char *str);
+	pstr_t scan(pstr_t str);
 
-	const char *read_comma_or_follow(const char *str);
+	pstr_t read_comma_or_follow(pstr_t str);
 };

@@ -6,7 +6,7 @@
 
 #include "parser/ParseParameter.h"
 
-AstParameter *ParseParameter::parse_parameter(const char *str)
+AstParameter *ParseParameter::parse_parameter(pstr_t str)
 {
     AstParameter *astParam = new AstParameter();
     astParam->strhead = str;
@@ -39,7 +39,7 @@ AstParameter *ParseParameter::parse_parameter(const char *str)
     }
 }
 
-const char *ParseParameter::read_comma_or_follow(const char *str)
+pstr_t ParseParameter::read_comma_or_follow(pstr_t str)
 {
     switch (get_symbol(str[0])) {
         case SYMBOL_COMMA:
@@ -53,7 +53,7 @@ const char *ParseParameter::read_comma_or_follow(const char *str)
     }
 }
 
-const char *ParseParameter::scan(const char* str)
+pstr_t ParseParameter::scan(pstr_t str)
 {
 	enum SymbolType type;
     

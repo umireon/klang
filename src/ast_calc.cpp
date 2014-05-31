@@ -28,123 +28,119 @@
 using namespace std;
 using namespace boost::numeric;
 
-int main(int argc, const char **argv)
+Binding make_world(Binding *b)
 {
     FuncExit kExit;
     FuncPrint kPrint;
     FuncPuts kPuts;
     FuncFor kFor;
-
+    
     FuncLog kLog;
     FuncLog10 kLog10;
     FuncC kC;
     FuncMatrix kMatrix;
-
+    
     FuncSin kSin;
     FuncCos kCos;
     FuncTan kTan;
-
+    
     FuncSinh kSinh;
     FuncCosh kCosh;
     FuncTanh kTanh;
-
+    
     FuncArcsin kArcsin;
     FuncArccos kArccos;
     FuncArctan kArctan;
-
+    
     FuncFact kFact;
     FuncPerm kPerm;
     FuncComb kComb;
     FuncHmpr kHmpr;
 
-    Binding b;
-    const char *line;
-    b.set_local(std::string("exit"), &kExit);
-    b.set_local(std::string("print"), &kPrint);
-    b.set_local(std::string("puts"), &kPuts);
-    b.set_local(std::string("for"), &kFor);
+    b->set_local(std::string("exit"), &kExit);
+    b->set_local(std::string("print"), &kPrint);
+    b->set_local(std::string("puts"), &kPuts);
+    b->set_local(std::string("for"), &kFor);
+    
+    b->set_local(std::string("log"), &kLog);
+    b->set_local(std::string("log10"), &kLog10);
+    b->set_local(std::string("c"), &kC);
+    b->set_local(std::string("matrix"), &kMatrix);
+    
+    b->set_local(std::string("sin"), &kSin);
+    b->set_local(std::string("cos"), &kCos);
+    b->set_local(std::string("tan"), &kTan);
+    
+    b->set_local(std::string("sinh"), &kSinh);
+    b->set_local(std::string("cosh"), &kCosh);
+    b->set_local(std::string("tanh"), &kTanh);
+    
+    b->set_local(std::string("arcsin"), &kArcsin);
+    b->set_local(std::string("arccos"), &kArccos);
+    b->set_local(std::string("arctan"), &kArctan);
+    
+    b->set_local(std::string("fact"), &kArcsin);
+    b->set_local(std::string("arccos"), &kArccos);
+    b->set_local(std::string("arctan"), &kArctan);
+    
+    b->set_local(std::string("fact"), &kFact);
+    b->set_local(std::string("perm"), &kPerm);
+    b->set_local(std::string("comb"), &kComb);
+    b->set_local(std::string("hmpr"), &kHmpr);
+}
 
-    b.set_local(std::string("log"), &kLog);
-    b.set_local(std::string("log10"), &kLog10);
-    b.set_local(std::string("c"), &kC);
-    b.set_local(std::string("matrix"), &kMatrix);
+std::string create_prompt(int lineno, int depth)
+{
+    ostringstream os;
+    os << "klang:";
+    os.setf(std::ios::right);
+    os.fill('0');
+    os.width(3);
+    os << lineno;
+    os << ":" << depth << "> ";
+    
+    return os.str();
+}
 
-    b.set_local(std::string("sin"), &kSin);
-    b.set_local(std::string("cos"), &kCos);
-    b.set_local(std::string("tan"), &kTan);
+int main(int argc, const char **argv)
+{
+    Binding binding;
+    Binding *b = &binding;
 
-    b.set_local(std::string("sinh"), &kSinh);
-    b.set_local(std::string("cosh"), &kCosh);
-    b.set_local(std::string("tanh"), &kTanh);
+    make_world(b);
 
-    b.set_local(std::string("arcsin"), &kArcsin);
-    b.set_local(std::string("arccos"), &kArccos);
-    b.set_local(std::string("arctan"), &kArctan);
-
-    b.set_local(std::string("fact"), &kArcsin);
-    b.set_local(std::string("arccos"), &kArccos);
-    b.set_local(std::string("arctan"), &kArctan);
-
-    b.set_local(std::string("fact"), &kFact);
-    b.set_local(std::string("perm"), &kPerm);
-    b.set_local(std::string("comb"), &kComb);
-    b.set_local(std::string("hmpr"), &kHmpr);
-
-    int lines = 1;
+    int lineno = 1;
     int depth = 0;
     ostringstream buf;
     while (true) {
-        Parse p;
-        ostringstream os;
-        os << "klang:";
-        os.setf(std::ios::right);
-        os.fill('0');
-        os.width(3);
-        os << lines;
-        os << ":" << depth << "> ";
-        line = readline(os.str().c_str());
-        lines++;
-
-        if (std::strrchr(line, '{')) {
-            depth++;
-        }
-        if (depth > 0 && std::strrchr(line, '}')) {
-            depth--;
-        }
-
+        std::string prompt = create_prompt(lineno, depth);
+        std::string line(readline(prompt.c_str()));
+        lineno++;
+        
+        depth += std::count(line.begin(), line.end(), '{');
+        depth -= std::count(line.begin(), line.end(), '}');
+        
         buf << line << std::endl;
 
         if (depth > 0) {
             continue;
+        } else {
+            depth = 0;
         }
 
         add_history(buf.str().c_str());
 
-        line = current_history()->line;
-
         try {
-            AstNode *ast = p.parse(line);
+            Parse p;
+            AstNode *ast = p.parse(buf.str().begin());
+            buf.str("");
             
             if (ast == NULL) {
                 continue;
             }
+            
+            KObject* res = ast->evaluate(b);
 
-            KObject* res = ast->evaluate(&b);
-            
-            if (KInteger* i = dynamic_cast<KInteger*>(res)) {
-                cout << "Integer: " << i->to_i() << endl;
-            }
-            
-            if (KFloat* f = dynamic_cast<KFloat*>(res)) {
-                cout << "KFloat: " << f->to_f() << endl;
-            }
-            
-            if (KFunction* func = dynamic_cast<KFunction*>(res)) {
-                //std::vector<KObject*> args;
-                //func->invoke(args);
-                cout << "Function" << endl;
-            }
-            
             if (res == NULL) {
                 cout << "NULL" << endl;
             } else {
@@ -153,8 +149,6 @@ int main(int argc, const char **argv)
         } catch (std::exception& e) {
             std::cerr << e.what() << std::endl;
         }
-
-        buf.str("");
     }
 }
 

@@ -8,7 +8,7 @@
 #include "parser/ParseParameter.h"
 #include "parser/ParseFunction.h"
 
-AstNode* ParsePrimary::parse_primary(const char *str)
+AstNode* ParsePrimary::parse_primary(pstr_t str)
 {
 	enum SymbolType type = get_symbol(str[0]);
     
@@ -31,7 +31,7 @@ AstNode* ParsePrimary::parse_primary(const char *str)
 	}
 }
 
-AstNode* ParsePrimary::parse_identifier_or_invocation(const char *str)
+AstNode* ParsePrimary::parse_identifier_or_invocation(pstr_t str)
 {
     ParseIdentifier pi;
     ParseIf pif;
@@ -69,7 +69,7 @@ AstNode* ParsePrimary::parse_identifier_or_invocation(const char *str)
     }
 }
 
-AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, const char *str)
+AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, pstr_t str)
 {
 	AstInvocation *newRoot = new AstInvocation();
 	newRoot->strhead = node->strhead;
@@ -101,7 +101,7 @@ AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, const cha
 	}
 }
 
-AstArgument* ParsePrimary::parse_argument(const char *str)
+AstArgument* ParsePrimary::parse_argument(pstr_t str)
 {
 	AstArgument *inv = new AstArgument();
 	inv->strhead = str;
@@ -129,7 +129,7 @@ AstArgument* ParsePrimary::parse_argument(const char *str)
 	}
 }
 
-const char* ParsePrimary::scan_lexical_symbol(const char* str)
+pstr_t ParsePrimary::scan_lexical_symbol(pstr_t str)
 {
 	enum SymbolType type;
     

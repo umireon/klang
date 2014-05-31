@@ -4,7 +4,7 @@
 #include "ast.h"
 #include "parser.h"
 
-AstIdentifier* ParseIdentifier::parse_identifier(const char *str)
+AstIdentifier* ParseIdentifier::parse_identifier(pstr_t str)
 {
 	AstIdentifier *ident = new AstIdentifier();
 	ident->strhead = str;

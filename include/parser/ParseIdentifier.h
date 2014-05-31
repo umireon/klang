@@ -2,11 +2,12 @@
 
 #include "ast/AstIdentifier.h"
 
+#include "parser/types.h"
 #include "parser/ParseIdentifier.h"
 
 class ParseIdentifier {
 public:
-	AstIdentifier* parse_identifier(const char *str);
+	AstIdentifier* parse_identifier(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_NUMBER,
