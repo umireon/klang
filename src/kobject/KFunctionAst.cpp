@@ -6,7 +6,8 @@ KFunctionAst::~KFunctionAst()
 }
 
 KObject* KFunctionAst::invoke(std::vector<KObject*> args) {
-    Binding b(binding);
+    Binding b;
+    b.global = &binding;
 
     if (paramNames.size() != args.size()) {
     	if (paramNames.size() < args.size()) {

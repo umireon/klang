@@ -32,5 +32,5 @@ KFunctionAst* AstFunction::evaluate(Binding *b)
 		iter++;
 	}
 
-	return new KFunctionAst(*b, body, paramNames);
+	return new KFunctionAst(b, body, paramNames);
 }

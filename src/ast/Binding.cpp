@@ -17,8 +17,12 @@ KObject* Binding::get_local(std::string name)
 {
     if (locals.count(name) == 1) {
         return locals[name]->clone();
+    } else if (global != NULL) {
+        return global->get_local(name);
     } else {
-        return NULL;
+        std::ostringstream os;
+        os << "Undefined variable: " << name << std::endl;
+        throw std::invalid_argument(os.str());
     }
 }
 
