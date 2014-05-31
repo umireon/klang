@@ -9,6 +9,7 @@ public:
 protected:
 	enum SymbolType {
 		SYMBOL_PAREN_LEFT,
+		SYMBOL_BRACE_LEFT,
 		SYMBOL_FOLLOW,
 		SYMBOL_WHITESPACE,
 	};

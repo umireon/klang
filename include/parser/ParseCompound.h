@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ast/AstFunction.h"
+#include "ast/AstCompound.h"
 
 class ParseCompound {
 public:
