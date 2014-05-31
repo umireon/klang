@@ -57,7 +57,7 @@ void make_world(Binding *b)
     FuncPerm kPerm;
     FuncComb kComb;
     FuncHmpr kHmpr;
-
+    
     b->set_local(std::string("exit"), &kExit);
     b->set_local(std::string("print"), &kPrint);
     b->set_local(std::string("puts"), &kPuts);
@@ -108,9 +108,9 @@ int main(int argc, const char **argv)
     Binding binding;
     Binding *b = &binding;
 	std::vector<std::string> lines;
-
+    
     make_world(b);
-
+    
     int lineno = 1;
     int depth = 0;
     ostringstream buf;
@@ -118,26 +118,25 @@ int main(int argc, const char **argv)
         std::string prompt = create_prompt(lineno, depth);
         std::string input_buf(readline(prompt.c_str()));
 		lineno++;
-
-		lines.push_back(input_buf);
-
-		std::string &line = lines.end()[-1];
         
-        depth += std::count(line.begin(), line.end(), '{');
-        depth -= std::count(line.begin(), line.end(), '}');
         
-        buf << line << std::endl;
-
+        depth += std::count(input_buf.begin(), input_buf.end(), '{');
+        depth -= std::count(input_buf.begin(), input_buf.end(), '}');
+        
+        buf << input_buf << std::endl;
+        
         if (depth > 0) {
             continue;
-		} else {
-			buf.str("");
-            depth = 0;
-        }
-
-		
+		}
+        
+		lines.push_back(buf.str());
+        
+        std::string &line = lines.end()[-1];
+        buf.str("");
+        depth = 0;
+        
 		add_history(const_cast<char *>(line.c_str()));
-
+        
         try {
             Parse p;
 			AstNode *ast = p.parse(line.begin());
@@ -147,7 +146,7 @@ int main(int argc, const char **argv)
             }
             
             KObject* res = ast->evaluate(b);
-
+            
             if (res == NULL) {
                 cout << "NULL" << endl;
             } else {
