@@ -16,6 +16,7 @@
 #include "kfunc/FuncExit.h"
 #include "kfunc/FuncPrint.h"
 #include "kfunc/FuncPuts.h"
+#include "kfunc/FuncFor.h"
 
 #include "kfunc/FuncC.h"
 #include "kfunc/FuncLog.h"
@@ -32,6 +33,7 @@ int main(int argc, const char **argv)
     FuncExit kExit;
     FuncPrint kPrint;
     FuncPuts kPuts;
+    FuncFor kFor;
 
     FuncLog kLog;
     FuncLog10 kLog10;
@@ -60,6 +62,7 @@ int main(int argc, const char **argv)
     b.set_local(std::string("exit"), &kExit);
     b.set_local(std::string("print"), &kPrint);
     b.set_local(std::string("puts"), &kPuts);
+    b.set_local(std::string("for"), &kFor);
 
     b.set_local(std::string("log"), &kLog);
     b.set_local(std::string("log10"), &kLog10);
