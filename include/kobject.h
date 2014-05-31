@@ -48,6 +48,8 @@ public:
 
 class KInteger : public KNumber {
 public:
+	long value;
+
 	KInteger(long v) : value(v) {};
 
     virtual enum Type get_type() { return INTEGER; }
@@ -75,12 +77,12 @@ public:
 	KInteger *op_pow(KInteger *right);
 	KFloat *op_pow(KFloat *right);
 	KVector *op_pow(KVector *right);
-private:
-	long value;
 };
 
 class KFloat : public KNumber {
 public:
+	double value;
+
 	KFloat(double v) : value(v) {}
     
     enum Type get_type() { return FLOAT; }
@@ -105,8 +107,6 @@ public:
 	KInteger *op_rem(KNumber* right);
 	KFloat *op_pow(KNumber* right);
 	KVector *op_pow(KVector *right);
-private:
-	double value;
 };
 
 class KVector : public KObject {

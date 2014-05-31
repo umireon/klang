@@ -1,11 +1,12 @@
 #include "kobject.h"
 
+#include "kobject.h"
 #include "kfunc/FuncFor.h"
 
 KObject* FuncFor::invoke(std::vector<KObject*> args)
 {
     if (args.size() != 2) {
-		throw std::invalid_argument("for() takes 2 arguments");
+		throw std::invalid_argument("for(): takes 2 arguments");
     }
 
     KVector *kvect = dynamic_cast<KVector *>(args[0]);
@@ -27,14 +28,17 @@ KObject* FuncFor::invoke(KVector *kvect, KFunction *kfunc)
 	dvector &vect = kvect->vect;
 	dvector::iterator iter = vect.begin();
 	KObject *res = NULL;
-
 	std::vector<KObject *> args(1);
 	while (iter != vect.end()) {
 		delete res;
 		args[0] = new KFloat(*iter);
 		res = kfunc->invoke(args);
 		iter++;
+		delete args[0];
 	}
+
+	delete kvect;
+	delete kfunc;
 
 	return res;
 }

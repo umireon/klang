@@ -7,7 +7,6 @@ KFunctionAst::KFunctionAst(Binding *b, AstNode *n, std::vector<std::string> p) :
 
 KFunctionAst::~KFunctionAst()
 {
-	delete body;
 }
 
 KObject* KFunctionAst::invoke(std::vector<KObject*> args) {
