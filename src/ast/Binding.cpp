@@ -1,11 +1,11 @@
-#include <map>
+#include <boost/unordered_map.hpp>
 
 #include "kobject.h"
 #include "Binding.h"
 
 Binding::~Binding()
 {
-	std::map<std::string, KObject *>::iterator iter = locals.begin();
+    boost::unordered_map<std::string, KObject *>::iterator iter = locals.begin();
 
 	while (iter != locals.end()) {
 		delete iter->second;

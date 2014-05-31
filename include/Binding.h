@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-#include <map>
+
+#include <boost/unordered_map.hpp>
 
 #include "kobject.h"
 
@@ -11,8 +12,8 @@ class KFunction;
 class Binding
 {
 public:
-	std::map<std::string, long> variableTable;
-	std::map<std::string, KObject *> locals;
+	boost::unordered_map<std::string, long> variableTable;
+	boost::unordered_map<std::string, KObject *> locals;
 	Binding *global;
 
 	Binding() : global(NULL) {}
