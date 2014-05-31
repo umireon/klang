@@ -22,7 +22,8 @@ public:
 		FLOAT,
 		VECTOR,
 		MATRIX,
-        FUNCTION
+        FUNCTION,
+        NIL,
 	};
 
 	virtual ~KObject() {}
