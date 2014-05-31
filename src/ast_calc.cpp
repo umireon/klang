@@ -1,7 +1,10 @@
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <cstring>
 #include <math.h>
 #include <stdexcept>
+#include <algorithm>
 #include <stdlib.h>
 #include <editline/readline.h>
 #include <boost/numeric/ublas/vector.hpp>
@@ -47,7 +50,7 @@ int main(int argc, const char **argv)
     FuncHmpr kHmpr;
 
     Binding b;
-    char *line;
+    const char *line;
     b.set_local(std::string("log"), &kLog);
     b.set_local(std::string("log10"), &kLog10);
     b.set_local(std::string("exit"), &kExit);
@@ -75,10 +78,37 @@ int main(int argc, const char **argv)
     b.set_local(std::string("comb"), &kComb);
     b.set_local(std::string("hmpr"), &kHmpr);
 
+    int lines = 1;
+    int depth = 0;
+    ostringstream buf;
     while (true) {
         Parse p;
-        line = readline("> ");
-        add_history(line);
+        ostringstream os;
+        os << "klang:";
+        os.setf(std::ios::right);
+        os.fill('0');
+        os.width(3);
+        os << lines;
+        os << ":" << depth << "> ";
+        line = readline(os.str().c_str());
+        lines++;
+
+        if (std::strrchr(line, '{')) {
+            depth++;
+        }
+        if (depth > 0 && std::strrchr(line, '}')) {
+            depth--;
+        }
+
+        buf << line << std::endl;
+
+        if (depth > 0) {
+            continue;
+        }
+
+        add_history(buf.str().c_str());
+
+        line = current_history()->line;
 
         try {
             AstNode *ast = p.parse(line);
@@ -110,8 +140,9 @@ int main(int argc, const char **argv)
             }
         } catch (std::exception& e) {
             std::cerr << e.what();
-            continue;
         }
+
+        buf.str("");
     }
 }
 
