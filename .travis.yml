@@ -14,7 +14,7 @@ before_script:
   - (cd build; cmake .. -DKLANG_UNIT=ON -DCMAKE_BUILD_TYPE=Debug)
 
 script: 
-  - (cd build; make)
+  - (cd build; make -j4)
   - (cd build; ctest -E CppUTest)
 after_success:
   - coveralls -e test -e spec -e include
