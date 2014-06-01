@@ -5,13 +5,17 @@
 
 KObject* AstIdentifier::evaluate(Binding* b)
 {
-    std::string name = get_string();
-    return b->get_local(name);
+    return b->get_local(value);
+}
+
+std::string AstIdentifier::get_name()
+{
+    return value;
 }
 
 AstIdentifier::IdentifierType AstIdentifier::get_identifier_type()
 {
-	std::string s(get_string());
+	std::string s(get_name());
 	if (s == std::string("function")) {
 		return FUNCTION;
     } else if (s == std::string("if")) {

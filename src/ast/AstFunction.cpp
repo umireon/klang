@@ -24,10 +24,10 @@ KFunctionAst* AstFunction::evaluate(Binding *b)
 		AstIdentifier *ident = *iter;
 
 		if (ident->get_identifier_type() == AstIdentifier::NAME) {
-			paramNames.push_back(ident->get_string());
+			paramNames.push_back(ident->get_name());
 		} else {
             std::ostringstream os;
-            os << "Reserved word for Parameter: " << ident->get_string() << std::endl;
+            os << "Reserved word for Parameter: " << ident->get_name() << std::endl;
             throw std::invalid_argument(os.str());
 		}
 
