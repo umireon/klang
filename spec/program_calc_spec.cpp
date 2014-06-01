@@ -16,9 +16,10 @@ using namespace igloo;
 
 int accepts(const char *str)
 {
+    std::string input(str);
 	Parse p;
-	AstNode *stmt = p.parse(str);
-	return (strlen(stmt->strtail) == 0);
+	AstNode *stmt = p.parse(input.begin());
+	return (stmt->strtail == input.end());
 }
 
 Describe(プログラム電卓) {

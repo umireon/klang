@@ -13,7 +13,7 @@
 
 #include "parser/ParseIf.h"
 
-AstIf *ParseIf::parse_if(const char *str)
+AstIf *ParseIf::parse_if(pstr_t str)
 {
     AstIf *astIf = new AstIf();
     astIf->strhead = str;
@@ -71,7 +71,7 @@ AstIf *ParseIf::parse_if(const char *str)
     }
 }
 
-const char* ParseIf::scan(const char* str)
+pstr_t ParseIf::scan(pstr_t str)
 {
 	enum SymbolType type;
     

@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstPower.h"
 
 KObject* AstPower::evaluate(Binding* b)
 {

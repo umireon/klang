@@ -1,14 +1,15 @@
 #include <CppUTest/TestHarness.h>
 
+#include <string>
+
 #include "kobject.h"
 #include "kobject/KNil.h"
+#include "Binding.h"
 
 #include "ast/AstIf.h"
 #include "ast/AstInteger.h"
 
 #include "parser/ParseIf.h"
-
-using std::string;
 
 TEST_GROUP(AstIf)
 {
@@ -33,7 +34,8 @@ TEST_GROUP(AstIf)
 
 TEST(AstIf, IfTrue)
 {
-    astIf = p.parse_if("1 2");
+    std::string input("1 2");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);
@@ -42,7 +44,8 @@ TEST(AstIf, IfTrue)
 
 TEST(AstIf, IfFalse)
 {
-    astIf = p.parse_if("0 2");
+    std::string input("0 2");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KNil *knil = dynamic_cast<KNil *>(res);
     CHECK(knil);
@@ -50,7 +53,8 @@ TEST(AstIf, IfFalse)
 
 TEST(AstIf, IfFalseElse)
 {
-    astIf = p.parse_if("0 2 else 4");
+    std::string input("0 2 else 4");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);
@@ -59,7 +63,8 @@ TEST(AstIf, IfFalseElse)
 
 TEST(AstIf, IfTrueElsif)
 {
-    astIf = p.parse_if("1 2 elsif 1 4");
+    std::string input("1 2 elsif 1 4");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);
@@ -68,7 +73,8 @@ TEST(AstIf, IfTrueElsif)
 
 TEST(AstIf, IfFalseElsifTrue)
 {
-    astIf = p.parse_if("0 2 elsif 1 4");
+    std::string input("0 2 elsif 1 4");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);
@@ -77,7 +83,8 @@ TEST(AstIf, IfFalseElsifTrue)
 
 TEST(AstIf, IfFalseElsifFalse)
 {
-    astIf = p.parse_if("0 2 elsif 0 4");
+    std::string input("0 2 elsif 0 4");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KNil *knil = dynamic_cast<KNil *>(res);
     CHECK(knil);
@@ -85,7 +92,8 @@ TEST(AstIf, IfFalseElsifFalse)
 
 TEST(AstIf, IfFalseElsifFalseElse)
 {
-    astIf = p.parse_if("0 2 elsif 0 4 else 6");
+    std::string input("0 2 elsif 0 4 else 6");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);
@@ -94,7 +102,8 @@ TEST(AstIf, IfFalseElsifFalseElse)
 
 TEST(AstIf, IfFalseElsifFalseElsifTrue)
 {
-    astIf = p.parse_if("0 2 elsif 0 4 elsif 1 6");
+    std::string input("0 2 elsif 0 4 elsif 1 6");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);
@@ -103,7 +112,8 @@ TEST(AstIf, IfFalseElsifFalseElsifTrue)
 
 TEST(AstIf, IfFalseElsifFalseElsifFalseElse)
 {
-    astIf = p.parse_if("0 2 elsif 0 4 elsif 0 6 else 8");
+    std::string input("0 2 elsif 0 4 elsif 0 6 else 8");
+    astIf = p.parse_if(input.begin());
     res = astIf->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);

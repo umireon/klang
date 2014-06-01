@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstParen.h"
 
 KObject* AstParen::evaluate(Binding* b)
 {

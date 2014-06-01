@@ -6,7 +6,7 @@
 #include "parser/ParseExpression.h"
 #include "parser/ParseCompound.h"
 
-AstCompound* ParseCompound::parse_compound(const char *str)
+AstCompound* ParseCompound::parse_compound(pstr_t str)
 {
 	AstCompound *com = new AstCompound();
 	com->strhead = str;
@@ -53,7 +53,7 @@ enum ParseCompound::SymbolType ParseCompound::get_symbol(char c) const
 	}
 }
 
-const char* ParseCompound::scan(const char* str) const
+pstr_t ParseCompound::scan(pstr_t str) const
 {
 	enum SymbolType type;
     

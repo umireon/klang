@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstInteger.h"
 
 KInteger* AstInteger::evaluate(Binding* b)
 {

@@ -1,18 +1,26 @@
 #include <CppUTest/TestHarness.h>
 
-#include "ast.h"
-#include "parser.h"
+#include <cfloat>
+#include <vector>
+
 #include "kobject.h"
+#include "kobject/KNil.h"
+#include "Binding.h"
 
 #include "kfunc/factorial.h"
 
+#include "ast/AstNode.h"
+
+#include "parser/Parse.h"
+
 TEST_GROUP(kfunc_factorial)
 {
-    AstNode *expr;
-    KInteger *res;
+    AstNode *node;
+    KObject *res;
 
 	Parse p;
-	Binding b;
+	Binding binding;
+    Binding *b;
 
     FuncFact kFact;
     FuncPerm kPerm;
@@ -21,47 +29,56 @@ TEST_GROUP(kfunc_factorial)
 
 	void setup()
 	{
-        b.set_local(std::string("fact"), &kFact);
-        b.set_local(std::string("perm"), &kPerm);
-        b.set_local(std::string("comb"), &kComb);
-        b.set_local(std::string("hmpr"), &kHmpr);
+        b = &binding;
+        binding.set_local(std::string("fact"), &kFact);
+        binding.set_local(std::string("perm"), &kPerm);
+        binding.set_local(std::string("comb"), &kComb);
+        binding.set_local(std::string("hmpr"), &kHmpr);
 	}
 
 	void teardown()
 	{
-		delete expr;
+		delete node;
 		delete res;
 	}
 };
 
 TEST(kfunc_factorial, FactInteger)
 {
-    expr = p.parse("fact(3)");
-    res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(6, res->to_i());
+    std::string input("fact(3)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(6, kint->to_i());
 }
 
 TEST(kfunc_factorial, PermInteger)
 {
-    expr = p.parse("perm(4,2)");
-    res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(12, res->to_i());
+    std::string input("perm(4,2)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(12, kint->to_i());
 }
 
 TEST(kfunc_factorial, CombInteger)
 {
-    expr = p.parse("comb(4,2)");
-    res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(6, res->to_i());
+    std::string input("comb(4,2)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(6, kint->to_i());
 }
 
 TEST(kfunc_factorial, HmprInteger)
 {
-    expr = p.parse("hmpr(4,2)");
-    res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(10, res->to_i());
+    std::string input("hmpr(4,2)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(10, kint->to_i());
 }

@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstDivision.h"
 
 KObject* AstDivision::evaluate(Binding* b)
 {

@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "ast/AstParameter.h"
+
 #include "parser/ParseParameter.h"
 
 TEST_GROUP(ParseParameter)
@@ -17,26 +19,30 @@ TEST_GROUP(ParseParameter)
 
 TEST(ParseParameter, get_string)
 {
-    astParam = p.parse_parameter("()");
+    std::string input("()");
+    astParam = p.parse_parameter(input.begin());
     CHECK_EQUAL(std::string("()"), astParam->get_string());
 }
 
 TEST(ParseParameter, Empty)
 {
-    astParam = p.parse_parameter("()");
+    std::string input("()");
+    astParam = p.parse_parameter(input.begin());
     CHECK(astParam->params.empty());
 }
 
 TEST(ParseParameter, One)
 {
-    astParam = p.parse_parameter("(a)");
+    std::string input("(a)");
+    astParam = p.parse_parameter(input.begin());
     CHECK_EQUAL(1, astParam->params.size());
     CHECK_EQUAL(std::string("a"), astParam->params[0]->get_string());
 }
 
 TEST(ParseParameter, More)
 {
-    astParam = p.parse_parameter("(a,b,c)");
+    std::string input("(a,b,c)");
+    astParam = p.parse_parameter(input.begin());
     CHECK_EQUAL(3, astParam->params.size());
     CHECK_EQUAL(std::string("a"), astParam->params[0]->get_string());
     CHECK_EQUAL(std::string("b"), astParam->params[1]->get_string());

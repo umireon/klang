@@ -2,9 +2,11 @@
 
 #include "ast/AstFunction.h"
 
+#include "parser/types.h"
+
 class ParseFunction {
 public:
-	AstFunction *parse_function(const char *str);
+	AstFunction *parse_function(pstr_t str);
 
 protected:
 	enum SymbolType {
@@ -15,5 +17,5 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char *scan(const char *str);
+	pstr_t scan(pstr_t str);
 };

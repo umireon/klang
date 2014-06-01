@@ -1,40 +1,42 @@
 #include <CppUTest/TestHarness.h>
-#include <limits.h>
 
-#include "parser.h"
+#include <string>
+
+#include "ast/AstIdentifier.h"
+
+#include "parser/ParseIdentifier.h"
 
 TEST_GROUP(ParseIdentifier)
 {
     ParseIdentifier p;
-    AstNode *node;
     AstIdentifier *ident;
-
+    
     void teardown()
     {
-        delete node;
+        delete ident;
     }
 };
 
 TEST(ParseIdentifier, ReturnIdentifierNode)
 {
-    node = p.parse_identifier("a");
-    ident = dynamic_cast<AstIdentifier *>(node);
+    std::string input("a");
+    ident = p.parse_identifier(input.begin());
     CHECK(ident);
-    CHECK_EQUAL("a", ident->get_string());
+    CHECK_EQUAL(input, ident->get_string());
 }
 
 TEST(ParseIdentifier, CanRead4LetterIdentifier)
 {
-    node = p.parse_identifier("abcd");
-    ident = dynamic_cast<AstIdentifier *>(node);
+    std::string input("abcd");
+    ident = p.parse_identifier(input.begin());
     CHECK(ident);
-    CHECK_EQUAL("abcd", ident->get_string());
+    CHECK_EQUAL(input, ident->get_string());
 }
 
 TEST(ParseIdentifier, CanRead4AlnumIdentifier)
 {
-    node = p.parse_identifier("a2xd");
-    ident = dynamic_cast<AstIdentifier *>(node);
+    std::string input("a2xd");
+    ident = p.parse_identifier(input.begin());
     CHECK(ident);
-    CHECK_EQUAL("a2xd", ident->get_string());
+    CHECK_EQUAL(input, ident->get_string());
 }

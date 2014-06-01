@@ -1,134 +1,129 @@
-#include <iostream>
 #include <CppUTest/TestHarness.h>
 
-#include "parser.h"
+#include <string>
 
-using std::string;
+#include "ast/AstNumber.h"
+#include "ast/AstAddition.h"
+#include "ast/AstSubtraction.h"
+
+#include "parser/ParseArithExpression.h"
 
 TEST_GROUP(ParseArithExpression)
 {
-    Binding *b;
-    void setup()
-    {
-        b = new Binding();
-    }
+    ParseArithExpression p;
+    AstNode *node;
     
     void teardown()
     {
-        delete b;
+        delete node;
     }
 };
 
+TEST(ParseArithExpression, get_string)
+{
+    std::string input("0");
+    node = p.parse_arith_expression(input.begin());
+    CHECK_EQUAL(input, node->get_string());
+}
+
 TEST(ParseArithExpression, AstNumber)
 {
-    ParseArithExpression p;
-    AstNode *expr = p.parse_arith_expression("0");
-    CHECK(dynamic_cast<AstNumber*>(expr));
-    
-    delete expr;
+    std::string input("0");
+    node = p.parse_arith_expression(input.begin());
+    AstNumber *num = dynamic_cast<AstNumber *>(node);
+    CHECK(num);
+    CHECK_EQUAL(input, num->get_string());
 }
 
 TEST(ParseArithExpression, 2ElemAddition)
 {
-    ParseArithExpression p;
-    
-    AstAddition *expr = dynamic_cast<AstAddition*>(p.parse_arith_expression("2+3"));
+    std::string input("2+3");
+    node = p.parse_arith_expression(input.begin());
+    AstAddition *expr = dynamic_cast<AstAddition *>(node);
     CHECK(expr);
-    std::vector<AstNode*> &children = expr->children;
+    std::vector<AstNode *> &children = expr->children;
     
-    CHECK_EQUAL(string("2"), children[0]->get_string());
-    CHECK_EQUAL(string("3"), children[1]->get_string());
-    
-    delete expr;
+    CHECK_EQUAL(std::string("2"), children[0]->get_string());
+    CHECK_EQUAL(std::string("3"), children[1]->get_string());
 }
 
 TEST(ParseArithExpression, 3ElemAddition)
 {
-    ParseArithExpression p;
-    
-    AstAddition *expr = dynamic_cast<AstAddition*>(p.parse_arith_expression("2+3+4"));
+    std::string input("2+3+4");
+    node = p.parse_arith_expression(input.begin());
+    AstAddition *expr = dynamic_cast<AstAddition *>(node);
     CHECK(expr);
-    std::vector<AstNode*> &children = expr->children;
+    std::vector<AstNode *> &children = expr->children;
     
-    AstAddition *expr0 = dynamic_cast<AstAddition*>(children[0]);
+    AstAddition *expr0 = dynamic_cast<AstAddition *>(children[0]);
     CHECK(expr0);
-    std::vector<AstNode*> &children0 = expr0->children;
+    std::vector<AstNode *> &children0 = expr0->children;
     
-    CHECK_EQUAL(string("2"), children0[0]->get_string());
-    CHECK_EQUAL(string("3"), children0[1]->get_string());
-    CHECK_EQUAL(string("4"), children[1]->get_string());
-    
-    delete expr;
+    CHECK_EQUAL(std::string("2"), children0[0]->get_string());
+    CHECK_EQUAL(std::string("3"), children0[1]->get_string());
+    CHECK_EQUAL(std::string("4"), children[1]->get_string());
 }
 
 TEST(ParseArithExpression, 2ElemSubtraction)
 {
-    ParseArithExpression p;
-    
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2-3"));
+    std::string input("2-3");
+    node = p.parse_arith_expression(input.begin());
+    AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
-    std::vector<AstNode*> &children = expr->children;
+    std::vector<AstNode *> &children = expr->children;
     
-    CHECK_EQUAL(string("2"), children[0]->get_string());
-    CHECK_EQUAL(string("3"), children[1]->get_string());
-    
-    delete expr;
+    CHECK_EQUAL(std::string("2"), children[0]->get_string());
+    CHECK_EQUAL(std::string("3"), children[1]->get_string());
 }
 
 TEST(ParseArithExpression, 3ElemSubtraction)
 {
-    ParseArithExpression p;
-    
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2-3-4"));
+    std::string input("2-3-4");
+    node = p.parse_arith_expression(input.begin());
+    AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
-    std::vector<AstNode*> &children = expr->children;
+    std::vector<AstNode *> &children = expr->children;
     
-    AstSubtraction *expr0 = dynamic_cast<AstSubtraction*>(children[0]);
+    AstSubtraction *expr0 = dynamic_cast<AstSubtraction *>(children[0]);
     CHECK(expr0);
-    std::vector<AstNode*> &children0 = expr0->children;
+    std::vector<AstNode *> &children0 = expr0->children;
     
-    CHECK_EQUAL(string("2"), children0[0]->get_string());
-    CHECK_EQUAL(string("3"), children0[1]->get_string());
-    CHECK_EQUAL(string("4"), children[1]->get_string());
-    
-    delete expr;
+    CHECK_EQUAL(std::string("2"), children0[0]->get_string());
+    CHECK_EQUAL(std::string("3"), children0[1]->get_string());
+    CHECK_EQUAL(std::string("4"), children[1]->get_string());
 }
 
 TEST(ParseArithExpression, Complex)
 {
-    ParseArithExpression p;
-    
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2+3-4"));
+    std::string input("2+3-4");
+    node = p.parse_arith_expression(input.begin());
+    AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
-    std::vector<AstNode*> &children = expr->children;
+    std::vector<AstNode *> &children = expr->children;
     
-    AstAddition *expr0 = dynamic_cast<AstAddition*>(children[0]);
+    AstAddition *expr0 = dynamic_cast<AstAddition *>(children[0]);
     CHECK(expr0);
-    std::vector<AstNode*> &children0 = expr0->children;
+    std::vector<AstNode *> &children0 = expr0->children;
     
-    CHECK_EQUAL(string("2"), children0[0]->get_string());
-    CHECK_EQUAL(string("3"), children0[1]->get_string());
-    CHECK_EQUAL(string("4"), children[1]->get_string());
-    
-    delete expr;
+    CHECK_EQUAL(std::string("2"), children0[0]->get_string());
+    CHECK_EQUAL(std::string("3"), children0[1]->get_string());
+    CHECK_EQUAL(std::string("4"), children[1]->get_string());
 }
 
 TEST(ParseArithExpression, Whitespace)
 {
-    ParseArithExpression p;
-    
-    AstSubtraction *expr = dynamic_cast<AstSubtraction*>(p.parse_arith_expression("2 + 3 - 4"));
+    std::string input("2 + 3 - 4");
+    node = p.parse_arith_expression(input.begin());
+    AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
-    std::vector<AstNode*> &children = expr->children;
+    std::vector<AstNode *> &children = expr->children;
     
-    AstAddition *expr0 = dynamic_cast<AstAddition*>(children[0]);
+    AstAddition *expr0 = dynamic_cast<AstAddition *>(children[0]);
     CHECK(expr0);
-    std::vector<AstNode*> &children0 = expr0->children;
+    std::vector<AstNode *> &children0 = expr0->children;
     
-    CHECK_EQUAL(string("2"), children0[0]->get_string());
-    CHECK_EQUAL(string("3"), children0[1]->get_string());
-    CHECK_EQUAL(string("4"), children[1]->get_string());
-    
-    delete expr;
+    CHECK_EQUAL(std::string("2"), children0[0]->get_string());
+    CHECK_EQUAL(std::string("3"), children0[1]->get_string());
+    CHECK_EQUAL(std::string("4"), children[1]->get_string());
 }
 

@@ -2,12 +2,13 @@
 
 #include "kobject.h"
 #include "Binding.h"
+#include "parser/types.h"
 
 class AstNode
 {
 public:
-	const char *strhead;
-	const char *strtail;
+	pstr_t strhead;
+	pstr_t strtail;
     
     virtual ~AstNode() {}
     virtual int size() { return 0; }

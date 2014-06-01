@@ -2,9 +2,11 @@
 
 #include "ast/AstCompound.h"
 
+#include "parser/types.h"
+
 class ParseCompound {
 public:
-	AstCompound *parse_compound(const char *str);
+	AstCompound *parse_compound(pstr_t str);
     
 protected:
 	enum SymbolType {
@@ -15,5 +17,5 @@ protected:
 	};
     
 	enum SymbolType get_symbol(char c) const;
-	const char *scan(const char *str) const;
+	pstr_t scan(pstr_t str) const;
 };

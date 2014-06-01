@@ -5,6 +5,7 @@
 #include "ast/AstNode.h"
 #include "ast/AstCompound.h"
 #include "ast/AstIdentifier.h"
+
 #include "parser/ParseCompound.h"
 
 TEST_GROUP(ParseCompound)
@@ -21,13 +22,15 @@ TEST_GROUP(ParseCompound)
 
 TEST(ParseCompound, get_string)
 {
-    node = p.parse_compound("{x}");
-    CHECK_EQUAL("{x}", node->get_string());
+    std::string input("{x}");
+    node = p.parse_compound(input.begin());
+    CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParseCompound, InLine)
 {
-    node = p.parse_compound("{x}");
+    std::string input("{x}");
+    node = p.parse_compound(input.begin());
     com = dynamic_cast<AstCompound *>(node);
     CHECK(com);
     
@@ -38,7 +41,8 @@ TEST(ParseCompound, InLine)
 
 TEST(ParseCompound, SingleLine)
 {
-    node = p.parse_compound("{\nx\n}");
+    std::string input("{\nx\n}");
+    node = p.parse_compound(input.begin());
     com = dynamic_cast<AstCompound *>(node);
     CHECK(com);
     
@@ -49,7 +53,8 @@ TEST(ParseCompound, SingleLine)
 
 TEST(ParseCompound, MultipleLine)
 {
-    node = p.parse_compound("{\nx\ny\rz\n}");
+    std::string input("{\nx\ny\rz\n}");
+    node = p.parse_compound(input.begin());
     com = dynamic_cast<AstCompound *>(node);
     CHECK(com);
     

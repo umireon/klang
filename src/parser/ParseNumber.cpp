@@ -5,7 +5,7 @@
 #include "ast.h"
 #include "parser.h"
 
-AstNumber* ParseNumber::parse_number(const char* str)
+AstNumber* ParseNumber::parse_number(pstr_t str)
 {
 	AstNumber* num;
     
@@ -32,7 +32,7 @@ AstNumber* ParseNumber::parse_number(const char* str)
 	return num;
 }
 
-AstNumber* ParseNumber::read_number_signed(const char *str)
+AstNumber* ParseNumber::read_number_signed(pstr_t str)
 {
 	enum SymbolType type = get_symbol(str[0]);
     
@@ -49,7 +49,7 @@ AstNumber* ParseNumber::read_number_signed(const char *str)
 	}
 }
 
-AstNumber* ParseNumber::read_number_hex_or_oct_or_float(const char* str)
+AstNumber* ParseNumber::read_number_hex_or_oct_or_float(pstr_t str)
 {
 	enum SymbolType type = get_symbol(str[0]);
     
@@ -63,7 +63,7 @@ AstNumber* ParseNumber::read_number_hex_or_oct_or_float(const char* str)
 	}
 }
 
-AstHexdecimal* ParseNumber::read_number_hex(const char *str)
+AstHexdecimal* ParseNumber::read_number_hex(pstr_t str)
 {
 	AstHexdecimal *hex = new AstHexdecimal();
     
@@ -84,7 +84,7 @@ AstHexdecimal* ParseNumber::read_number_hex(const char *str)
 	}
 }
 
-AstOctal* ParseNumber::read_number_oct(const char *str)
+AstOctal* ParseNumber::read_number_oct(pstr_t str)
 {
 	AstOctal *oct = new AstOctal();
     
@@ -103,7 +103,7 @@ AstOctal* ParseNumber::read_number_oct(const char *str)
 	}
 }
 
-AstNumber* ParseNumber::read_number_dec_or_float(const char* str)
+AstNumber* ParseNumber::read_number_dec_or_float(pstr_t str)
 {
 	while (1) {
 		enum SymbolType type = get_symbol(str[0]);
@@ -122,14 +122,14 @@ AstNumber* ParseNumber::read_number_dec_or_float(const char* str)
 	}
 }
 
-AstDecimal* ParseNumber::read_number_dec(const char* str)
+AstDecimal* ParseNumber::read_number_dec(pstr_t str)
 {
 	AstDecimal *dec = new AstDecimal();
 	dec->strtail = str;
 	return dec;
 }
 
-AstFloat* ParseNumber::read_number_float(const char *str)
+AstFloat* ParseNumber::read_number_float(pstr_t str)
 {
 	AstFloat *flt = new AstFloat();
     

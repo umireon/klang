@@ -5,10 +5,10 @@
 #include "ast.h"
 #include "parser.h"
 
-AstParen* ParseParen::parse_paren(const char *str)
+AstParen* ParseParen::parse_paren(pstr_t str)
 {
 	AstParen* paren = new AstParen();
-	const char *s = str;
+	pstr_t s = str;
     
 	enum SymbolType type = get_symbol(s[0]);
 	switch (type) {
@@ -45,7 +45,7 @@ AstParen* ParseParen::parse_paren(const char *str)
 	return paren;
 }
 
-const char* ParseParen::scan_lexical_symbol(const char* str)
+pstr_t ParseParen::scan_lexical_symbol(pstr_t str)
 {
 	enum SymbolType type;
     

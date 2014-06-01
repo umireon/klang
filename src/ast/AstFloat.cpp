@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstFloat.h"
 
 KFloat* AstFloat::evaluate(Binding* b)
 {

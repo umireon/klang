@@ -5,11 +5,11 @@
 #include "ast.h"
 #include "parser.h"
 
-AstNode* ParseTerm::parse_term(const char *str)
+AstNode* ParseTerm::parse_term(pstr_t str)
 {
 	AstNode *term;
 	enum SymbolType type = get_symbol(str[0]);
-	const char *s = str;
+	pstr_t s = str;
     
 	switch (type) {
         case SYMBOL_FOLLOW:
@@ -61,7 +61,7 @@ AstNode* ParseTerm::parse_term(const char *str)
 	}
 }
 
-AstParentNode* ParseTerm::chain_power(AstNode* node, const char *str)
+AstParentNode* ParseTerm::chain_power(AstNode* node, pstr_t str)
 {
 	if (node->size() == 2) {
         AstParentNode *root = static_cast<AstParentNode*>(node);
@@ -85,7 +85,7 @@ AstParentNode* ParseTerm::chain_power(AstNode* node, const char *str)
 	}
 }
 
-AstMultiplication* ParseTerm::chain_multiplication(AstNode* root, const char *str)
+AstMultiplication* ParseTerm::chain_multiplication(AstNode* root, pstr_t str)
 {
 	AstMultiplication *newRoot = new AstMultiplication();
 	newRoot->strhead = root->strhead;
@@ -103,7 +103,7 @@ AstMultiplication* ParseTerm::chain_multiplication(AstNode* root, const char *st
 	return newRoot;
 }
 
-AstDivision* ParseTerm::chain_division(AstNode* root, const char* str)
+AstDivision* ParseTerm::chain_division(AstNode* root, pstr_t str)
 {
 	AstDivision *newRoot = new AstDivision();
 	newRoot->strhead = root->strhead;
@@ -121,7 +121,7 @@ AstDivision* ParseTerm::chain_division(AstNode* root, const char* str)
 	return newRoot;
 }
 
-AstReminder* ParseTerm::chain_reminder(AstNode* root, const char* str)
+AstReminder* ParseTerm::chain_reminder(AstNode* root, pstr_t str)
 {
 	AstReminder *newRoot = new AstReminder();
 	newRoot->strhead = root->strhead;
@@ -139,7 +139,7 @@ AstReminder* ParseTerm::chain_reminder(AstNode* root, const char* str)
 	return newRoot;
 }
 
-const char* ParseTerm::scan_lexical_symbol(const char* str)
+pstr_t ParseTerm::scan_lexical_symbol(pstr_t str)
 {
 	enum SymbolType type;
     

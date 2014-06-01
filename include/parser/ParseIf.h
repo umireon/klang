@@ -2,9 +2,12 @@
 
 #include "ast/AstIf.h"
 
+#include "parser/types.h"
+
 class ParseIf {
 public:
-	AstIf *parse_if(const char *str);
+	AstIf *parse_if(pstr_t str);
+
 private:
 	enum SymbolType {
 		SYMBOL_BRACE_LEFT,
@@ -14,5 +17,5 @@ private:
 	};
     
 	enum SymbolType get_symbol(char c);
-	const char *scan(const char *str);
+	pstr_t scan(pstr_t str);
 };

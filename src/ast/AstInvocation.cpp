@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstInvocation.h"
 
 AstInvocation::~AstInvocation()
 {

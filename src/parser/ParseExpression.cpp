@@ -4,7 +4,7 @@
 #include "ast.h"
 #include "parser.h"
 
-AstNode* ParseExpression::parse_expression(const char *str)
+AstNode* ParseExpression::parse_expression(pstr_t str)
 {
 	ParseAssignment p;
 	return p.parse_assignment(str);

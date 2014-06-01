@@ -1,17 +1,21 @@
 #include <CppUTest/TestHarness.h>
 
+#include <string>
+
 #include "kobject.h"
+#include "Binding.h"
+
 #include "ast/AstCompound.h"
 #include "ast/AstInteger.h"
-#include "parser/ParseCompound.h"
 
-using std::string;
+#include "parser/ParseCompound.h"
 
 TEST_GROUP(AstCompound)
 {
     Binding binding;
     Binding *b;
     
+    ParseCompound p;
     AstCompound *com;
     KObject *res;
     
@@ -29,8 +33,8 @@ TEST_GROUP(AstCompound)
 
 TEST(AstCompound, SingleStatement)
 {
-    ParseCompound p;
-    com = p.parse_compound("{1}");
+    std::string input("{1}");
+    com = p.parse_compound(input.begin());
     
     res = com->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
