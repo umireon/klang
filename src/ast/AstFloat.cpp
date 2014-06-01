@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include "kobject/KFloat.h"
 #include "Binding.h"
 
@@ -5,5 +7,10 @@
 
 KFloat* AstFloat::evaluate(Binding* b)
 {
-    return new KFloat(strtod(get_string().c_str(), NULL));
+    return new KFloat(value);
+}
+
+void AstFloat::save_value()
+{
+    value = std::strtod(get_string().c_str(), NULL);
 }

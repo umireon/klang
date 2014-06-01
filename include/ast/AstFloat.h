@@ -6,5 +6,9 @@
 
 class AstFloat : public AstNumber {
 public:
+    double value;
+
 	virtual KFloat *evaluate(Binding *b);
+    
+    virtual void save_value();
 };

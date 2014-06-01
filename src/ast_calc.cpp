@@ -131,7 +131,7 @@ int run()
         
 		lines.push_back(buf.str());
         
-        std::string &line = lines.end()[-1];
+        std::string &line = lines[lines.size()-1];
         buf.str("");
         depth = 0;
         

@@ -36,6 +36,7 @@ AstIdentifier* ParseIdentifier::parse_identifier(pstr_t str)
                 break;
             case SYMBOL_FOLLOW:
                 ident->strtail = str;
+                ident->value = ident->get_string();
                 return ident;
 		}
 	}
