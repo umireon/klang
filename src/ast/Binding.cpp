@@ -26,8 +26,10 @@ Binding::~Binding()
 
 KObject* Binding::get_local(std::string name)
 {
-    if (locals.count(name) == 1) {
-        return locals[name]->clone();
+    std::map<std::string, KObject *>::iterator item = locals.find(name);
+
+    if (item != locals.end()) {
+        return item->second->clone();
     } else if (global != NULL) {
         return global->get_local(name);
     } else {
@@ -39,6 +41,20 @@ KObject* Binding::get_local(std::string name)
 
 void Binding::set_local(std::string name, KObject* value)
 {
+    Binding *parent = this;
+
+    do {
+        std::map<std::string, KObject *> &plocals = parent->locals;
+        std::map<std::string, KObject *>::iterator item = plocals.find(name);
+        if (item != plocals.end()) {
+            delete item->second;
+            plocals[name] = value->clone();
+            return;
+        } else {
+            parent = parent->global;
+        }
+    } while (parent != NULL);
+    
     locals[name] = value->clone();
 }
 

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "kobject/KObject.h"
+#include "kobject/KInteger.h"
 #include "kobject/KFloat.h"
 #include "kobject/KNil.h"
 #include "Binding.h"
@@ -80,4 +81,18 @@ TEST(kfunc_FuncFor, Iteration)
     std::string input("for(c(1,2,3),function(i)checker(i))");
     node = p.parse(input.begin());
     res = node->evaluate(b);
+}
+
+TEST(kfunc_FuncFor, OuterBinding)
+{
+    KInteger *zero = new KInteger(0);
+    binding.set_local(std::string("s"), zero);
+    delete zero;
+    
+    std::string input("for(c(1,2,3,4,5),function(i)s=s+1)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(5, kint->to_i());
 }
