@@ -11,12 +11,10 @@ before_install:
 
 before_script:
   - mkdir build
-  - cd build
-  - cmake .. -DTEST=ON -DCMAKE_BUILD_TYPE=Debug
+  - (cd build; cmake .. -DTEST=ON -DCMAKE_BUILD_TYPE=Debug)
 
 script: 
-  - make
-  - ctest -E CppUTest
+  - (cd build; make)
+  - (cd build; ctest -E CppUTest)
 after_success:
-  - cd ..
-  - coveralls --verbose
+  - coveralls
