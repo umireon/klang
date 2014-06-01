@@ -69,7 +69,7 @@ TEST(AstFunction, Invoke)
 }
 
 #ifndef __APPLE__
-TEST(AstFunction, Invoke)
+TEST(AstFunction, ReservedWord)
 {
     std::string input("function (function) x");
     node = p.parse(input.begin());
