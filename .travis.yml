@@ -7,12 +7,15 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y libboost-dev
   - sudo apt-get install -y libedit-dev
+  - sudo pip install cpp-coveralls
 
 before_script:
   - mkdir build
   - cd build
-  - cmake .. -DTEST=ON
+  - cmake .. -DTEST=ON -DCMAKE_BUILD_TYPE=Debug
 
 script: 
   - make
   - ctest -E CppUTest
+after_success:
+  - coveralls

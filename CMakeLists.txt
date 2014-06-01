@@ -48,44 +48,36 @@ target_link_libraries(ast_compile parser)
 
 set(serial "0.0.0")
 
-if (TEST)
-    set(UNIT_TEST ON)
-    set(INTEGRATION_TEST ON)
-endif ()
-
-if (UNIT_TEST)
+if (KLANG_UNIT)
     enable_testing()
+
+    set(TEST_HELPER_H "${CMAKE_SOURCE_DIR}/test/test_helper.h")
+    set(CLANG_UNIT_COMPILE_FLAGS "-include ${TEST_HELPER_H} -coverage")
 
     set(TESTS OFF CACHE BOOL "CppUTest test")
     add_subdirectory(vendors/cpputest)
     include_directories(${CppUTest_SOURCE_DIR}/include)
 
     file(GLOB TestSourceFiles test/*_test.cpp)
+
     add_executable(runUnit ${TestSourceFiles} test/test_runner.cpp)
-    set_target_properties(runUnit PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
-    add_library(parser_test ${PARSER_SRC})
-    add_library(kobject_test ${KOBJECT_SRC})
-    add_library(ast_test ${AST_SRC})
-    add_library(kfunc_test ${KFUNC_SRC})
-    set_target_properties(parser_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
-    set_target_properties(kobject_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
-    set_target_properties(ast_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
-    set_target_properties(kfunc_test PROPERTIES COMPILE_FLAGS "-include ${CMAKE_SOURCE_DIR}/test/test_helper.h")
     target_link_libraries(runUnit ${Boost_LIBRARIES})
     target_link_libraries(runUnit CppUTest CppUTestExt)
-    target_link_libraries(runUnit parser_test ast_test kobject_test kfunc_test)
+    target_link_libraries(runUnit parser ast kobject kfunc)
+    set_target_properties(runUnit PROPERTIES COMPILE_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+    set_target_properties(runUnit PROPERTIES LINK_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+
+    if (${CMAKE_BUILD_TYPE} STREQUAL Debug)
+        target_link_libraries(parser CppUTest CppUTestExt)
+        target_link_libraries(ast CppUTest CppUTestExt)
+        target_link_libraries(kobject CppUTest CppUTestExt)
+        target_link_libraries(kfunc CppUTest CppUTestExt)
+        set_target_properties(parser ast kobject kfunc PROPERTIES COMPILE_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+        set_target_properties(parser ast kobject kfunc PROPERTIES LINK_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+
+        set_target_properties(ast_calc ast_compile print_ast PROPERTIES LINK_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+    endif ()
+
     add_test(Unit runUnit)
 endif ()
 
-if (INTEGRATION_TEST)
-    enable_testing()
-
-    add_subdirectory(vendors/igloo EXCLUDE_FROM_ALL)
-    include_directories(${igloo_SOURCE_DIR})
-
-    file(GLOB SpecSourceFiles spec/*.cpp)
-    add_executable(runSpec ${SpecSourceFiles})
-    target_link_libraries(runSpec parser kobject ast kfunc)
-    target_link_libraries(runSpec ${Boost_LIBRARIES})
-    add_test(Spec runSpec)
-endif ()
