@@ -152,6 +152,28 @@ TEST(ParseTerm, 3ElemPower)
     CHECK_EQUAL(std::string("4"), children1[1]->get_string());
 }
 
+TEST(ParseTerm, 4ElemPower)
+{
+    std::string input("2**3**4**5");
+    node = p.parse_term(input.begin());
+    AstPower *term = dynamic_cast<AstPower *>(node);
+    CHECK(term);
+    std::vector<AstNode *> &children = term->children;
+    
+    AstPower *term1 = dynamic_cast<AstPower *>(children[1]);
+    CHECK(term1);
+    std::vector<AstNode *> &children1 = term1->children;
+    
+    AstPower *term11 = dynamic_cast<AstPower *>(children1[1]);
+    CHECK(term11);
+    std::vector<AstNode *> &children11 = term11->children;
+    
+    CHECK_EQUAL(std::string("2"), children[0]->get_string());
+    CHECK_EQUAL(std::string("3"), children1[0]->get_string());
+    CHECK_EQUAL(std::string("4"), children11[0]->get_string());
+    CHECK_EQUAL(std::string("5"), children11[1]->get_string());
+}
+
 TEST(ParseTerm, Complex)
 {
     std::string input("1*2**3/4%5");
