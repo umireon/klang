@@ -1,4 +1,5 @@
 #include <map>
+#include <sstream>
 
 #include "kobject/KObject.h"
 #include "Binding.h"

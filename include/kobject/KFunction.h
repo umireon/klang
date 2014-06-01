@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "kobject/KObject.h"
 
 class KFunction : public KObject {
