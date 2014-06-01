@@ -8,7 +8,7 @@
 
 class ParseArithExpression {
 public:
-	AstNode* parse_arith_expression(pstr_t str);
+	AstNode *parse_arith_expression(pstr_t str);
 
 protected:
 	enum SymbolType {
@@ -21,6 +21,6 @@ protected:
 	enum SymbolType get_symbol(char c);
 	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstAddition* chain_addition(AstNode* root, pstr_t str);
-	AstSubtraction* chain_subtraction(AstNode* root, pstr_t str);
+	AstAddition* chain_addition(AstNode *root, pstr_t str);
+	AstSubtraction* chain_subtraction(AstNode *root, pstr_t str);
 };

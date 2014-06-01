@@ -6,5 +6,5 @@
 
 class ParseExpression {
 public:
-	AstNode* parse_expression(pstr_t str);
+	AstNode *parse_expression(pstr_t str);
 };

@@ -12,7 +12,7 @@
 
 class ParseNumber {
 public:
-	AstNumber* parse_number(pstr_t str);
+	AstNumber *parse_number(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_NUMBER_ZERO,
@@ -27,13 +27,13 @@ protected:
     
 	enum SymbolType get_symbol(char c);
     
-	AstNumber* read_number_signed(pstr_t str);
+	AstNumber *read_number_signed(pstr_t str);
     
-	AstNumber* read_number_hex_or_oct_or_float(pstr_t str);
-	AstHexdecimal* read_number_hex(pstr_t str);
-	AstOctal* read_number_oct(pstr_t str);
+	AstNumber *read_number_hex_or_oct_or_float(pstr_t str);
+	AstHexdecimal *read_number_hex(pstr_t str);
+	AstOctal *read_number_oct(pstr_t str);
     
-	AstNumber* read_number_dec_or_float(pstr_t str);
-	AstDecimal* read_number_dec(pstr_t str);
-	AstFloat* read_number_float(pstr_t str);
+	AstNumber *read_number_dec_or_float(pstr_t str);
+	AstDecimal *read_number_dec(pstr_t str);
+	AstFloat *read_number_float(pstr_t str);
 };

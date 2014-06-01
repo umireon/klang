@@ -1,4 +1,8 @@
-#include "kobject.h"
+#pragma once
+
+#include <vector>
+
+#include "kobject/KObject.h"
 
 class FuncFact : public KFunction {
 public:
