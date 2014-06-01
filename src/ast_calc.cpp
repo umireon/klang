@@ -19,6 +19,10 @@
 #include "kfunc/FuncPuts.h"
 #include "kfunc/FuncFor.h"
 
+#include "kfunc/FuncAnd.h"
+#include "kfunc/FuncOr.h"
+#include "kfunc/FuncNot.h"
+
 #include "kfunc/FuncC.h"
 #include "kfunc/FuncLog.h"
 #include "kfunc/FuncLog10.h"
@@ -32,9 +36,13 @@ using namespace boost::numeric;
 void make_world(Binding *b)
 {
     FuncExit kExit;
-    FuncPrint kPrint;
-    FuncPuts kPuts;
+    FuncPrint kPrint(std::cout);
+    FuncPuts kPuts(std::cout);
     FuncFor kFor;
+    
+    FuncAnd kAnd;
+    FuncOr kOr;
+    FuncNot kNot;
     
     FuncLog kLog;
     FuncLog10 kLog10;
@@ -62,6 +70,10 @@ void make_world(Binding *b)
     b->set_local(std::string("print"), &kPrint);
     b->set_local(std::string("puts"), &kPuts);
     b->set_local(std::string("for"), &kFor);
+
+    b->set_local(std::string("and"), &kAnd);
+    b->set_local(std::string("or"), &kOr);
+    b->set_local(std::string("not"), &kNot);
     
     b->set_local(std::string("log"), &kLog);
     b->set_local(std::string("log10"), &kLog10);

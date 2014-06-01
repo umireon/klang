@@ -67,3 +67,12 @@ TEST(AstFunction, Invoke)
     CHECK(kint);
     CHECK_EQUAL(1, kint->to_i());
 }
+
+#ifndef __APPLE__
+TEST(AstFunction, ReservedWord)
+{
+    std::string input("function (function) x");
+    node = p.parse(input.begin());
+    CHECK_THROWS(std::invalid_argument, node->evaluate(b));
+}
+#endif

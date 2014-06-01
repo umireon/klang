@@ -56,14 +56,14 @@ pstr_t ParseParameter::read_comma_or_follow(pstr_t str)
 
 pstr_t ParseParameter::scan(pstr_t str)
 {
-	enum SymbolType type;
-    
-	do {
-		type = get_symbol(str[0]);
-		str++;
-	} while (type == SYMBOL_WHITESPACE);
-    
-	return str - 1;
+    enum SymbolType type;
+
+    do {
+        type = get_symbol(str[0]);
+        str++;
+    } while (type == SYMBOL_WHITESPACE);
+
+    return str - 1;
 }
 
 enum ParseParameter::SymbolType ParseParameter::get_symbol(char c)

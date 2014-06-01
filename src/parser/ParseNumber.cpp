@@ -13,10 +13,10 @@
 
 AstNumber* ParseNumber::parse_number(pstr_t str)
 {
-	AstNumber* num;
-    
-	enum SymbolType type = get_symbol(str[0]);
-	switch (type) {
+    AstNumber* num;
+
+    enum SymbolType type = get_symbol(str[0]);
+    switch (type) {
         case SYMBOL_NUMBER_ZERO:
             num = read_number_hex_or_oct_or_float(str+1);
             break;
@@ -31,19 +31,19 @@ AstNumber* ParseNumber::parse_number(pstr_t str)
             std::ostringstream os;
             os << "Unexpected character: " << str[0] << std::endl;
             throw std::invalid_argument(os.str());
-	}
-    
-	num->strhead = str;
+    }
+
+    num->strhead = str;
     num->save_value();
-    
-	return num;
+
+    return num;
 }
 
 AstNumber* ParseNumber::read_number_signed(pstr_t str)
 {
-	enum SymbolType type = get_symbol(str[0]);
-    
-	switch (type) {
+    enum SymbolType type = get_symbol(str[0]);
+
+    switch (type) {
         case SYMBOL_NUMBER_ZERO:
             return read_number_hex_or_oct_or_float(str + 1);
         case SYMBOL_NUMBER_OCT:
@@ -53,31 +53,31 @@ AstNumber* ParseNumber::read_number_signed(pstr_t str)
             std::ostringstream os;
             os << "Unexpected character: " << str[0] << std::endl;
             throw std::invalid_argument(os.str());
-	}
+    }
 }
 
 AstNumber* ParseNumber::read_number_hex_or_oct_or_float(pstr_t str)
 {
-	enum SymbolType type = get_symbol(str[0]);
-    
-	switch (type) {
+    enum SymbolType type = get_symbol(str[0]);
+
+    switch (type) {
         case SYMBOL_ALPHABET_X:
             return read_number_hex(str+1);
         case SYMBOL_DOT:
             return read_number_float(str+1);
         default:
             return read_number_oct(str);
-	}
+    }
 }
 
 AstHexdecimal* ParseNumber::read_number_hex(pstr_t str)
 {
-	AstHexdecimal *hex = new AstHexdecimal();
-    
-	while (1) {
-		enum SymbolType type = get_symbol(str[0]);
-        
-		switch (type) {
+    AstHexdecimal *hex = new AstHexdecimal();
+
+    while (1) {
+        enum SymbolType type = get_symbol(str[0]);
+
+        switch (type) {
             case SYMBOL_NUMBER_ZERO:
             case SYMBOL_NUMBER_OCT:
             case SYMBOL_NUMBER_DEC:
@@ -87,18 +87,18 @@ AstHexdecimal* ParseNumber::read_number_hex(pstr_t str)
             default:
                 hex->strtail = str;
                 return hex;
-		}
-	}
+        }
+    }
 }
 
 AstOctal* ParseNumber::read_number_oct(pstr_t str)
 {
-	AstOctal *oct = new AstOctal();
-    
-	while (1) {
-		enum SymbolType type = get_symbol(str[0]);
-        
-		switch (type) {
+    AstOctal *oct = new AstOctal();
+
+    while (1) {
+        enum SymbolType type = get_symbol(str[0]);
+
+        switch (type) {
             case SYMBOL_NUMBER_ZERO:
             case SYMBOL_NUMBER_OCT:
                 str++;
@@ -106,16 +106,16 @@ AstOctal* ParseNumber::read_number_oct(pstr_t str)
             default:
                 oct->strtail = str;
                 return oct;
-		}
-	}
+        }
+    }
 }
 
 AstNumber* ParseNumber::read_number_dec_or_float(pstr_t str)
 {
-	while (1) {
-		enum SymbolType type = get_symbol(str[0]);
-        
-		switch (type) {
+    while (1) {
+        enum SymbolType type = get_symbol(str[0]);
+
+        switch (type) {
             case SYMBOL_NUMBER_ZERO:
             case SYMBOL_NUMBER_OCT:
             case SYMBOL_NUMBER_DEC:
@@ -125,25 +125,25 @@ AstNumber* ParseNumber::read_number_dec_or_float(pstr_t str)
                 return read_number_float(str + 1);
             default:
                 return read_number_dec(str);
-		}
-	}
+        }
+    }
 }
 
 AstDecimal* ParseNumber::read_number_dec(pstr_t str)
 {
-	AstDecimal *dec = new AstDecimal();
-	dec->strtail = str;
-	return dec;
+    AstDecimal *dec = new AstDecimal();
+    dec->strtail = str;
+    return dec;
 }
 
 AstFloat* ParseNumber::read_number_float(pstr_t str)
 {
-	AstFloat *flt = new AstFloat();
-    
-	while (1) {
-		enum SymbolType type = get_symbol(str[0]);
-        
-		switch (type) {
+    AstFloat *flt = new AstFloat();
+
+    while (1) {
+        enum SymbolType type = get_symbol(str[0]);
+
+        switch (type) {
             case SYMBOL_NUMBER_ZERO:
             case SYMBOL_NUMBER_OCT:
             case SYMBOL_NUMBER_DEC:
@@ -152,20 +152,20 @@ AstFloat* ParseNumber::read_number_float(pstr_t str)
             default:
                 flt->strtail = str;
                 return flt;
-		}
-	}
+        }
+    }
 }
 
 enum ParseNumber::SymbolType ParseNumber::get_symbol(char c)
 {
-	if ('1' <= c && c <= '7') {
-		return SYMBOL_NUMBER_OCT;
-	} else if ('A' <= c && c <= 'F') {
-		return SYMBOL_ALPHABET_HEX;
-	} else if ('a' <= c && c <= 'f') {
-		return SYMBOL_ALPHABET_HEX;
+    if ('1' <= c && c <= '7') {
+        return SYMBOL_NUMBER_OCT;
+    } else if ('A' <= c && c <= 'F') {
+        return SYMBOL_ALPHABET_HEX;
+    } else if ('a' <= c && c <= 'f') {
+        return SYMBOL_ALPHABET_HEX;
     }
-    
+
     switch (c) {
         case '0':
             return SYMBOL_NUMBER_ZERO;
