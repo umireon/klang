@@ -1,8 +1,9 @@
 #pragma once
 
+#include "kobject/KFunctionAst.h"
+
 #include "ast/AstNode.h"
 #include "ast/AstParameter.h"
-#include "kobject/KFunctionAst.h"
 
 class AstFunction : public AstNode {
 public:

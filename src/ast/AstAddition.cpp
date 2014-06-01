@@ -1,6 +1,7 @@
-#include "kobject.h"
+#include "kobject/KObject.h"
 
 #include "ast/AstAddition.h"
+#include "Binding.h"
 
 KObject* AstAddition::evaluate(Binding* b)
 {

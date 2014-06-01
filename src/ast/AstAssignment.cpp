@@ -1,6 +1,7 @@
-#include "kobject.h"
+#include "kobject/KObject.h"
 
 #include "ast/AstAssignment.h"
+#include "Binding.h"
 
 KObject* AstAssignment::evaluate(Binding* b)
 {

@@ -1,4 +1,5 @@
-#include "kobject.h"
+#include "kobject/KFloat.h"
+#include "Binding.h"
 
 #include "ast/AstFloat.h"
 

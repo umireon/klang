@@ -1,7 +1,9 @@
 #include <vector>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
 #include "kobject/KNil.h"
+#include "kobject/KInteger.h"
+#include "Binding.h"
 
 #include "ast/AstIf.h"
 

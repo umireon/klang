@@ -3,7 +3,8 @@
 #include <string>
 #include <map>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
+#include "kobject/KFunction.h"
 
 class KObject;
 class KFunction;

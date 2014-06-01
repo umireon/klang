@@ -1,7 +1,8 @@
 #pragma once
 
-#include "kobject.h"
 #include <boost/numeric/ublas/matrix.hpp>
+
+#include "kobject/KObject.h"
 
 typedef boost::numeric::ublas::matrix<double> dmatrix;
 

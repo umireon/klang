@@ -1,7 +1,8 @@
 #pragma once
 
-#include "kobject.h"
+#include "kobject/KNumber.h"
 #include "Binding.h"
+
 #include "ast/AstNode.h"
 
 class AstNumber : public AstNode {

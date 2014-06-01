@@ -1,9 +1,6 @@
 #pragma once
 
-#include <vector>
-
-#include "Binding.h"
-#include "ast/AstNode.h"
+#include "kobject/KObject.h"
 
 class KNil : public KObject {
 public:

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "ast/AstNode.h"
 
 class AstParentNode : public AstNode {
