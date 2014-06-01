@@ -17,12 +17,12 @@ TEST_GROUP(ParseIdentifier)
     }
 };
 
-TEST(ParseIdentifier, ReturnIdentifierNode)
+TEST(ParseIdentifier, Name)
 {
     std::string input("a");
     ident = p.parse_identifier(input.begin());
     CHECK(ident);
-    CHECK_EQUAL(input, ident->get_string());
+    CHECK_EQUAL(AstIdentifier::NAME, ident->get_identifier_type());
 }
 
 TEST(ParseIdentifier, CanRead4LetterIdentifier)
@@ -39,4 +39,25 @@ TEST(ParseIdentifier, CanRead4AlnumIdentifier)
     ident = p.parse_identifier(input.begin());
     CHECK(ident);
     CHECK_EQUAL(input, ident->get_string());
+}
+
+TEST(ParseIdentifier, ReservedIf)
+{
+    std::string input("if");
+    ident = p.parse_identifier(input.begin());
+    CHECK_EQUAL(AstIdentifier::IF, ident->get_identifier_type());
+}
+
+TEST(ParseIdentifier, ReservedElsif)
+{
+    std::string input("elsif");
+    ident = p.parse_identifier(input.begin());
+    CHECK_EQUAL(AstIdentifier::ELSIF, ident->get_identifier_type());
+}
+
+TEST(ParseIdentifier, ReservedElse)
+{
+    std::string input("else");
+    ident = p.parse_identifier(input.begin());
+    CHECK_EQUAL(AstIdentifier::ELSE, ident->get_identifier_type());
 }
