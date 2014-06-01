@@ -2,7 +2,8 @@
 
 #include <string>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
+#include "kobject/KInteger.h"
 #include "kobject/KNil.h"
 #include "Binding.h"
 
