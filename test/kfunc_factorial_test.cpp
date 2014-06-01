@@ -5,7 +5,7 @@
 #include "kobject.h"
 
 #include "kfunc/factorial.h"
-
+/*
 TEST_GROUP(kfunc_factorial)
 {
     AstNode *expr;
@@ -64,4 +64,4 @@ TEST(kfunc_factorial, HmprInteger)
     res = dynamic_cast<KInteger *>(expr->evaluate(&b));
     CHECK(res);
     CHECK_EQUAL(10, res->to_i());
-}
+}*/

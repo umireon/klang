@@ -10,7 +10,7 @@
 
 #include "kfunc/FuncC.h"
 #include "kfunc/FuncFor.h"
-
+/*
 TEST_GROUP(kfunc_FuncFor)
 {
     AstNode *expr;
@@ -74,4 +74,4 @@ TEST(kfunc_FuncFor, Iteration)
 
     expr = p.parse("for(c(1,2,3),function(i)checker(i))");
     res = expr->evaluate(b);
-}
+}*/

@@ -5,7 +5,7 @@
 #include "kobject.h"
 
 #include "kfunc/triangle.h"
-
+/*
 TEST_GROUP(kfunc_triangle)
 {
     AstNode *expr;
@@ -120,4 +120,4 @@ TEST(kfunc_triangle, ArctanFloat)
     CHECK(res);
     DOUBLES_EQUAL(0.785, res->to_f(), 0.01);
 
-}
+}*/

@@ -1,161 +1,143 @@
-#include <cfloat>
-#include <iostream>
-
 #include <CppUTest/TestHarness.h>
 
-#include "parser.h"
+#include <cfloat>
+#include <string>
+
+#include "kobject.h"
+#include "Binding.h"
 
 #include "kfunc/FuncC.h"
 
-using std::string;
+#include "ast/AstNode.h"
+
+#include "parser/Parse.h"
 
 TEST_GROUP(AstDivision)
 {
+    Binding binding;
+    Binding *b;
+
+    Parse p;
+    AstNode *node;
+    KObject *res;
+    
+    void setup()
+    {
+        b = &binding;
+    }
+    
+    void teardown()
+    {
+        delete node;
+        delete res;
+    }
 };
 
 TEST(AstDivision, IntInt)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7/2");
-
-    KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(3, res->to_i());
-    delete res;
-    
-    delete expr;
+    std::string input("7/2");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(3, kint->to_i());
 }
 
 TEST(AstDivision, IntFloat)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7/2.0");
-
-    KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(3.5, res->to_f(), DBL_EPSILON);
-    delete res;
-    
-    delete expr;
+    std::string input("7/2.0");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KFloat *kflt = dynamic_cast<KFloat *>(res);
+    CHECK(kflt);
+    DOUBLES_EQUAL(3.5, kflt->to_f(), DBL_EPSILON);
 }
 
 TEST(AstDivision, IntVector)
 {
-    Binding b;
     FuncC kC;
-    b.set_local("c", &kC);
+    b->set_local("c", &kC);
 
-    Parse p;
-    AstNode *expr = p.parse("7/c(2,4)");
-
-    KVector *res = dynamic_cast<KVector *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(3.5, res->vect[0], DBL_EPSILON);
-    DOUBLES_EQUAL(1.75, res->vect[1], DBL_EPSILON);
-    delete res;
-    
-    delete expr;
+    std::string input("7/c(2,4)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    DOUBLES_EQUAL(3.5, kvect->vect[0], DBL_EPSILON);
+    DOUBLES_EQUAL(1.75, kvect->vect[1], DBL_EPSILON);
 }
 
 TEST(AstDivision, FloatInt)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7.0/2");
-
-    KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(3.5, res->to_f(), DBL_EPSILON);
-    delete res;
-    
-    delete expr;
+    std::string input("7.0/2");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KFloat *kflt = dynamic_cast<KFloat *>(res);
+    CHECK(kflt);
+    DOUBLES_EQUAL(3.5, kflt->to_f(), DBL_EPSILON);
 }
 
 TEST(AstDivision, FloatFloat)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7.0/2.0");
-
-    KFloat *res = dynamic_cast<KFloat *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(3.5, res->to_f(), DBL_EPSILON);
-    delete res;
-    
-    delete expr;
+    std::string input("7.0/2.0");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KFloat *kflt = dynamic_cast<KFloat *>(res);
+    CHECK(kflt);
+    DOUBLES_EQUAL(3.5, kflt->to_f(), DBL_EPSILON);
 }
 
 TEST(AstDivision, FloatVector)
 {
-    Binding b;
     FuncC kC;
-    b.set_local("c", &kC);
-
-    Parse p;
-    AstNode *expr = p.parse("7.0/c(2,4)");
-
-    KVector *res = dynamic_cast<KVector *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(3.5, res->vect[0], DBL_EPSILON);
-    DOUBLES_EQUAL(1.75, res->vect[1], DBL_EPSILON);
-    delete res;
+    b->set_local("c", &kC);
     
-    delete expr;
+    std::string input("7.0/c(2,4)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    DOUBLES_EQUAL(3.5, kvect->vect[0], DBL_EPSILON);
+    DOUBLES_EQUAL(1.75, kvect->vect[1], DBL_EPSILON);
 }
 
 TEST(AstDivision, VectorInt)
 {
-    Binding b;
     FuncC kC;
-    b.set_local("c", &kC);
-
-    Parse p;
-    AstNode *expr = p.parse("c(14,7)/2");
-
-    KVector *res = dynamic_cast<KVector *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(7.0, res->vect[0], DBL_EPSILON);
-    DOUBLES_EQUAL(3.5, res->vect[1], DBL_EPSILON);
-    delete res;
+    b->set_local("c", &kC);
     
-    delete expr;
+    std::string input("c(14,7)/2");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    DOUBLES_EQUAL(7.0, kvect->vect[0], DBL_EPSILON);
+    DOUBLES_EQUAL(3.5, kvect->vect[1], DBL_EPSILON);
 }
 
 TEST(AstDivision, VectorFloat)
 {
-    Binding b;
     FuncC kC;
-    b.set_local("c", &kC);
-
-    Parse p;
-    AstNode *expr = p.parse("c(14,7)/2.0");
-
-    KVector *res = dynamic_cast<KVector *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(7.0, res->vect[0], DBL_EPSILON);
-    DOUBLES_EQUAL(3.5, res->vect[1], DBL_EPSILON);
-    delete res;
-    
-    delete expr;
+    b->set_local("c", &kC);
+    std::string input("c(14,7)/2.0");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    DOUBLES_EQUAL(7.0, kvect->vect[0], DBL_EPSILON);
+    DOUBLES_EQUAL(3.5, kvect->vect[1], DBL_EPSILON);
 }
 
 TEST(AstDivision, VectorVector)
 {
-    Binding b;
     FuncC kC;
-    b.set_local("c", &kC);
-
-    Parse p;
-    AstNode *expr = p.parse("c(14,7)/c(2,4)");
-
-    KVector *res = dynamic_cast<KVector *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(7.0, res->vect[0], DBL_EPSILON);
-    DOUBLES_EQUAL(1.75, res->vect[1], DBL_EPSILON);
-    delete res;
+    b->set_local("c", &kC);
     
-    delete expr;
+    std::string input("c(14,7)/c(2,4)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    DOUBLES_EQUAL(7.0, kvect->vect[0], DBL_EPSILON);
+    DOUBLES_EQUAL(1.75, kvect->vect[1], DBL_EPSILON);
 }
-

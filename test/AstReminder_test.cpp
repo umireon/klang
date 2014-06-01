@@ -1,105 +1,102 @@
-#include <cfloat>
-#include <iostream>
-
 #include <CppUTest/TestHarness.h>
 
-#include "parser.h"
+#include <cfloat>
+#include <string>
+
+#include "kobject.h"
+#include "Binding.h"
+
 #include "kfunc/FuncC.h"
 
-using std::string;
+#include "ast/AstNode.h"
+
+#include "parser/Parse.h"
 
 TEST_GROUP(AstReminder)
 {
+    Binding binding;
+    Binding *b;
+    
+    Parse p;
+    AstNode *node;
+    KObject *res;
+    
+    void setup()
+    {
+        b = &binding;
+    }
+    
+    void teardown()
+    {
+        delete node;
+        delete res;
+    }
 };
 
 TEST(AstReminder, IntInt)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7%2");
-
-    KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(1, res->to_i());
-    delete res;
-    
-    delete expr;
+	std::string input("7%2");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(1, kint->to_i());
 }
 
 TEST(AstReminder, IntFloat)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7%2.0");
-
-    KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(1, res->to_i());
-    delete res;
-    
-    delete expr;
+	std::string input("7%2.0");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(1, kint->to_i());
 }
 
 TEST(AstReminder, FloatInt)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7.0%2");
-
-    KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(1, res->to_i());
-    delete res;
-    
-    delete expr;
+	std::string input("7.0%2");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(1, kint->to_i());
 }
 
 TEST(AstReminder, FloatFloat)
 {
-	Binding b;
-    Parse p;
-    AstNode *expr = p.parse("7.0%2.0");
-
-    KInteger *res = dynamic_cast<KInteger *>(expr->evaluate(&b));
-    CHECK(res);
-    CHECK_EQUAL(1, res->to_i());
-    delete res;
-    
-    delete expr;
+	std::string input("7.0%2.0");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KInteger *kint = dynamic_cast<KInteger *>(res);
+    CHECK(kint);
+    CHECK_EQUAL(1, kint->to_i());
 }
 
 TEST(AstReminder, VectorInt)
 {
-    Binding b;
     FuncC kC;
-    b.set_local("c", &kC);
+    b->set_local("c", &kC);
 
-    Parse p;
-    AstNode *expr = p.parse("c(14,7)%2");
-
-    KVector *res = dynamic_cast<KVector *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(0.0, res->vect[0], DBL_EPSILON);
-    DOUBLES_EQUAL(1.0, res->vect[1], DBL_EPSILON);
-    delete res;
-    
-    delete expr;
+    std::string input("c(14,7)%2");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    DOUBLES_EQUAL(0.0, kvect->vect[0], DBL_EPSILON);
+    DOUBLES_EQUAL(1.0, kvect->vect[1], DBL_EPSILON);
 }
 
 TEST(AstReminder, VectorFloat)
 {
-    Binding b;
     FuncC kC;
-    b.set_local("c", &kC);
+    b->set_local("c", &kC);
 
-    Parse p;
-    AstNode *expr = p.parse("c(14,7)%2.0");
-
-    KVector *res = dynamic_cast<KVector *>(expr->evaluate(&b));
-    CHECK(res);
-    DOUBLES_EQUAL(0.0, res->vect[0], DBL_EPSILON);
-    DOUBLES_EQUAL(1.0, res->vect[1], DBL_EPSILON);
-    delete res;
-    
-    delete expr;
+    std::string input("c(14,7)%2.0");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    DOUBLES_EQUAL(0.0, kvect->vect[0], DBL_EPSILON);
+    DOUBLES_EQUAL(1.0, kvect->vect[1], DBL_EPSILON);
 }
