@@ -48,3 +48,13 @@ TEST(ParseParameter, More)
     CHECK_EQUAL(std::string("b"), astParam->params[1]->get_string());
     CHECK_EQUAL(std::string("c"), astParam->params[2]->get_string());
 }
+
+TEST(ParseParameter, Whitespace)
+{
+    std::string input("(  a  , b  , c )");
+    astParam = p.parse_parameter(input.begin());
+    CHECK_EQUAL(3, astParam->params.size());
+    CHECK_EQUAL(std::string("a"), astParam->params[0]->get_string());
+    CHECK_EQUAL(std::string("b"), astParam->params[1]->get_string());
+    CHECK_EQUAL(std::string("c"), astParam->params[2]->get_string());
+}

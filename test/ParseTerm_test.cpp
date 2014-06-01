@@ -203,7 +203,7 @@ TEST(ParseTerm, Complex)
 
 TEST(ParseTerm, Whitespace)
 {
-    std::string input("1 * 2 ** 3 / 4 % 5");
+    std::string input("1  *  2 ** 3 / 4 % 5");
     node = p.parse_term(input.begin());
     AstReminder *term = dynamic_cast<AstReminder *>(node);
     CHECK(term);

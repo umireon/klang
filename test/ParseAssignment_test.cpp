@@ -57,7 +57,7 @@ TEST(ParseAssignment, 3ExpressionAssignment)
 
 TEST(ParseAssignment, Whitespace)
 {
-    std::string input("a = b = 4");
+    std::string input("a =  b  =  4");
     node = p.parse_assignment(input.begin());
     assign = dynamic_cast<AstAssignment *>(node);
     CHECK(assign);

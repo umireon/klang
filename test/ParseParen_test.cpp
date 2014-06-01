@@ -65,7 +65,7 @@ TEST(ParseParen, NestedParen)
 
 TEST(ParseParen, NestedParenWhitespace)
 {
-    std::string input("( ( 1 ) )");
+    std::string input("(  ( 1 ) )");
     paren = p.parse_paren(input.begin());
     
     AstParen *paren0 = dynamic_cast<AstParen*>(paren->children.at(0));
