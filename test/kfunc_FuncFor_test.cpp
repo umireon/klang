@@ -3,17 +3,20 @@
 #include <cfloat>
 #include <vector>
 
-#include "ast/AstNode.h"
-#include "parser.h"
 #include "kobject.h"
 #include "kobject/KNil.h"
+#include "Binding.h"
 
 #include "kfunc/FuncC.h"
 #include "kfunc/FuncFor.h"
-/*
+
+#include "ast/AstNode.h"
+
+#include "parser/Parse.h"
+
 TEST_GROUP(kfunc_FuncFor)
 {
-    AstNode *expr;
+    AstNode *node;
     KObject *res;
 
 	Parse p;
@@ -33,14 +36,15 @@ TEST_GROUP(kfunc_FuncFor)
 	void teardown()
 	{
 		delete res;
-        delete expr;
+        delete node;
 	}
 };
 
 TEST(kfunc_FuncFor, TwoArgs)
 {
-    expr = p.parse("for(c(1,2,3),function(i)i)");
-    res = expr->evaluate(b);
+    std::string input("for(c(1,2,3),function(i)i)");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
     CHECK(kflt);
     DOUBLES_EQUAL(3.0, kflt->to_f(), DBL_EPSILON);
@@ -72,6 +76,7 @@ TEST(kfunc_FuncFor, Iteration)
     kChecker.iter = expectedValues.begin();
     binding.set_local(std::string("checker"), &kChecker);
 
-    expr = p.parse("for(c(1,2,3),function(i)checker(i))");
-    res = expr->evaluate(b);
-}*/
+    std::string input("for(c(1,2,3),function(i)checker(i))");
+    node = p.parse(input.begin());
+    res = node->evaluate(b);
+}
