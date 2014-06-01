@@ -18,4 +18,4 @@ script:
   - make
   - ctest -E CppUTest
 after_success:
-  - coveralls
+  - coveralls --verbose
