@@ -1,4 +1,5 @@
 #include "kobject.h"
+#include "kobject/KMatrix.h"
 
 #include "kfunc/FuncMatrix.h"
 
