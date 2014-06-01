@@ -1,8 +1,13 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "ast.h"
-#include "parser.h"
+#include "ast/AstNumber.h"
+#include "ast/AstAddition.h"
+#include "ast/AstSubtraction.h"
+
+#include "parser/types.h"
+#include "parser/ParseArithExpression.h"
+#include "parser/ParseTerm.h"
 
 AstNode* ParseArithExpression::parse_arith_expression(pstr_t str)
 {
