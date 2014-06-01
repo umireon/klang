@@ -32,8 +32,8 @@ using namespace boost::numeric;
 void make_world(Binding *b)
 {
     FuncExit kExit;
-    FuncPrint kPrint;
-    FuncPuts kPuts;
+    FuncPrint kPrint(std::cout);
+    FuncPuts kPuts(std::cout);
     FuncFor kFor;
     
     FuncLog kLog;
