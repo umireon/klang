@@ -4,7 +4,7 @@
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 
-#include "kobject.h"
+#include "kobject/KMatrix.h"
 
 using boost::numeric::ublas::matrix;
 using boost::numeric::ublas::matrix_row;

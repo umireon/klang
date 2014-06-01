@@ -17,4 +17,4 @@ script:
   - (cd build; make)
   - (cd build; ctest -E CppUTest)
 after_success:
-  - coveralls -b build/CMakeFiles/runUnit.dir/test
+  - coveralls

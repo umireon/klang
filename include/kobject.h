@@ -2,10 +2,8 @@
 
 #include <map>
 
-#include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 
-typedef boost::numeric::ublas::matrix<double> dmatrix;
 typedef boost::numeric::ublas::vector<double> dvector;
 typedef boost::numeric::ublas::scalar_vector<double> dscalar_vector;
 
@@ -136,18 +134,6 @@ public:
 	KVector *op_rem(KNumber* right);
 	KVector *op_pow(KNumber* right);
 	KVector *op_pow(KVector *right);
-};
-
-class KMatrix : public KObject {
-public:
-    dmatrix mat;
-
-    KMatrix(dmatrix m) : mat(m) {};
-    
-    virtual enum Type get_type() { return MATRIX; }
-	virtual KObject *op_mul(KObject *right) { return NULL; };
-    virtual std::string to_s();
-	virtual KMatrix *clone() const { return new KMatrix(*this); }
 };
 
 class KFunction : public KObject {
