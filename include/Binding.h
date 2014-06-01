@@ -1,19 +1,23 @@
 #pragma once
 
-#include <string>
 #include <map>
+#include <string>
+#include <vector>
+
+class AstNode;
+class KObject;
+class KFunction;
+
+#include "ast/AstNode.h"
 
 #include "kobject/KObject.h"
 #include "kobject/KFunction.h"
 
-class KObject;
-class KFunction;
-
 class Binding
 {
 public:
-	std::map<std::string, long> variableTable;
 	std::map<std::string, KObject *> locals;
+	std::vector<AstNode *> functions;
 	Binding *global;
 
 	Binding() : global(NULL) {}

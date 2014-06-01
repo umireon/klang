@@ -43,6 +43,17 @@ TEST(ParseIf, IfCompound)
     CHECK_EQUAL(std::string("{3}"), astIf->body.at(0)->get_string());
 }
 
+TEST(ParseIf, ElseCompound)
+{
+    std::string input("1 3 else {4}");
+    astIf = p.parse_if(input.begin());
+    
+    CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
+    CHECK_EQUAL(std::string("3"), astIf->body.at(0)->get_string());
+
+    CHECK_EQUAL(std::string("{4}"), astIf->body.at(1)->get_string());
+}
+
 TEST(ParseIf, IfElsif)
 {
     std::string input("1 3 elsif 2 4");

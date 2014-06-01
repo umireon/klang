@@ -53,7 +53,7 @@ TEST(ParseCompound, SingleLine)
 
 TEST(ParseCompound, MultipleLine)
 {
-    std::string input("{\nx\ny\rz\n}");
+    std::string input("{\nx\n  y\rz\n}");
     node = p.parse_compound(input.begin());
     com = dynamic_cast<AstCompound *>(node);
     CHECK(com);

@@ -1,6 +1,8 @@
 #include <CppUTest/TestHarness.h>
 
+#include <stdexcept>
 #include <string>
+#include <memory>
 
 #include "ast/AstNumber.h"
 #include "ast/AstAddition.h"
@@ -112,7 +114,7 @@ TEST(ParseArithExpression, Complex)
 
 TEST(ParseArithExpression, Whitespace)
 {
-    std::string input("2 + 3 - 4");
+    std::string input("2 +  3   - 4");
     node = p.parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);

@@ -9,6 +9,8 @@
 
 class AstIdentifier : public AstNode {
 public:
+    std::string value;
+
 	enum IdentifierType {
 		NAME,
 		FUNCTION,

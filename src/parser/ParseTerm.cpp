@@ -39,15 +39,7 @@ AstNode *ParseTerm::parse_term(pstr_t str)
                 type = get_symbol(s[1]);
                 switch (type) {
                     case SYMBOL_OP_ASTERISK:
-                        if (term->size() == 2) {
-                            AstParentNode *root = static_cast<AstParentNode *>(term);
-                            AstNode *child = root->children[1];
-                            child = chain_power(child, s+2);
-                            term->strtail = child->strtail;
-                            root->children[1] = child;
-                        } else {
-                            term = chain_power(term, s+2);
-                        }
+                        term = chain_power(term, s+2);
                         break;
                     default:
                         term = chain_multiplication(term, s+1);
@@ -73,6 +65,7 @@ AstParentNode *ParseTerm::chain_power(AstNode* node, pstr_t str)
 	if (node->size() == 2) {
         AstParentNode *root = static_cast<AstParentNode *>(node);
 		root->children[1] = chain_power(root->children[1], str);
+        node->strtail = root->children[1]->strtail;
         return root;
 	} else {
 		AstPower *newRoot = new AstPower();

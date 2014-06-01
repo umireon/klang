@@ -72,7 +72,7 @@ AstNode* ParsePrimary::parse_identifier_or_invocation(pstr_t str)
             break;
         default:
             std::ostringstream os;
-            os << "Unexpected identifier: " << ident->get_string() << std::endl;
+            os << "Unexpected identifier: " << ident->get_name() << std::endl;
             throw std::invalid_argument(os.str());
     }
 }

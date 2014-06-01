@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <sstream>
 #include <stdexcept>
 
@@ -33,6 +34,7 @@ AstNumber* ParseNumber::parse_number(pstr_t str)
 	}
     
 	num->strhead = str;
+    num->save_value();
     
 	return num;
 }

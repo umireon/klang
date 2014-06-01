@@ -87,7 +87,7 @@ TEST(ParsePrimary, 2ArgInvocation)
 
 TEST(ParsePrimary, 2ArgInvocationWhitespace)
 {
-    std::string input("log ( 1 , 2 )");
+    std::string input("log  (  1  , 2 )");
     node = p.parse_primary(input.begin());
     CHECK(dynamic_cast<AstInvocation *>(node));
     CHECK_EQUAL(input, node->get_string());

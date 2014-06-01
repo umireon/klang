@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "kobject/KFunctionAst.h"
 
 #include "ast/AstNode.h"

@@ -13,10 +13,10 @@ before_install:
 
 before_script:
   - mkdir build
-  - (cd build; cmake .. -DKLANG_UNIT=ON -DCMAKE_BUILD_TYPE=Debug)
+  - (cd build; cmake .. -DKLANG_UNIT=ON -DKLANG_COVERAGE=ON)
 
 script: 
   - (cd build; make -j8)
   - (cd build; ctest -E CppUTest)
 after_success:
-  - coveralls -e test -e spec -e include -E CompilerId -e build/vendors
+  - coveralls -e test -e spec -e include -E CompilerId -e build/vendors > /dev/null
