@@ -11,7 +11,6 @@
 AstFunction::~AstFunction(void)
 {
 	delete astParam;
-	delete body;
 }
 
 KFunctionAst* AstFunction::evaluate(Binding *b)
@@ -34,6 +33,8 @@ KFunctionAst* AstFunction::evaluate(Binding *b)
 
 		iter++;
 	}
+    
+    b->functions.push_back(body);
 
 	return new KFunctionAst(b, body, paramNames);
 }

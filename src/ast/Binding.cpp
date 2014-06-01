@@ -2,7 +2,10 @@
 #include <sstream>
 
 #include "kobject/KObject.h"
+#include "kobject/KFunctionAst.h"
 #include "Binding.h"
+
+#include "ast/AstNode.h"
 
 Binding::~Binding()
 {
@@ -11,6 +14,13 @@ Binding::~Binding()
 	while (iter != locals.end()) {
 		delete iter->second;
 		iter++;
+	}
+    
+	std::vector<AstNode *>::iterator iter2 = functions.begin();
+    
+	while (iter2 != functions.end()) {
+		delete *iter2;
+		iter2++;
 	}
 }
 

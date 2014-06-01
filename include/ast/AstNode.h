@@ -1,5 +1,7 @@
 #pragma once
 
+class Binding;
+
 #include "kobject/KObject.h"
 #include "Binding.h"
 

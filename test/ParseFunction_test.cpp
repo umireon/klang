@@ -17,6 +17,7 @@ TEST_GROUP(ParseFunction)
     
     void teardown()
     {
+        delete astFunc->body;
         delete astFunc;
     }
 };
@@ -59,6 +60,7 @@ TEST(ParseFunction, Assignment)
     AstAssignment *assign = dynamic_cast<AstAssignment *>(astFunc->body);
     CHECK(assign);
 }
+
 TEST(ParseFunction, Compound)
 {
     std::string input("(a) {\na\nb\n}");

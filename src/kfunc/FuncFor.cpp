@@ -34,7 +34,6 @@ KObject* FuncFor::invoke(KVector *kvect, KFunction *kfunc)
 		args[0] = new KFloat(*iter);
 		res = kfunc->invoke(args);
 		iter++;
-		delete args[0];
 	}
 
 	delete kvect;

@@ -23,6 +23,7 @@ KObject* KFunctionAst::invoke(std::vector<KObject*> args) {
 
 	for (int i = 0; i < paramNames.size(); i++) {
 		func_binding.set_local(paramNames[i], args[i]);
+        delete args[i];
 	}
 
 	return body->evaluate(&func_binding);
