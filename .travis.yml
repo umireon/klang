@@ -19,4 +19,4 @@ script:
   - (cd build; make -j8)
   - (cd build; ctest -E CppUTest)
 after_success:
-  - coveralls -e test -e spec -e include -E CompilerId -e build/vendors > /dev/null
+  - coveralls -e test -e spec -e include -e build/CMakeFiles/CompilerIdC -e build/CMakeFiles/CompilerIdCXX -e build/vendors > /dev/null
