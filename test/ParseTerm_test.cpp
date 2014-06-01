@@ -1,5 +1,6 @@
 #include <CppUTest/TestHarness.h>
 
+#include <stdexcept>
 #include <string>
 
 #include "ast/AstNode.h"
@@ -203,7 +204,7 @@ TEST(ParseTerm, Complex)
 
 TEST(ParseTerm, Whitespace)
 {
-    std::string input("1  *  2 ** 3 / 4 % 5");
+    std::string input("1  *   2   **   3   /  4  %   5");
     node = p.parse_term(input.begin());
     AstReminder *term = dynamic_cast<AstReminder *>(node);
     CHECK(term);
@@ -227,3 +228,11 @@ TEST(ParseTerm, Whitespace)
     CHECK_EQUAL(std::string("4"), children0[1]->get_string());
     CHECK_EQUAL(std::string("5"), children[1]->get_string());
 }
+
+#ifndef __APPLE__
+TEST(ParseTerm, Invalid)
+{
+    std::string input("*");
+    CHECK_THROWS(std::invalid_argument, p.parse_term(input.begin()));
+}
+#endif
