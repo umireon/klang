@@ -1,6 +1,8 @@
 #include <CppUTest/TestHarness.h>
 
+#include <stdexcept>
 #include <string>
+#include <memory>
 
 #include "ast/AstNumber.h"
 #include "ast/AstAddition.h"
@@ -24,6 +26,12 @@ TEST(ParseArithExpression, get_string)
     std::string input("0");
     node = p.parse_arith_expression(input.begin());
     CHECK_EQUAL(input, node->get_string());
+}
+
+TEST(ParseArithExpression, invalsid_starting)
+{
+    std::string input(" ");
+    CHECK_THROWS(std::invalid_argument, p.parse_arith_expression(input.begin()));
 }
 
 TEST(ParseArithExpression, AstNumber)
