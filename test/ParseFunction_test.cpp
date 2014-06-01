@@ -68,3 +68,11 @@ TEST(ParseFunction, Compound)
     AstCompound *com = dynamic_cast<AstCompound *>(astFunc->body);
     CHECK(com);
 }
+
+#ifndef __APPLE__
+TEST(ParseFunction, ReservedWord)
+{
+    std::string input("(function) 0");
+    CHECK_THROWS(std::invalid_argument, p.parse_function(input.begin()));
+}
+#endif
