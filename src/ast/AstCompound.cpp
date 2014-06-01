@@ -1,6 +1,8 @@
 #include <vector>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
+#include "Binding.h"
+
 #include "ast/AstCompound.h"
 
 KObject *AstCompound::evaluate(Binding *b)

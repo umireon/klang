@@ -7,7 +7,7 @@
 
 class ParseAssignment {
 public:
-	AstNode* parse_assignment(pstr_t str);
+	AstNode *parse_assignment(pstr_t str);
 
 protected:
 	enum SymbolType {
@@ -21,5 +21,5 @@ protected:
 	enum SymbolType get_symbol(char c);
 	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstParentNode* chain_assignment(AstNode* root, pstr_t str);
+	AstParentNode *chain_assignment(AstNode *root, pstr_t str);
 };

@@ -3,7 +3,8 @@
 #include <cfloat>
 #include <string>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
+#include "kobject/KFloat.h"
 #include "Binding.h"
 
 #include "ast/AstFloat.h"

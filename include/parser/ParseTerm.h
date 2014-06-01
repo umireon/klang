@@ -10,7 +10,7 @@
 
 class ParseTerm {
 public:
-	AstNode* parse_term(pstr_t str);
+	AstNode *parse_term(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_OP_ASTERISK,
@@ -23,9 +23,9 @@ protected:
 	enum SymbolType get_symbol(char c);
 	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstParentNode* parse_power_or_multiplication(pstr_t str);
-	AstParentNode* chain_power(AstNode* root, pstr_t str);
-	AstMultiplication* chain_multiplication(AstNode* root, pstr_t str);
-	AstDivision* chain_division(AstNode* root, pstr_t str);
-	AstReminder* chain_reminder(AstNode* root, pstr_t str);
+	AstParentNode *parse_power_or_multiplication(pstr_t str);
+	AstParentNode *chain_power(AstNode *root, pstr_t str);
+	AstMultiplication *chain_multiplication(AstNode *root, pstr_t str);
+	AstDivision *chain_division(AstNode *root, pstr_t str);
+	AstReminder *chain_reminder(AstNode *root, pstr_t str);
 };

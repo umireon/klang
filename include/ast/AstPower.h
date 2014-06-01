@@ -1,7 +1,8 @@
 #pragma once
 
-#include "kobject.h"
+#include "kobject/KObject.h"
 #include "Binding.h"
+
 #include "ast/AstParentNode.h"
 
 class AstPower : public AstParentNode {

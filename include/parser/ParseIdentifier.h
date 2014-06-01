@@ -6,7 +6,7 @@
 
 class ParseIdentifier {
 public:
-	AstIdentifier* parse_identifier(pstr_t str);
+	AstIdentifier *parse_identifier(pstr_t str);
 
 protected:
 	enum SymbolType {

@@ -1,11 +1,18 @@
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
-#include "ast.h"
-#include "parser.h"
+#include "ast/AstNode.h"
+#include "ast/AstParentNode.h"
+#include "ast/AstDivision.h"
+#include "ast/AstMultiplication.h"
+#include "ast/AstPower.h"
+#include "ast/AstReminder.h"
 
-AstNode* ParseTerm::parse_term(pstr_t str)
+#include "parser/types.h"
+#include "parser/ParsePrimary.h"
+#include "parser/ParseTerm.h"
+
+AstNode *ParseTerm::parse_term(pstr_t str)
 {
 	AstNode *term;
 	enum SymbolType type = get_symbol(str[0]);
@@ -33,7 +40,7 @@ AstNode* ParseTerm::parse_term(pstr_t str)
                 switch (type) {
                     case SYMBOL_OP_ASTERISK:
                         if (term->size() == 2) {
-                            AstParentNode *root = static_cast<AstParentNode*>(term);
+                            AstParentNode *root = static_cast<AstParentNode *>(term);
                             AstNode *child = root->children[1];
                             child = chain_power(child, s+2);
                             term->strtail = child->strtail;
@@ -61,16 +68,16 @@ AstNode* ParseTerm::parse_term(pstr_t str)
 	}
 }
 
-AstParentNode* ParseTerm::chain_power(AstNode* node, pstr_t str)
+AstParentNode *ParseTerm::chain_power(AstNode* node, pstr_t str)
 {
 	if (node->size() == 2) {
-        AstParentNode *root = static_cast<AstParentNode*>(node);
+        AstParentNode *root = static_cast<AstParentNode *>(node);
 		root->children[1] = chain_power(root->children[1], str);
         return root;
 	} else {
 		AstPower *newRoot = new AstPower();
 		newRoot->strhead = node->strhead;
-		std::vector<AstNode*> &newChildren = newRoot->children;
+		std::vector<AstNode *> &newChildren = newRoot->children;
         
 		newChildren.push_back(node);
         
@@ -85,11 +92,11 @@ AstParentNode* ParseTerm::chain_power(AstNode* node, pstr_t str)
 	}
 }
 
-AstMultiplication* ParseTerm::chain_multiplication(AstNode* root, pstr_t str)
+AstMultiplication *ParseTerm::chain_multiplication(AstNode* root, pstr_t str)
 {
 	AstMultiplication *newRoot = new AstMultiplication();
 	newRoot->strhead = root->strhead;
-	std::vector<AstNode*> &newChildren = newRoot->children;
+	std::vector<AstNode *> &newChildren = newRoot->children;
     
 	newChildren.push_back(root);
     
@@ -103,11 +110,11 @@ AstMultiplication* ParseTerm::chain_multiplication(AstNode* root, pstr_t str)
 	return newRoot;
 }
 
-AstDivision* ParseTerm::chain_division(AstNode* root, pstr_t str)
+AstDivision *ParseTerm::chain_division(AstNode* root, pstr_t str)
 {
 	AstDivision *newRoot = new AstDivision();
 	newRoot->strhead = root->strhead;
-	std::vector<AstNode*> &newChildren = newRoot->children;
+	std::vector<AstNode *> &newChildren = newRoot->children;
     
 	newChildren.push_back(root);
     
@@ -121,11 +128,11 @@ AstDivision* ParseTerm::chain_division(AstNode* root, pstr_t str)
 	return newRoot;
 }
 
-AstReminder* ParseTerm::chain_reminder(AstNode* root, pstr_t str)
+AstReminder *ParseTerm::chain_reminder(AstNode* root, pstr_t str)
 {
 	AstReminder *newRoot = new AstReminder();
 	newRoot->strhead = root->strhead;
-	std::vector<AstNode*> &newChildren = newRoot->children;
+	std::vector<AstNode *> &newChildren = newRoot->children;
     
 	newChildren.push_back(root);
     

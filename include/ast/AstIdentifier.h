@@ -2,8 +2,9 @@
 
 #include <string>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
 #include "Binding.h"
+
 #include "ast/AstNode.h"
 
 class AstIdentifier : public AstNode {

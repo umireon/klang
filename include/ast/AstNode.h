@@ -1,7 +1,8 @@
 #pragma once
 
-#include "kobject.h"
+#include "kobject/KObject.h"
 #include "Binding.h"
+
 #include "parser/types.h"
 
 class AstNode

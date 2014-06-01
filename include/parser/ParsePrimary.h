@@ -8,7 +8,7 @@
 
 class ParsePrimary {
 public:
-	AstNode* parse_primary(pstr_t str);
+	AstNode *parse_primary(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_FIRST_NUMBER,
@@ -23,7 +23,7 @@ protected:
 	enum SymbolType get_symbol(char c);
 	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstNode* parse_identifier_or_invocation(pstr_t str);
-	AstInvocation* wrap_with_invocation(AstIdentifier* node, pstr_t str);
-	AstArgument* parse_argument(pstr_t str);
+	AstNode *parse_identifier_or_invocation(pstr_t str);
+	AstInvocation *wrap_with_invocation(AstIdentifier* node, pstr_t str);
+	AstArgument *parse_argument(pstr_t str);
 };

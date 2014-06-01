@@ -3,7 +3,10 @@
 #include <cfloat>
 #include <string>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
+#include "kobject/KInteger.h"
+#include "kobject/KFloat.h"
+#include "kobject/KVector.h"
 #include "Binding.h"
 
 #include "kfunc/FuncC.h"

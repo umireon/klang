@@ -2,8 +2,9 @@
 #include <stdexcept>
 
 #include "ast/AstParameter.h"
-#include "parser/ParseIdentifier.h"
 
+#include "parser/types.h"
+#include "parser/ParseIdentifier.h"
 #include "parser/ParseParameter.h"
 
 AstParameter *ParseParameter::parse_parameter(pstr_t str)

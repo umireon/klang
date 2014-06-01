@@ -6,7 +6,7 @@
 
 class ParseParen {
 public:
-	AstParen* parse_paren(pstr_t str);
+	AstParen *parse_paren(pstr_t str);
 
 protected:
 	enum SymbolType {

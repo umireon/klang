@@ -1,8 +1,14 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "ast.h"
-#include "parser.h"
+#include "ast/AstNode.h"
+#include "ast/AstParentNode.h"
+#include "ast/AstAssignment.h"
+
+#include "parser/types.h"
+#include "parser/ParseArithExpression.h"
+#include "parser/ParseAssignment.h"
+#include "parser/ParseExpression.h"
 
 AstNode* ParseAssignment::parse_assignment(pstr_t str)
 {

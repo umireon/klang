@@ -3,6 +3,9 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "kobject/KFunctionAst.h"
+#include "Binding.h"
+
 #include "ast/AstFunction.h"
 
 AstFunction::~AstFunction(void)

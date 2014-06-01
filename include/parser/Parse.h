@@ -7,7 +7,7 @@
 class Parse
 {
 public:
-	AstNode* parse(pstr_t str);
+	AstNode *parse(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_NUMBER_ZERO,
@@ -35,5 +35,5 @@ protected:
 	enum SymbolType get_symbol(char c);
 	pstr_t scan_lexical_symbol(pstr_t str);
     
-	AstNode* parse_statement(pstr_t str);
+	AstNode *parse_statement(pstr_t str);
 };

@@ -2,7 +2,8 @@
 
 #include <vector>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
+
 #include "Binding.h"
 #include "ast/AstNode.h"
 

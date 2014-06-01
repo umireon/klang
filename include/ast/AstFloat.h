@@ -1,6 +1,6 @@
 #pragma once
 
-#include "kobject.h"
+#include "kobject/KFloat.h"
 #include "Binding.h"
 #include "ast/AstNumber.h"
 

@@ -1,9 +1,14 @@
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
-#include "ast.h"
-#include "parser.h"
+#include "ast/AstNumber.h"
+#include "ast/AstFloat.h"
+#include "ast/AstDecimal.h"
+#include "ast/AstHexdecimal.h"
+#include "ast/AstOctal.h"
+
+#include "parser/types.h"
+#include "parser/ParseNumber.h"
 
 AstNumber* ParseNumber::parse_number(pstr_t str)
 {

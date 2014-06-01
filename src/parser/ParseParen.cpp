@@ -1,9 +1,12 @@
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
-#include "ast.h"
-#include "parser.h"
+#include "ast/AstNode.h"
+#include "ast/AstParen.h"
+
+#include "parser/types.h"
+#include "parser/ParseExpression.h"
+#include "parser/ParseParen.h"
 
 AstParen* ParseParen::parse_paren(pstr_t str)
 {

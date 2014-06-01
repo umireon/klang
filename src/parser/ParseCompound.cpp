@@ -3,6 +3,8 @@
 
 #include "ast/AstNode.h"
 #include "ast/AstCompound.h"
+
+#include "parser/types.h"
 #include "parser/ParseExpression.h"
 #include "parser/ParseCompound.h"
 

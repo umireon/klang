@@ -1,12 +1,20 @@
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 
-#include "ast.h"
-#include "parser.h"
-#include "parser/ParseIf.h"
-#include "parser/ParseParameter.h"
+#include "ast/AstNode.h"
+#include "ast/AstArgument.h"
+#include "ast/AstIdentifier.h"
+#include "ast/AstInvocation.h"
+
+#include "parser/types.h"
+#include "parser/ParseExpression.h"
 #include "parser/ParseFunction.h"
+#include "parser/ParseIdentifier.h"
+#include "parser/ParseIf.h"
+#include "parser/ParseNumber.h"
+#include "parser/ParseParameter.h"
+#include "parser/ParseParen.h"
+#include "parser/ParsePrimary.h"
 
 AstNode* ParsePrimary::parse_primary(pstr_t str)
 {

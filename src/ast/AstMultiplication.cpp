@@ -1,6 +1,5 @@
-#include <stdexcept>
-
-#include "kobject.h"
+#include "kobject/KObject.h"
+#include "Binding.h"
 
 #include "ast/AstMultiplication.h"
 

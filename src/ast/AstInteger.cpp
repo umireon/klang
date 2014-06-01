@@ -1,4 +1,5 @@
-#include "kobject.h"
+#include "kobject/KInteger.h"
+#include "Binding.h"
 
 #include "ast/AstInteger.h"
 

@@ -103,7 +103,7 @@ std::string create_prompt(int lineno, int depth)
     return os.str();
 }
 
-int main(int argc, const char **argv)
+int run()
 {
     Binding binding;
     Binding *b = &binding;
@@ -158,3 +158,7 @@ int main(int argc, const char **argv)
     }
 }
 
+int main()
+{
+    run();
+}

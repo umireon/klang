@@ -1,4 +1,5 @@
-#include "kobject.h"
+#include "kobject/KObject.h"
+#include "Binding.h"
 
 #include "ast/AstDivision.h"
 

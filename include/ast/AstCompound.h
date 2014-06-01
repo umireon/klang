@@ -1,6 +1,6 @@
 #pragma once
 
-#include "kobject.h"
+#include "kobject/KObject.h"
 #include "ast/AstParentNode.h"
 
 class AstCompound : public AstParentNode {

@@ -1,8 +1,10 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "ast.h"
-#include "parser.h"
+#include "ast/AstIdentifier.h"
+
+#include "parser/types.h"
+#include "parser/ParseIdentifier.h"
 
 AstIdentifier* ParseIdentifier::parse_identifier(pstr_t str)
 {

@@ -3,8 +3,8 @@
 #include <cfloat>
 #include <vector>
 
-#include "kobject.h"
-#include "kobject/KNil.h"
+#include "kobject/KObject.h"
+#include "kobject/KFloat.h"
 #include "Binding.h"
 
 #include "kfunc/triangle.h"

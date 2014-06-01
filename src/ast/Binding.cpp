@@ -1,6 +1,6 @@
 #include <map>
 
-#include "kobject.h"
+#include "kobject/KObject.h"
 #include "Binding.h"
 
 Binding::~Binding()
