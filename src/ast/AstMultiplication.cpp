@@ -2,7 +2,7 @@
 
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstMultiplication.h"
 
 KObject* AstMultiplication::evaluate(Binding* b)
 {

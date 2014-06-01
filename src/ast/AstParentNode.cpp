@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "ast/AstParentNode.h"
 
 AstParentNode::~AstParentNode(void)
 {

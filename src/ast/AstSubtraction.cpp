@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstSubtraction.h"
 
 KObject* AstSubtraction::evaluate(Binding* b)
 {

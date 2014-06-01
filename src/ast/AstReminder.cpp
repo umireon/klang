@@ -1,6 +1,6 @@
 #include "kobject.h"
 
-#include "ast.h"
+#include "ast/AstReminder.h"
 
 KObject* AstReminder::evaluate(Binding* b)
 {
