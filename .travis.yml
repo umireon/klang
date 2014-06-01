@@ -17,4 +17,4 @@ script:
   - (cd build; make)
   - (cd build; ctest -E CppUTest)
 after_success:
-  - coveralls -e test -e spec -e include -e build
+  - coveralls -e test -e spec -e include
