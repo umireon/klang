@@ -6,15 +6,15 @@
 #include "ast/AstAssignment.h"
 
 #include "parser/types.h"
-#include "parser/ParseArithExpression.h"
 #include "parser/ParseAssignment.h"
+#include "parser/ParseCompare.h"
 #include "parser/ParseExpression.h"
 
 AstNode* ParseAssignment::parse_assignment(pstr_t str)
 {
-    ParseArithExpression p;
+    ParseCompare p;
 
-    AstNode *expr = p.parse_arith_expression(str);
+    AstNode *expr = p.parse_compare(str);
     str = expr->strtail;
     str = scan_lexical_symbol(str);
     if (str[0] == '=') {
