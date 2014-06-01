@@ -8,12 +8,12 @@
 
 AstIdentifier* ParseIdentifier::parse_identifier(pstr_t str)
 {
-	AstIdentifier *ident = new AstIdentifier();
-	ident->strhead = str;
-    
-	enum SymbolType type = get_symbol(str[0]);
-    
-	switch (type) {
+    AstIdentifier *ident = new AstIdentifier();
+    ident->strhead = str;
+
+    enum SymbolType type = get_symbol(str[0]);
+
+    switch (type) {
         case SYMBOL_ALPHABET_LOWER:
         case SYMBOL_ALPHABET_UPPER:
             str++;
@@ -23,12 +23,12 @@ AstIdentifier* ParseIdentifier::parse_identifier(pstr_t str)
             std::ostringstream os;
             os << "Unexpected character: " << str[0] << std::endl;
             throw std::invalid_argument(os.str());
-	}
-    
-	while (1) {
-		type = get_symbol(str[0]);
-        
-		switch (type) {
+    }
+
+    while (1) {
+        type = get_symbol(str[0]);
+
+        switch (type) {
             case SYMBOL_ALPHABET_LOWER:
             case SYMBOL_ALPHABET_UPPER:
             case SYMBOL_NUMBER:
@@ -38,19 +38,19 @@ AstIdentifier* ParseIdentifier::parse_identifier(pstr_t str)
                 ident->strtail = str;
                 ident->value = ident->get_string();
                 return ident;
-		}
-	}
+        }
+    }
 }
 
 enum ParseIdentifier::SymbolType ParseIdentifier::get_symbol(char c)
 {
-	if ('0' <= c && c <= '9') {
-		return SYMBOL_NUMBER;
-	} else if ('A' <= c && c <= 'Z') {
-		return SYMBOL_ALPHABET_UPPER;
-	} else if ('a' <= c && c <= 'z') {
-		return SYMBOL_ALPHABET_LOWER;
-	} else {
-		return SYMBOL_FOLLOW;
-	}
+    if ('0' <= c && c <= '9') {
+        return SYMBOL_NUMBER;
+    } else if ('A' <= c && c <= 'Z') {
+        return SYMBOL_ALPHABET_UPPER;
+    } else if ('a' <= c && c <= 'z') {
+        return SYMBOL_ALPHABET_LOWER;
+    } else {
+        return SYMBOL_FOLLOW;
+    }
 }

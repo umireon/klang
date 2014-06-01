@@ -11,12 +11,12 @@
 
 AstNode* ParseArithExpression::parse_arith_expression(pstr_t str)
 {
-	AstNode *expr;
-	pstr_t s = str;
-	enum SymbolType type;
-    
-	type = get_symbol(str[0]);
-	switch (type) {
+    AstNode *expr;
+    pstr_t s = str;
+    enum SymbolType type;
+
+    type = get_symbol(str[0]);
+    switch (type) {
         case SYMBOL_FOLLOW:
         case SYMBOL_SIGN_PLUS:
         case SYMBOL_SIGN_MINUS:
@@ -28,12 +28,12 @@ AstNode* ParseArithExpression::parse_arith_expression(pstr_t str)
             std::ostringstream os;
             os << "Unexpected character: " << s[0] << std::endl;
             throw std::invalid_argument(os.str());
-	}
-    
-	while (1) {
-		s = scan_lexical_symbol(s);
-		type = get_symbol(s[0]);
-		switch (type) {
+    }
+
+    while (1) {
+        s = scan_lexical_symbol(s);
+        type = get_symbol(s[0]);
+        switch (type) {
             case SYMBOL_SIGN_PLUS:
                 expr = chain_addition(expr, s+1);
                 break;
@@ -42,64 +42,64 @@ AstNode* ParseArithExpression::parse_arith_expression(pstr_t str)
                 break;
             default:
                 return expr;
-		}
-        
-		s = expr->strtail;
-	}
+        }
+
+        s = expr->strtail;
+    }
 }
 
 
 AstAddition* ParseArithExpression::chain_addition(AstNode* root, pstr_t str)
 {
-	AstAddition *newRoot = new AstAddition();
-	newRoot->strhead = root->strhead;
-	std::vector<AstNode*> &newChildren = newRoot->children;
-    
-	newChildren.push_back(root);
-    
-	str = scan_lexical_symbol(str);
-	ParseTerm p;
-	AstNode *term = p.parse_term(str);
-	newChildren.push_back(term);
-    
-	newRoot->strtail = term->strtail;
-    
-	return newRoot;
+    AstAddition *newRoot = new AstAddition();
+    newRoot->strhead = root->strhead;
+    std::vector<AstNode*> &newChildren = newRoot->children;
+
+    newChildren.push_back(root);
+
+    str = scan_lexical_symbol(str);
+    ParseTerm p;
+    AstNode *term = p.parse_term(str);
+    newChildren.push_back(term);
+
+    newRoot->strtail = term->strtail;
+
+    return newRoot;
 }
 
 AstSubtraction* ParseArithExpression::chain_subtraction(AstNode* root, pstr_t str)
 {
-	AstSubtraction *newRoot = new AstSubtraction();
-	newRoot->strhead = root->strhead;
-	std::vector<AstNode*> &newChildren = newRoot->children;
-    
-	newChildren.push_back(root);
-    
-	str = scan_lexical_symbol(str);
-	ParseTerm p;
-	AstNode *term = p.parse_term(str);
-	newChildren.push_back(term);
-    
-	newRoot->strtail = term->strtail;
-    
-	return newRoot;
+    AstSubtraction *newRoot = new AstSubtraction();
+    newRoot->strhead = root->strhead;
+    std::vector<AstNode*> &newChildren = newRoot->children;
+
+    newChildren.push_back(root);
+
+    str = scan_lexical_symbol(str);
+    ParseTerm p;
+    AstNode *term = p.parse_term(str);
+    newChildren.push_back(term);
+
+    newRoot->strtail = term->strtail;
+
+    return newRoot;
 }
 
 pstr_t ParseArithExpression::scan_lexical_symbol(pstr_t str)
 {
-	enum SymbolType type;
-    
-	do {
-		type = get_symbol(str[0]);
-		str++;
-	} while (type == SYMBOL_WHITESPACE);
-    
-	return str - 1;
+    enum SymbolType type;
+
+    do {
+        type = get_symbol(str[0]);
+        str++;
+    } while (type == SYMBOL_WHITESPACE);
+
+    return str - 1;
 }
 
 enum ParseArithExpression::SymbolType ParseArithExpression::get_symbol(char c)
 {
-	switch (c) {
+    switch (c) {
         case ' ':
             return SYMBOL_WHITESPACE;
         case '+':
@@ -108,5 +108,5 @@ enum ParseArithExpression::SymbolType ParseArithExpression::get_symbol(char c)
             return SYMBOL_SIGN_MINUS;
         default:
             return SYMBOL_FOLLOW;
-	}
+    }
 }

@@ -48,14 +48,14 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
 
 pstr_t ParseFunction::scan(pstr_t str)
 {
-	enum SymbolType type;
-    
-	do {
-		type = get_symbol(str[0]);
-		str++;
-	} while (type == SYMBOL_WHITESPACE);
-    
-	return str - 1;
+    enum SymbolType type;
+
+    do {
+        type = get_symbol(str[0]);
+        str++;
+    } while (type == SYMBOL_WHITESPACE);
+
+    return str - 1;
 }
 
 enum ParseFunction::SymbolType ParseFunction::get_symbol(char c)
