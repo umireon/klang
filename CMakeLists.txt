@@ -9,10 +9,10 @@ option(INTEGRATION_TEST "Build integration tests." OFF)
 find_package(Boost)
 include_directories(${Boost_INCLUDE_DIR})
 
-file(GLOB PARSER_SRC "${CMAKE_SOURCE_DIR}/src/parser/*" "${CMAKE_SOURCE_DIR}/include/parser.h")
-file(GLOB KOBJECT_SRC "${CMAKE_SOURCE_DIR}/src/kobject/*" "${CMAKE_SOURCE_DIR}/include/kobject.h")
-file(GLOB_RECURSE AST_SRC "${CMAKE_SOURCE_DIR}/src/ast/*" "${CMAKE_SOURCE_DIR}/include/ast/*")
-file(GLOB KFUNC_SRC "${CMAKE_SOURCE_DIR}/src/kfunc/*" "${CMAKE_SOURCE_DIR}/include/kfunc/*.h")
+file(GLOB_RECURSE PARSER_SRC "${CMAKE_SOURCE_DIR}/src/parser/*.cpp" "${CMAKE_SOURCE_DIR}/include/parser/*.h")
+file(GLOB_RECURSE KOBJECT_SRC "${CMAKE_SOURCE_DIR}/src/kobject/*.cpp" "${CMAKE_SOURCE_DIR}/include/kobject/*.h")
+file(GLOB_RECURSE AST_SRC "${CMAKE_SOURCE_DIR}/src/ast/*.cpp" "${CMAKE_SOURCE_DIR}/include/ast/*.h")
+file(GLOB_RECURSE KFUNC_SRC "${CMAKE_SOURCE_DIR}/src/kfunc/*.cpp" "${CMAKE_SOURCE_DIR}/include/kfunc/*.h")
 
 add_library(kobject ${KOBJECT_SRC})
 
