@@ -3,7 +3,7 @@
 #include <typeinfo>
 
 #include "ast.h"
-#include "parser.h"
+#include "parser/Parse.h"
 
 using namespace std;
 
