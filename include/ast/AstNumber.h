@@ -9,5 +9,5 @@ class AstNumber : public AstNode {
 public:
 	virtual KNumber *evaluate(Binding *b) = 0;
 
-    virtual void save_value() = 0;
+    virtual void save_value() {};
 };

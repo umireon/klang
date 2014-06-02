@@ -53,11 +53,14 @@ AstNumber* TokenNumber::read_number_signed(pstr_t str)
         case SYMBOL_NUMBER_DEC:
             return read_number_dec_or_float(str);
         default:
-            SyntaxErrorHandler seh;
-            seh.invalid_char(str);
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
+            pstr_t recover = syntaxErrorHandler->invalid_char(str);
+            if (*recover != '\0') {
+                return read_number_signed(syntaxErrorHandler->invalid_char(str));
+            } else {
+                AstInteger *nullnum = new AstInteger();
+                nullnum->strtail = recover;
+                return nullnum;
+            }
     }
 }
 

@@ -3,6 +3,7 @@
 
 #include "kobject/KObject.h"
 #include "kobject/KFunctionAst.h"
+#include "kobject/KNil.h"
 #include "Binding.h"
 
 #include "ast/AstNode.h"
@@ -33,9 +34,8 @@ KObject* Binding::get_local(std::string name)
     } else if (global != NULL) {
         return global->get_local(name);
     } else {
-        std::ostringstream os;
-        os << "Undefined variable: " << name << std::endl;
-        throw std::invalid_argument(os.str());
+        std::cout << "WARNING: Undefined Variable " << name << std::endl;
+        return new KNil();
     }
 }
 
@@ -74,7 +74,7 @@ KFunction* Binding::get_function(std::string name)
         return global->get_function(name);
     } else {
         std::ostringstream os;
-        os << "Undefined function: " << name << std::endl;
+        std::cout << "Undefined function: " << name << std::endl;
         throw std::invalid_argument(os.str());
     }
 }

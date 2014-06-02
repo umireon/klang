@@ -152,6 +152,11 @@ int run()
         
         try {
             Parse p;
+            SyntaxErrorHandler seh;
+            seh.line = &line;
+            seh.lineno = lineno;
+            p.syntaxErrorHandler = &seh;
+
 			AstNode *ast = p.parse(line.begin());
             
             if (ast == NULL) {

@@ -17,9 +17,13 @@ AstIdentifier* TokenIdentifier::parse_identifier(pstr_t str)
             break;
         case SYMBOL_NUMBER:
         case SYMBOL_FOLLOW:
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
+            pstr_t recover = syntaxErrorHandler->invalid_char(str);
+            if (*recover != '\0') {
+                return parse_identifier(syntaxErrorHandler->invalid_char(str));
+            } else {
+                ident->strtail = ident->strhead;
+                return ident;
+            }
     }
 
     while (1) {
