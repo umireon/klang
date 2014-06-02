@@ -8,12 +8,12 @@
 
 TEST_GROUP(TokenIdentifier)
 {
-    TokenIdentifier TokenIdentifier, *p;
+    TokenIdentifier tokenIdentifier, *p;
     AstIdentifier *ident;
     
     void setup()
     {
-        p = &TokenIdentifier;
+        p = &tokenIdentifier;
     }
     
     void teardown()
