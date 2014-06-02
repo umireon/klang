@@ -22,7 +22,6 @@ AstParameter *ParseParameter::parse_parameter(pstr_t str)
             throw std::invalid_argument(os.str());
     }
 
-    TokenIdentifier p;
     while (true) {
         str = scan(str);
         switch (get_symbol(str[0])) {
@@ -30,7 +29,7 @@ AstParameter *ParseParameter::parse_parameter(pstr_t str)
                 astParam->strtail = str + 1;
                 return astParam;
             default:
-                AstIdentifier *ident = p.parse_identifier(str);
+                AstIdentifier *ident = tokenIdentifier->parse_identifier(str);
                 astParam->params.push_back(ident);
 
                 str = scan(ident->strtail);
@@ -57,8 +56,6 @@ pstr_t ParseParameter::read_comma_or_follow(pstr_t str)
 enum ParseParameter::SymbolType ParseParameter::get_symbol(char c)
 {
     switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
         case '(':
             return SYMBOL_PAREN_LEFT;
         case ')':

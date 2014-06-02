@@ -67,7 +67,14 @@ TEST_GROUP(ParsePrimary)
         }
     } parseParenMock;
     
-    TokenIdentifier tokenIdentifier;
+    class TokenIdentifierMock : public TokenIdentifier
+    {
+        virtual AstIdentifier *parse_identifier(pstr_t str)
+        {
+            mock().actualCall("tokenIdentifier");
+            return TokenIdentifier::parse_identifier(str);
+        }
+    } tokenIdentifierMock;
     
     class TokenNumberMock : public TokenNumber
     {
@@ -92,7 +99,7 @@ TEST_GROUP(ParsePrimary)
         p->parseFunction = &parseFunctionMock;
         p->parseIf = &parseIfMock;
         p->parseParen = &parseParenMock;
-        p->tokenIdentifier = &tokenIdentifier;
+        p->tokenIdentifier = &tokenIdentifierMock;
         p->tokenNumber = &tokenNumberMock;
     }
     
@@ -146,52 +153,109 @@ TEST(ParsePrimary, Paren)
     mock().expectOneCall("parseParen");
     node = p->parse_primary(input.begin());
 }
-/*
+
 TEST(ParsePrimary, 0ArgInvocation)
 {
     std::string input("f()");
-    mock().expectOneCall("parseIdentifier");
+    mock().expectOneCall("tokenIdentifier");
     node = p->parse_primary(input.begin());
-    CHECK(dynamic_cast<AstInvocation *>(node));
     CHECK_EQUAL(input, node->get_string());
+    
+    AstInvocation *invoke = dynamic_cast<AstInvocation *>(node);
+    CHECK(invoke);
+    
+    CHECK_EQUAL(std::string("f"), invoke->ident->get_name());
+    
+    AstArgument *astArgs = invoke->astArgs;
+    CHECK_EQUAL(astArgs->size(), 0);
 }
 
 TEST(ParsePrimary, 0ArgInvocationWhitespace)
 {
     std::string input("f ( )");
+    mock().expectOneCall("tokenIdentifier");
     node = p->parse_primary(input.begin());
-    CHECK(dynamic_cast<AstInvocation *>(node));
     CHECK_EQUAL(input, node->get_string());
+
+    AstInvocation *invoke = dynamic_cast<AstInvocation *>(node);
+    CHECK(invoke);
+    
+    CHECK_EQUAL(std::string("f"), invoke->ident->get_name());
+    
+    AstArgument *astArgs = invoke->astArgs;
+    CHECK_EQUAL(astArgs->size(), 0);
 }
 
 TEST(ParsePrimary, 1ArgInvocation)
 {
     std::string input("f(1)");
+    mock().expectOneCall("tokenIdentifier");
+    mock().expectOneCall("parseExpression");
     node = p->parse_primary(input.begin());
-    CHECK(dynamic_cast<AstInvocation *>(node));
     CHECK_EQUAL(input, node->get_string());
+
+    AstInvocation *invoke = dynamic_cast<AstInvocation *>(node);
+    CHECK(invoke);
+    
+    CHECK_EQUAL(std::string("f"), invoke->ident->get_name());
+    
+    AstArgument *astArgs = invoke->astArgs;
+    CHECK_EQUAL(astArgs->size(), 1);
+    CHECK_EQUAL(std::string("1"), astArgs->children.at(0)->get_string());
 }
 
 TEST(ParsePrimary, 1ArgInvocationWhitespace)
 {
-    std::string input("f ( 1 )");
+    std::string input("f  (  1  )");
+    mock().expectOneCall("tokenIdentifier");
+    mock().expectOneCall("parseExpression");
     node = p->parse_primary(input.begin());
-    CHECK(dynamic_cast<AstInvocation *>(node));
     CHECK_EQUAL(input, node->get_string());
+    
+    AstInvocation *invoke = dynamic_cast<AstInvocation *>(node);
+    CHECK(invoke);
+    
+    CHECK_EQUAL(std::string("f"), invoke->ident->get_name());
+    
+    AstArgument *astArgs = invoke->astArgs;
+    CHECK_EQUAL(astArgs->size(), 1);
+    CHECK_EQUAL(std::string("1"), astArgs->children.at(0)->get_string());
 }
 
 TEST(ParsePrimary, 2ArgInvocation)
 {
     std::string input("f(1,2)");
+    mock().expectOneCall("tokenIdentifier");
+    mock().expectNCalls(2, "parseExpression");
     node = p->parse_primary(input.begin());
-    CHECK(dynamic_cast<AstInvocation *>(node));
     CHECK_EQUAL(input, node->get_string());
+    
+    AstInvocation *invoke = dynamic_cast<AstInvocation *>(node);
+    CHECK(invoke);
+    
+    CHECK_EQUAL(std::string("f"), invoke->ident->get_name());
+    
+    AstArgument *astArgs = invoke->astArgs;
+    CHECK_EQUAL(astArgs->size(), 2);
+    CHECK_EQUAL(std::string("1"), astArgs->children.at(0)->get_string());
+    CHECK_EQUAL(std::string("2"), astArgs->children.at(1)->get_string());
 }
 
 TEST(ParsePrimary, 2ArgInvocationWhitespace)
 {
-    std::string input("f  (  1  , 2 )");
+    std::string input("f  (  1  ,  2  )");
+    mock().expectOneCall("tokenIdentifier");
+    mock().expectNCalls(2, "parseExpression");
     node = p->parse_primary(input.begin());
-    CHECK(dynamic_cast<AstInvocation *>(node));
     CHECK_EQUAL(input, node->get_string());
-}*/
+    
+    AstInvocation *invoke = dynamic_cast<AstInvocation *>(node);
+    CHECK(invoke);
+    
+    CHECK_EQUAL(std::string("f"), invoke->ident->get_name());
+    
+    AstArgument *astArgs = invoke->astArgs;
+    CHECK_EQUAL(astArgs->size(), 2);
+    CHECK_EQUAL(std::string("1"), astArgs->children.at(0)->get_string());
+    CHECK_EQUAL(std::string("2"), astArgs->children.at(1)->get_string());
+}

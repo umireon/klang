@@ -4,15 +4,18 @@
 
 #include "parser/types.h"
 #include "parser/BaseParse.h"
+#include "parser/TokenIdentifier.h"
 
 class ParseParameter : public BaseParse {
 public:
-	virtual AstNode *parse(pstr_t str)
-	{
-		return parse_parameter(str);
-	}
+    TokenIdentifier *tokenIdentifier;
+    
+    virtual AstNode *parse(pstr_t str)
+    {
+        return parse_parameter(str);
+    }
 
-	AstParameter *parse_parameter(pstr_t str);
+	virtual AstParameter *parse_parameter(pstr_t str);
 
 private:
 	enum SymbolType {

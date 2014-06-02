@@ -28,6 +28,7 @@ AstNode* Parse::parse(pstr_t str)
     ParsePrimary parsePrimary;
     ParseFunction parseFunction;
     ParseCompound parseCompound;
+    ParseParameter parseParameter;
     ParseIf parseIf;
     ParseParen parseParen;
     TokenNumber tokenNumber;
@@ -48,8 +49,11 @@ AstNode* Parse::parse(pstr_t str)
 
     parseFunction.parseExpression = &parseExpression;
     parseFunction.parseCompound = &parseCompound;
+    parseFunction.parseParameter = &parseParameter;
 
     parseCompound.parseExpression = &parseExpression;
+
+    parseParameter.tokenIdentifier = &tokenIdentifier;
 
     parseIf.parseExpression = &parseExpression;
     parseIf.parseCompound = &parseCompound;

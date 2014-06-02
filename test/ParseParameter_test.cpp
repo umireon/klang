@@ -8,8 +8,14 @@
 
 TEST_GROUP(ParseParameter)
 {
+    TokenIdentifier tokenIdentifier;
     ParseParameter p;
     AstParameter *astParam;
+
+    void setup()
+    {
+        p.tokenIdentifier = &tokenIdentifier;
+    }
 
     void teardown()
     {

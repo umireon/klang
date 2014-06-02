@@ -36,6 +36,18 @@ TEST_GROUP(ParseFunction)
             return node;
         }
     } parseCompoundMock;
+    
+    class ParseParameterMock : public ParseParameter
+    {
+        virtual AstParameter *parse_parameter(pstr_t str)
+        {
+            mock().actualCall("parseParameter");
+            AstParameter *astParams = new AstParameter();
+            astParams->strhead = str;
+            astParams->strtail = str + 1;
+            return astParams;
+        }
+    } parseParameterMock;
 
     ParseFunction parseFunction, *p;
     
@@ -46,6 +58,7 @@ TEST_GROUP(ParseFunction)
         p = &parseFunction;
         p->parseExpression = &parseExpressionMock;
         p->parseCompound = &parseCompoundMock;
+        p->parseParameter = &parseParameterMock;
     }
     
     void teardown()
@@ -60,6 +73,7 @@ TEST(ParseFunction, get_string)
 {
     std::string input("() 0");
     mock().expectOneCall("parseExpression");
+    mock().expectOneCall("parseParameter");
     astFunc = p->parse_function(input.begin());
 }
 
@@ -67,6 +81,7 @@ TEST(ParseFunction, Expression)
 {
     std::string input("(a) 0");
     mock().expectOneCall("parseExpression");
+    mock().expectOneCall("parseParameter");
     astFunc = p->parse_function(input.begin());
 }
 
@@ -74,5 +89,7 @@ TEST(ParseFunction, Compound)
 {
     std::string input("(a) {\na\nb\n}");
     mock().expectOneCall("parseCompound");
+    mock().expectNCalls(2, "parseExpression");
+    mock().expectOneCall("parseParameter");
     astFunc = p->parse_function(input.begin());
 }

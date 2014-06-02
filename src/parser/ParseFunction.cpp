@@ -14,10 +14,9 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
     astFunc->strhead = str;
 
     AstParameter *astParam;
-    ParseParameter pp;
     switch (get_symbol(str)) {
         case SYMBOL_PAREN_LEFT:
-            astParam = pp.parse_parameter(str);
+            astParam = parseParameter->parse_parameter(str);
             astFunc->astParam = astParam;
             str = scan(astParam->strtail);
             break;

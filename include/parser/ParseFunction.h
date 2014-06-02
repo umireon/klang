@@ -4,11 +4,13 @@
 
 #include "parser/types.h"
 #include "parser/BaseParse.h"
+#include "parser/ParseParameter.h"
 
 class ParseFunction : public BaseParse {
 public:
     BaseParse *parseExpression;
     BaseParse *parseCompound;
+    ParseParameter *parseParameter;
     
     virtual AstNode *parse(pstr_t str)
     {
