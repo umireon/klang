@@ -6,6 +6,9 @@ option(TEST "Build all tests." OFF)
 option(UNIT_TEST "Build unit tests." OFF)
 option(INTEGRATION_TEST "Build integration tests." OFF)
 
+set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
+include (cotire)
+
 find_package(Boost)
 include_directories(${Boost_INCLUDE_DIR})
 
@@ -15,15 +18,19 @@ file(GLOB_RECURSE AST_SRC "${CMAKE_SOURCE_DIR}/src/ast/*" "${CMAKE_SOURCE_DIR}/i
 file(GLOB KFUNC_SRC "${CMAKE_SOURCE_DIR}/src/kfunc/*" "${CMAKE_SOURCE_DIR}/include/kfunc/*.h")
 
 add_library(kobject ${KOBJECT_SRC})
+cotire(kobject)
 
 add_library(ast ${AST_SRC})
 target_link_libraries(ast kobject)
+cotire(ast)
 
 add_library(parser ${PARSER_SRC})
 target_link_libraries(parser ast)
+cotire(parser)
 
 add_library(kfunc ${KFUNC_SRC})
 target_link_libraries(kfunc kobject)
+cotire(kfunc)
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
