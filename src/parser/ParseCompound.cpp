@@ -8,12 +8,12 @@
 #include "parser/ParseExpression.h"
 #include "parser/ParseCompound.h"
 
-AstCompound* ParseCompound::parse_compound(pstr_t str)
+AstCompound *ParseCompound::parse_compound(pstr_t str)
 {
     AstCompound *com = new AstCompound();
     com->strhead = str;
 
-    switch (get_symbol(str[0])) {
+    switch (get_symbol(str)) {
         case SYMBOL_BRACE_LEFT:
             str++;
             break;
@@ -23,29 +23,23 @@ AstCompound* ParseCompound::parse_compound(pstr_t str)
             throw std::invalid_argument(os.str());
     }
 
-    ParseExpression p;
-    AstNode *expr;
     while (1) {
         str = scan(str);
-        switch (get_symbol(str[0])) {
+        switch (get_symbol(str)) {
             case SYMBOL_BRACE_RIGHT:
                 com->strtail = str + 1;
                 return com;
             default:
-                expr = p.parse_expression(str);
+                AstNode *expr = parseExpression->parse(str);
                 str = expr->strtail;
                 com->children.push_back(expr);
         }
     }
 }
 
-enum ParseCompound::SymbolType ParseCompound::get_symbol(char c) const
+enum ParseCompound::SymbolType ParseCompound::get_symbol(pstr_t str)
 {
-    switch (c) {
-        case '\n':
-        case '\r':
-        case ' ':
-            return SYMBOL_WHITESPACE;
+    switch (*str) {
         case '{':
             return SYMBOL_BRACE_LEFT;
         case '}':
@@ -55,14 +49,13 @@ enum ParseCompound::SymbolType ParseCompound::get_symbol(char c) const
     }
 }
 
-pstr_t ParseCompound::scan(pstr_t str) const
-{
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
+bool ParseCompound::is_whitespace(pstr_t str) {
+    switch (*str) {
+        case '\n':
+        case '\r':
+        case ' ':
+            return true;
+        default:
+            return false;
+    }
 }

@@ -3,9 +3,17 @@
 #include "ast/AstParen.h"
 
 #include "parser/types.h"
+#include "parser/BaseParse.h"
 
-class ParseParen {
+class ParseParen : public BaseParse {
 public:
+    BaseParse *parseExpression;
+    
+    virtual AstNode *parse(pstr_t str)
+    {
+        return parse_paren(str);
+    }
+    
 	AstParen *parse_paren(pstr_t str);
 
 protected:
@@ -13,9 +21,7 @@ protected:
 		SYMBOL_PAREN_LEFT,
 		SYMBOL_PAREN_RIGHT,
 		SYMBOL_FOLLOW,
-		SYMBOL_WHITESPACE,
 	};
     
-	enum SymbolType get_symbol(char c);
-	pstr_t scan_lexical_symbol(pstr_t str);
+	enum SymbolType get_symbol(pstr_t str);
 };

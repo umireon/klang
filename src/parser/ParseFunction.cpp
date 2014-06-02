@@ -2,10 +2,9 @@
 #include <stdexcept>
 
 #include "ast/AstFunction.h"
+#include "ast/AstParameter.h"
 
 #include "parser/types.h"
-#include "parser/ParseCompound.h"
-#include "parser/ParseExpression.h"
 #include "parser/ParseFunction.h"
 #include "parser/ParseParameter.h"
 
@@ -16,11 +15,11 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
 
     AstParameter *astParam;
     ParseParameter pp;
-    switch (get_symbol(str[0])) {
+    switch (get_symbol(str)) {
         case SYMBOL_PAREN_LEFT:
             astParam = pp.parse_parameter(str);
             astFunc->astParam = astParam;
-            str = astParam->strtail;
+            str = scan(astParam->strtail);
             break;
         default:
             std::ostringstream os;
@@ -28,16 +27,14 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
             throw std::invalid_argument(os.str());
     }
 
-    str = scan(str);
     AstNode *body;
-    ParseExpression pe;
-    ParseCompound pc;
-    switch (get_symbol(str[0])) {
+    switch (get_symbol(str)) {
         case SYMBOL_BRACE_LEFT:
-            body = pc.parse_compound(str);
+            body = parseCompound->parse(str);
             break;
-        default:
-            body = pe.parse_expression(str);
+        case SYMBOL_FOLLOW:
+        case SYMBOL_PAREN_LEFT:
+            body = parseExpression->parse(str);
     }
 
     astFunc->body = body;
@@ -46,23 +43,9 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
     return astFunc;
 }
 
-pstr_t ParseFunction::scan(pstr_t str)
+enum ParseFunction::SymbolType ParseFunction::get_symbol(pstr_t str)
 {
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
-}
-
-enum ParseFunction::SymbolType ParseFunction::get_symbol(char c)
-{
-    switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
+    switch (*str) {
         case '(':
             return SYMBOL_PAREN_LEFT;
         case '{':

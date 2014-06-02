@@ -18,16 +18,13 @@
 
 AstNode* ParsePrimary::parse_primary(pstr_t str)
 {
-    enum SymbolType type = get_symbol(str[0]);
-
-    switch (type) {
+    switch (get_symbol(str)) {
         case SYMBOL_FIRST_NUMBER:
             ParseNumber pn;
             return pn.parse_number(str);
             break;
         case SYMBOL_PAREN_LEFT:
-            ParseParen pp;
-            return pp.parse_paren(str);
+            return parseParen->parse(str);
             break;
         case SYMBOL_ALPHABET:
             return parse_identifier_or_invocation(str);
@@ -46,25 +43,18 @@ AstNode* ParsePrimary::parse_identifier_or_invocation(pstr_t str)
     AstIdentifier *ident = pi.parse_identifier(str);
 
     str = ident->strtail;
-    str = scan_lexical_symbol(str);
-    enum SymbolType type = get_symbol(str[0]);
-
-    ParseFunction pf;
+    str = scan(str);
     switch (ident->get_identifier_type()) {
         case AstIdentifier::FUNCTION:
             delete ident;
-            str = scan_lexical_symbol(str);
-            return pf.parse_function(str);
+            return parseFunction->parse(scan(str));
         case AstIdentifier::IF:
             delete ident;
-            str = scan_lexical_symbol(str);
-            return pif.parse_if(str);
+            return parseIf->parse(scan(str));
         case AstIdentifier::NAME:
-            switch (type) {
+            switch (get_symbol(str)) {
                 case SYMBOL_PAREN_LEFT:
-                    str++;
-                    str = scan_lexical_symbol(str);
-                    return wrap_with_invocation(ident, str);
+                    return wrap_with_invocation(ident, scan(str+1));
                     break;
                 default:
                     return ident;
@@ -84,7 +74,7 @@ AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, pstr_t st
     newRoot->ident = node;
 
     AstArgument *args;
-    enum SymbolType type = get_symbol(str[0]);
+    enum SymbolType type = get_symbol(str);
     switch (type) {
         case SYMBOL_PAREN_RIGHT:
             args = new AstArgument();
@@ -97,7 +87,7 @@ AstInvocation* ParsePrimary::wrap_with_invocation(AstIdentifier* node, pstr_t st
             str = args->strtail;
     }
 
-    type = get_symbol(str[0]);
+    type = get_symbol(str);
     switch (type) {
         case SYMBOL_PAREN_RIGHT:
             newRoot->strtail = str + 1;
@@ -114,19 +104,18 @@ AstArgument* ParsePrimary::parse_argument(pstr_t str)
     AstArgument *inv = new AstArgument();
     inv->strhead = str;
 
-    ParseExpression p;
-    AstNode *expr = p.parse_expression(str);
+    AstNode *expr = parseExpression->parse(str);
     inv->children.push_back(expr);
     str = expr->strtail;
 
     while (true) {
-        str = scan_lexical_symbol(str);
-        enum SymbolType type = get_symbol(str[0]);
+        str = scan(str);
+        enum SymbolType type = get_symbol(str);
         switch (type) {
             case SYMBOL_COMMA:
                 str++;
-                str = scan_lexical_symbol(str);
-                expr = p.parse_expression(str);
+                str = scan(str);
+                expr = parseExpression->parse(str);
                 inv->children.push_back(expr);
                 str = expr->strtail;
                 break;
@@ -137,20 +126,9 @@ AstArgument* ParsePrimary::parse_argument(pstr_t str)
     }
 }
 
-pstr_t ParsePrimary::scan_lexical_symbol(pstr_t str)
+enum ParsePrimary::SymbolType ParsePrimary::get_symbol(pstr_t str)
 {
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
-}
-
-enum ParsePrimary::SymbolType ParsePrimary::get_symbol(char c)
-{
+    char c = *str;
     if ('0' <= c && c <= '9') {
         return SYMBOL_FIRST_NUMBER;
     } else if ('A' <= c && c <= 'Z') {
@@ -160,8 +138,6 @@ enum ParsePrimary::SymbolType ParsePrimary::get_symbol(char c)
     }
 
     switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
         case '+':
             return SYMBOL_FIRST_NUMBER;
         case '-':

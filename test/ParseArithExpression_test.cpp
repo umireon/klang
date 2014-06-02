@@ -7,38 +7,36 @@
 #include "ast/AstAddition.h"
 #include "ast/AstSubtraction.h"
 
+#include "parser/types.h"
 #include "parser/BaseParse.h"
 #include "parser/ParseArithExpression.h"
 
-class ParseNextMock : public BaseParse
-{
-    virtual AstNode *parse(pstr_t str)
-    {
-        mock().actualCall("parse");
-        AstNode *node = new AstNode();
-        node->strhead = str;
-        node->strtail = str + 1;
-        return node;
-    }
-};
-
 TEST_GROUP(ParseArithExpression)
 {
-    ParseNextMock *pn;
-    ParseArithExpression *p;
+    class ParseNextMock : public BaseParse
+    {
+        virtual AstNode *parse(pstr_t str)
+        {
+            mock().actualCall("parse");
+            AstNode *node = new AstNode();
+            node->strhead = str;
+            node->strtail = str + 1;
+            return node;
+        }
+    } parseNextMock;
+
+    ParseArithExpression parseArithExpression, *p;
+
     AstNode *node;
     
     void setup()
     {
-        pn = new ParseNextMock();
-        p = new ParseArithExpression;
-        p->parseNext = pn;
+        p = &parseArithExpression;
+        p->parseNext = &parseNextMock;
     }
     
     void teardown()
     {
-        delete p;
-        delete pn;
         delete node;
         mock().clear();
     }

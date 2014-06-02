@@ -19,33 +19,27 @@ AstIf *ParseIf::parse_if(pstr_t str)
 
     AstNode *node;
     while (true) {
-        ParseExpression pe;
-        node = pe.parse_expression(str);
-        str = node->strtail;
+        node = parseExpression->parse(str);
+        str = scan(node->strtail);
         astIf->cond.push_back(node);
 
-
-        str = scan(str);
-        ParseCompound pc;
-        switch (get_symbol(str[0])) {
+        switch (get_symbol(str)) {
             case SYMBOL_BRACE_LEFT:
-                node = pc.parse_compound(str);
+                node = parseCompound->parse(str);
                 break;
             default:
-                node = pe.parse_expression(str);
+                node = parseExpression->parse(str);
         }
-        str = astIf->strtail = node->strtail;
+        str = scan(node->strtail);
         astIf->body.push_back(node);
 
-
-        str = scan(str);
-        AstIdentifier *ident;
-        ParseIdentifier pi;
-
         if (str[0] != 'e') {
+            astIf->strtail = node->strtail;
             return astIf;
         }
-
+        
+        AstIdentifier *ident;
+        ParseIdentifier pi;
         ident = pi.parse_identifier(str);
         enum AstIdentifier::IdentifierType itype = ident->get_identifier_type();
         str = scan(ident->strtail);
@@ -55,14 +49,14 @@ AstIf *ParseIf::parse_if(pstr_t str)
             case AstIdentifier::ELSIF:
                 continue;
             case AstIdentifier::ELSE:
-                switch (get_symbol(str[0])) {
+                switch (get_symbol(str)) {
                     case SYMBOL_BRACE_LEFT:
-                        node = pc.parse_compound(str);
+                        node = parseCompound->parse(str);
                         break;
                     default:
-                        node = pe.parse_expression(str);
+                        node = parseExpression->parse(str);
                 }
-                str = astIf->strtail = node->strtail;
+                astIf->strtail = node->strtail;
                 astIf->body.push_back(node);
             default:
                 return astIf;
@@ -70,23 +64,9 @@ AstIf *ParseIf::parse_if(pstr_t str)
     }
 }
 
-pstr_t ParseIf::scan(pstr_t str)
+enum ParseIf::SymbolType ParseIf::get_symbol(pstr_t str)
 {
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
-}
-
-enum ParseIf::SymbolType ParseIf::get_symbol(char c)
-{
-    switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
+    switch (*str) {
         case '{':
             return SYMBOL_BRACE_LEFT;
         default:

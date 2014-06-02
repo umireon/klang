@@ -1,75 +1,57 @@
-#include <CppUTest/TestHarness.h>
+#include "CppUTest/TestHarness.h"
+#include "CppUTestExt/MockSupport.h"
 
 #include <string>
 
+#include "ast/AstNode.h"
 #include "ast/AstParen.h"
 
+#include "parser/BaseParse.h"
 #include "parser/ParseParen.h"
 
 TEST_GROUP(ParseParen)
 {
-    ParseParen p;
+    class ParseExpressionMock : public BaseParse
+    {
+        virtual AstNode *parse(pstr_t str)
+        {
+            mock().actualCall("parseExpression");
+            AstNode *node = new AstNode();
+            node->strhead = str;
+            node->strtail = str + 1;
+            return node;
+        }
+    } parseExpressionMock;
+
+    ParseParen parseParen, *p;
+    
     AstParen *paren;
+    
+    void setup()
+    {
+        p = &parseParen;
+        p->parseExpression = &parseExpressionMock;
+    }
     
     void teardown()
     {
         delete paren;
+        mock().clear();
     }
 };
 
 TEST(ParseParen, get_string)
 {
     std::string input("(1)");
-    paren = p.parse_paren(input.begin());
+    mock().expectOneCall("parseExpression");
+    paren = p->parse_paren(input.begin());
     CHECK_EQUAL(input, paren->get_string());
 }
 
-TEST(ParseParen, Number)
-{
-    std::string input("(1)");
-    paren = p.parse_paren(input.begin());
-    CHECK_EQUAL(std::string("1"), paren->children.at(0)->get_string());
-}
-
-TEST(ParseParen, NumberWhitespace)
-{
-    std::string input("( 1 )");
-    paren = p.parse_paren(input.begin());
-    CHECK_EQUAL(std::string("1"), paren->children.at(0)->get_string());
-}
-
-TEST(ParseParen, Identity)
+TEST(ParseParen, SingleParen)
 {
     std::string input("(a)");
-    paren = p.parse_paren(input.begin());
+    mock().expectOneCall("parseExpression");
+    paren = p->parse_paren(input.begin());
     CHECK_EQUAL(std::string("a"), paren->children.at(0)->get_string());
-}
-
-TEST(ParseParen, IdentityWhitespace)
-{
-    std::string input("( a )");
-    paren = p.parse_paren(input.begin());
-    CHECK_EQUAL(std::string("a"), paren->children.at(0)->get_string());
-}
-
-TEST(ParseParen, NestedParen)
-{
-    std::string input("((1))");
-    paren = p.parse_paren(input.begin());
-    
-    AstParen *paren0 = dynamic_cast<AstParen*>(paren->children.at(0));
-    CHECK(paren0);
-    
-    CHECK_EQUAL(std::string("1"), paren0->children.at(0)->get_string());
-}
-
-TEST(ParseParen, NestedParenWhitespace)
-{
-    std::string input("(  ( 1 ) )");
-    paren = p.parse_paren(input.begin());
-    
-    AstParen *paren0 = dynamic_cast<AstParen*>(paren->children.at(0));
-    CHECK(paren0);
-    
-    CHECK_EQUAL(std::string("1"), paren0->children.at(0)->get_string());
 }

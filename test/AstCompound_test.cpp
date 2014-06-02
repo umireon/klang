@@ -31,7 +31,7 @@ TEST_GROUP(AstCompound)
         delete res;
     }
 };
-
+/*
 TEST(AstCompound, SingleStatement)
 {
     std::string input("{1}");
@@ -41,4 +41,4 @@ TEST(AstCompound, SingleStatement)
     KInteger *kint = dynamic_cast<KInteger *>(res);
     CHECK(kint);
     CHECK_EQUAL(1, kint->to_i());
-}
+}*/

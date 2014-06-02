@@ -5,82 +5,75 @@
 
 #include "ast/AstNode.h"
 #include "ast/AstCompound.h"
-#include "ast/AstIdentifier.h"
 
-#include "parser/ParseCompound.h"
+#include "parser/types.h"
 #include "parser/BaseParse.h"
-
-class ParseNextMock : public BaseParse
-{
-    virtual AstNode *parse(pstr_t str)
-    {
-        mock().actualCall("parse");
-        AstNode *node = new AstNode();
-        node->strhead = str;
-        node->strtail = str + 1;
-        return node;
-    }
-};
+#include "parser/ParseCompound.h"
 
 TEST_GROUP(ParseCompound)
 {
-    ParseCompound p;
-    AstNode *node;
+    class ParseExpressionMock : public BaseParse
+    {
+        virtual AstNode *parse(pstr_t str)
+        {
+            mock().actualCall("parseExpression");
+            AstNode *com = new AstNode();
+            com->strhead = str;
+            com->strtail = str + 1;
+            return com;
+        }
+    } parseExpressionMock;
+
+    ParseCompound parseCompound, *p;
+    
     AstCompound *com;
+    
+    void setup()
+    {
+        p = &parseCompound;
+        p->parseExpression = &parseExpressionMock;
+    }
     
     void teardown()
     {
-        delete node;
+        delete com;
+        mock().clear();
     }
 };
 
 TEST(ParseCompound, get_string)
 {
     std::string input("{x}");
-    node = p.parse_compound(input.begin());
-    CHECK_EQUAL(input, node->get_string());
+    mock().expectOneCall("parseExpression");
+    com = p->parse_compound(input.begin());
+    CHECK_EQUAL(input, com->get_string());
 }
 
 TEST(ParseCompound, InLine)
 {
     std::string input("{x}");
-    node = p.parse_compound(input.begin());
-    com = dynamic_cast<AstCompound *>(node);
-    CHECK(com);
+    mock().expectOneCall("parseExpression");
+    com = p->parse_compound(input.begin());
     
-    AstIdentifier *ident = dynamic_cast<AstIdentifier *>(com->children.at(0));
-	CHECK(ident);
-	CHECK_EQUAL(std::string("x"), ident->get_string());
+	CHECK_EQUAL(std::string("x"), com->children.at(0)->get_string());
 }
 
 TEST(ParseCompound, SingleLine)
 {
-    std::string input("{\nx\n}");
-    node = p.parse_compound(input.begin());
-    com = dynamic_cast<AstCompound *>(node);
-    CHECK(com);
+    std::string input("{ \n\rx\r\n }");
+    mock().expectOneCall("parseExpression");
+    com = p->parse_compound(input.begin());
     
-    AstIdentifier *ident = dynamic_cast<AstIdentifier *>(com->children.at(0));
-	CHECK(ident);
-	CHECK_EQUAL(std::string("x"), ident->get_string());
+	CHECK_EQUAL(std::string("x"), com->children.at(0)->get_string());
 }
 
 TEST(ParseCompound, MultipleLine)
 {
     std::string input("{\nx\n  y\rz\n}");
-    node = p.parse_compound(input.begin());
-    com = dynamic_cast<AstCompound *>(node);
-    CHECK(com);
+    mock().expectNCalls(3, "parseExpression");
+    com = p->parse_compound(input.begin());
     
-    AstIdentifier *ident1 = dynamic_cast<AstIdentifier *>(com->children.at(0));
-	CHECK(ident1);
-	CHECK_EQUAL(std::string("x"), ident1->get_string());
-    
-    AstIdentifier *ident2 = dynamic_cast<AstIdentifier *>(com->children.at(1));
-	CHECK(ident2);
-	CHECK_EQUAL(std::string("y"), ident2->get_string());
-    
-    AstIdentifier *ident3 = dynamic_cast<AstIdentifier *>(com->children.at(2));
-	CHECK(ident3);
-	CHECK_EQUAL(std::string("z"), ident3->get_string());
+	CHECK_EQUAL(std::string("x"), com->children.at(0)->get_string());
+	CHECK_EQUAL(std::string("y"), com->children.at(1)->get_string());
+	CHECK_EQUAL(std::string("z"), com->children.at(2)->get_string());
 }

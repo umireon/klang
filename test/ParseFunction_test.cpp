@@ -1,4 +1,5 @@
-#include <CppUTest/TestHarness.h>
+#include "CppUTest/TestHarness.h"
+#include "CppUTestExt/MockSupport.h"
 
 #include <string>
 
@@ -12,59 +13,66 @@
 
 TEST_GROUP(ParseFunction)
 {
-    ParseFunction p;
+    class ParseExpressionMock : public BaseParse
+    {
+        virtual AstNode *parse(pstr_t str)
+        {
+            mock().actualCall("parseExpression");
+            AstNode *node = new AstNode();
+            node->strhead = str;
+            node->strtail = str + 1;
+            return node;
+        }
+    } parseExpressionMock;
+    
+    class ParseCompoundMock : public BaseParse
+    {
+        virtual AstNode *parse(pstr_t str)
+        {
+            mock().actualCall("parseCompound");
+            AstNode *node = new AstNode();
+            node->strhead = str;
+            node->strtail = str + 3;
+            return node;
+        }
+    } parseCompoundMock;
+
+    ParseFunction parseFunction, *p;
+    
     AstFunction *astFunc;
+    
+    void setup()
+    {
+        p = &parseFunction;
+        p->parseExpression = &parseExpressionMock;
+        p->parseCompound = &parseCompoundMock;
+    }
     
     void teardown()
     {
         delete astFunc->body;
         delete astFunc;
+        mock().clear();
     }
 };
 
 TEST(ParseFunction, get_string)
 {
     std::string input("() 0");
-    astFunc = p.parse_function(input.begin());
-    CHECK_EQUAL(input, astFunc->get_string());
+    mock().expectOneCall("parseExpression");
+    astFunc = p->parse_function(input.begin());
 }
 
-TEST(ParseFunction, Number)
+TEST(ParseFunction, Expression)
 {
     std::string input("(a) 0");
-    astFunc = p.parse_function(input.begin());
-    AstNumber *num = dynamic_cast<AstNumber *>(astFunc->body);
-    CHECK(num);
-}
-
-TEST(ParseFunction, Identifier)
-{
-    std::string input("(a) a");
-    astFunc = p.parse_function(input.begin());
-    AstIdentifier *ident = dynamic_cast<AstIdentifier *>(astFunc->body);
-    CHECK(ident);
-}
-
-TEST(ParseFunction, ArithExpression)
-{
-    std::string input("(a) a + b");
-    astFunc = p.parse_function(input.begin());
-    AstAddition *add = dynamic_cast<AstAddition *>(astFunc->body);
-    CHECK(add);
-}
-
-TEST(ParseFunction, Assignment)
-{
-    std::string input("(a) a = b");
-    astFunc = p.parse_function(input.begin());
-    AstAssignment *assign = dynamic_cast<AstAssignment *>(astFunc->body);
-    CHECK(assign);
+    mock().expectOneCall("parseExpression");
+    astFunc = p->parse_function(input.begin());
 }
 
 TEST(ParseFunction, Compound)
 {
     std::string input("(a) {\na\nb\n}");
-    astFunc = p.parse_function(input.begin());
-    AstCompound *com = dynamic_cast<AstCompound *>(astFunc->body);
-    CHECK(com);
+    mock().expectOneCall("parseCompound");
+    astFunc = p->parse_function(input.begin());
 }

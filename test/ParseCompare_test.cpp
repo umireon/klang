@@ -9,35 +9,32 @@
 #include "parser/BaseParse.h"
 #include "parser/ParseCompare.h"
 
-class ParseNextMock : public BaseParse
-{
-    virtual AstNode *parse(pstr_t str)
-    {
-        mock().actualCall("parse");
-        AstNode *node = new AstNode();
-        node->strhead = str;
-        node->strtail = str + 1;
-        return node;
-    }
-};
-
 TEST_GROUP(ParseCompare)
 {
-    ParseNextMock *pn;
-    ParseCompare *p;
+    class ParseNextMock : public BaseParse
+    {
+        virtual AstNode *parse(pstr_t str)
+        {
+            mock().actualCall("parse");
+            AstNode *node = new AstNode();
+            node->strhead = str;
+            node->strtail = str + 1;
+            return node;
+        }
+    } parseNextMock;
+
+    ParseCompare parseCompare, *p;
+
     AstNode *node;
     
     void setup()
     {
-        pn = new ParseNextMock();
-        p = new ParseCompare();
-        p->parseNext = pn;
+        p = &parseCompare;
+        p->parseNext = &parseNextMock;
     }
     
     void teardown()
     {
-        delete p;
-        delete pn;
         delete node;
         mock().clear();
     }

@@ -11,7 +11,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 
 #include "ast.h"
-#include "parser.h"
+#include "parser/Parse.h"
 #include "kobject.h"
 
 #include "kfunc/FuncExit.h"
