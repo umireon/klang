@@ -20,6 +20,9 @@
 
 AstNode* Parse::parse(pstr_t str)
 {
+    SyntaxErrorHandler handler;
+    SyntaxErrorHandler *seh = &handler;
+    
     ParseExpression parseExpression;
     ParseAssignment parseAssignment;
     ParseCompare parseCompare;
@@ -60,6 +63,20 @@ AstNode* Parse::parse(pstr_t str)
     parseIf.tokenIdentifier = &tokenIdentifier;
 
     parseParen.parseExpression = &parseExpression;
+    
+    parseExpression.syntaxErrorHandler = seh;
+    parseAssignment.syntaxErrorHandler = seh;
+    parseCompare.syntaxErrorHandler = seh;
+    parseArithExpression.syntaxErrorHandler = seh;
+    parseTerm.syntaxErrorHandler = seh;
+    parsePrimary.syntaxErrorHandler = seh;
+    parseFunction.syntaxErrorHandler = seh;
+    parseCompound.syntaxErrorHandler = seh;
+    parseParameter.syntaxErrorHandler = seh;
+    parseIf.syntaxErrorHandler = seh;
+    parseParen.syntaxErrorHandler = seh;
+    tokenNumber.syntaxErrorHandler = seh;
+    tokenIdentifier.syntaxErrorHandler = seh;
 
     return parseExpression.parse(scan(str));
 }

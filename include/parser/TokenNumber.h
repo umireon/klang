@@ -9,10 +9,16 @@
 #include "ast/AstDecimal.h"
 
 #include "parser/types.h"
+#include "parser/BaseParse.h"
 
-class TokenNumber {
+class TokenNumber : public BaseParse {
 public:
+    virtual AstNode *parse(pstr_t str) {
+        return parse_number(str);
+    }
+
 	virtual AstNumber *parse_number(pstr_t str);
+
 protected:
 	enum SymbolType {
 		SYMBOL_NUMBER_ZERO,
