@@ -10,9 +10,9 @@
 
 #include "parser/types.h"
 
-class ParseNumber {
+class TokenNumber {
 public:
-	AstNumber *parse_number(pstr_t str);
+	virtual AstNumber *parse_number(pstr_t str);
 protected:
 	enum SymbolType {
 		SYMBOL_NUMBER_ZERO,

@@ -6,6 +6,8 @@
 
 #include "parser/types.h"
 #include "parser/BaseParse.h"
+#include "parser/TokenNumber.h"
+#include "parser/TokenIdentifier.h"
 
 class ParsePrimary : public BaseParse {
 public:
@@ -13,6 +15,8 @@ public:
     BaseParse *parseParen;
     BaseParse *parseFunction;
     BaseParse *parseIf;
+    TokenNumber *tokenNumber;
+    TokenIdentifier *tokenIdentifier;
 
 	virtual AstNode *parse(pstr_t str)
 	{

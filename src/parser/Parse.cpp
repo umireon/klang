@@ -30,6 +30,8 @@ AstNode* Parse::parse(pstr_t str)
     ParseCompound parseCompound;
     ParseIf parseIf;
     ParseParen parseParen;
+    TokenNumber tokenNumber;
+    TokenIdentifier tokenIdentifier;
 
     parseExpression.parseNext = &parseAssignment;
     parseAssignment.parseNext = &parseCompare;
@@ -41,6 +43,8 @@ AstNode* Parse::parse(pstr_t str)
     parsePrimary.parseFunction = &parseFunction;
     parsePrimary.parseIf = &parseIf;
     parsePrimary.parseParen = &parseParen;
+    parsePrimary.tokenNumber = &tokenNumber;
+    parsePrimary.tokenIdentifier = &tokenIdentifier;
 
     parseFunction.parseExpression = &parseExpression;
     parseFunction.parseCompound = &parseCompound;
@@ -49,6 +53,7 @@ AstNode* Parse::parse(pstr_t str)
 
     parseIf.parseExpression = &parseExpression;
     parseIf.parseCompound = &parseCompound;
+    parseIf.tokenIdentifier = &tokenIdentifier;
 
     parseParen.parseExpression = &parseExpression;
 

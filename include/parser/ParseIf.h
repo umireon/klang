@@ -5,11 +5,13 @@
 
 #include "parser/types.h"
 #include "parser/BaseParse.h"
+#include "parser/TokenIdentifier.h"
 
 class ParseIf : public BaseParse {
 public:
     BaseParse *parseExpression;
     BaseParse *parseCompound;
+    TokenIdentifier *tokenIdentifier;
     
     virtual AstNode *parse(pstr_t str)
     {

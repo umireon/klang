@@ -9,9 +9,9 @@
 #include "parser/types.h"
 #include "parser/ParseExpression.h"
 #include "parser/ParseFunction.h"
-#include "parser/ParseIdentifier.h"
+#include "parser/TokenIdentifier.h"
 #include "parser/ParseIf.h"
-#include "parser/ParseNumber.h"
+#include "parser/TokenNumber.h"
 #include "parser/ParseParameter.h"
 #include "parser/ParseParen.h"
 #include "parser/ParsePrimary.h"
@@ -20,8 +20,7 @@ AstNode* ParsePrimary::parse_primary(pstr_t str)
 {
     switch (get_symbol(str)) {
         case SYMBOL_FIRST_NUMBER:
-            ParseNumber pn;
-            return pn.parse_number(str);
+            return tokenNumber->parse_number(str);
             break;
         case SYMBOL_PAREN_LEFT:
             return parseParen->parse(str);
@@ -38,12 +37,9 @@ AstNode* ParsePrimary::parse_primary(pstr_t str)
 
 AstNode* ParsePrimary::parse_identifier_or_invocation(pstr_t str)
 {
-    ParseIdentifier pi;
-    ParseIf pif;
-    AstIdentifier *ident = pi.parse_identifier(str);
+    AstIdentifier *ident = tokenIdentifier->parse_identifier(str);
 
-    str = ident->strtail;
-    str = scan(str);
+    str = scan(ident->strtail);
     switch (ident->get_identifier_type()) {
         case AstIdentifier::FUNCTION:
             delete ident;

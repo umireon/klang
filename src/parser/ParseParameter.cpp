@@ -4,7 +4,7 @@
 #include "ast/AstParameter.h"
 
 #include "parser/types.h"
-#include "parser/ParseIdentifier.h"
+#include "parser/TokenIdentifier.h"
 #include "parser/ParseParameter.h"
 
 AstParameter *ParseParameter::parse_parameter(pstr_t str)
@@ -22,7 +22,7 @@ AstParameter *ParseParameter::parse_parameter(pstr_t str)
             throw std::invalid_argument(os.str());
     }
 
-    ParseIdentifier p;
+    TokenIdentifier p;
     while (true) {
         str = scan(str);
         switch (get_symbol(str[0])) {

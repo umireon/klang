@@ -6,10 +6,6 @@
 #include "ast/AstIf.h"
 
 #include "parser/types.h"
-#include "parser/ParseCompound.h"
-#include "parser/ParseExpression.h"
-#include "parser/ParseIdentifier.h"
-#include "parser/ParseParameter.h"
 #include "parser/ParseIf.h"
 
 AstIf *ParseIf::parse_if(pstr_t str)
@@ -38,9 +34,7 @@ AstIf *ParseIf::parse_if(pstr_t str)
             return astIf;
         }
         
-        AstIdentifier *ident;
-        ParseIdentifier pi;
-        ident = pi.parse_identifier(str);
+        AstIdentifier *ident = tokenIdentifier->parse_identifier(str);
         enum AstIdentifier::IdentifierType itype = ident->get_identifier_type();
         str = scan(ident->strtail);
         delete ident;

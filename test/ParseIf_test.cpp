@@ -34,6 +34,8 @@ TEST_GROUP(ParseIf)
             return node;
         }
     } parseCompoundMock;
+    
+    TokenIdentifier tokenIdentifier;
 
     ParseIf parseIf, *p;
     
@@ -44,6 +46,7 @@ TEST_GROUP(ParseIf)
         p = &parseIf;
         p->parseExpression = &parseExpressionMock;
         p->parseCompound = &parseCompoundMock;
+        p->tokenIdentifier = &tokenIdentifier;
     }
     
     void teardown()
@@ -88,6 +91,7 @@ TEST(ParseIf, ElseCompound)
     std::string input("1 3 else {4}");
     mock().expectNCalls(2, "parseExpression");
     mock().expectNCalls(1, "parseCompound");
+    mock().expectNCalls(1, "tokenIdentifier");
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -100,6 +104,7 @@ TEST(ParseIf, IfElsif)
 {
     std::string input("1 3 elsif 2 4");
     mock().expectNCalls(4, "parseExpression");
+    mock().expectNCalls(1, "tokenIdentifier");
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -113,6 +118,7 @@ TEST(ParseIf, IfElse)
 {
     std::string input("1 3 else 4");
     mock().expectNCalls(3, "parseExpression");
+    mock().expectNCalls(1, "tokenIdentifier");
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -125,6 +131,7 @@ TEST(ParseIf, IfElsifElse)
 {
     std::string input("1 3 elsif 2 4 else 6");
     mock().expectNCalls(5, "parseExpression");
+    mock().expectNCalls(2, "tokenIdentifier");
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());

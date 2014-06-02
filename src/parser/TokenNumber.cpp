@@ -10,9 +10,9 @@
 
 #include "parser/types.h"
 #include "parser/SyntaxErrorHandler.h"
-#include "parser/ParseNumber.h"
+#include "parser/TokenNumber.h"
 
-AstNumber* ParseNumber::parse_number(pstr_t str)
+AstNumber* TokenNumber::parse_number(pstr_t str)
 {
     AstNumber* num;
 
@@ -42,7 +42,7 @@ AstNumber* ParseNumber::parse_number(pstr_t str)
     return num;
 }
 
-AstNumber* ParseNumber::read_number_signed(pstr_t str)
+AstNumber* TokenNumber::read_number_signed(pstr_t str)
 {
     enum SymbolType type = get_symbol(str[0]);
 
@@ -61,7 +61,7 @@ AstNumber* ParseNumber::read_number_signed(pstr_t str)
     }
 }
 
-AstNumber* ParseNumber::read_number_hex_or_oct_or_float(pstr_t str)
+AstNumber* TokenNumber::read_number_hex_or_oct_or_float(pstr_t str)
 {
     enum SymbolType type = get_symbol(str[0]);
 
@@ -75,7 +75,7 @@ AstNumber* ParseNumber::read_number_hex_or_oct_or_float(pstr_t str)
     }
 }
 
-AstHexdecimal* ParseNumber::read_number_hex(pstr_t str)
+AstHexdecimal* TokenNumber::read_number_hex(pstr_t str)
 {
     AstHexdecimal *hex = new AstHexdecimal();
 
@@ -96,7 +96,7 @@ AstHexdecimal* ParseNumber::read_number_hex(pstr_t str)
     }
 }
 
-AstOctal* ParseNumber::read_number_oct(pstr_t str)
+AstOctal* TokenNumber::read_number_oct(pstr_t str)
 {
     AstOctal *oct = new AstOctal();
 
@@ -115,7 +115,7 @@ AstOctal* ParseNumber::read_number_oct(pstr_t str)
     }
 }
 
-AstNumber* ParseNumber::read_number_dec_or_float(pstr_t str)
+AstNumber* TokenNumber::read_number_dec_or_float(pstr_t str)
 {
     while (1) {
         enum SymbolType type = get_symbol(str[0]);
@@ -134,14 +134,14 @@ AstNumber* ParseNumber::read_number_dec_or_float(pstr_t str)
     }
 }
 
-AstDecimal* ParseNumber::read_number_dec(pstr_t str)
+AstDecimal* TokenNumber::read_number_dec(pstr_t str)
 {
     AstDecimal *dec = new AstDecimal();
     dec->strtail = str;
     return dec;
 }
 
-AstFloat* ParseNumber::read_number_float(pstr_t str)
+AstFloat* TokenNumber::read_number_float(pstr_t str)
 {
     AstFloat *flt = new AstFloat();
 
@@ -161,7 +161,7 @@ AstFloat* ParseNumber::read_number_float(pstr_t str)
     }
 }
 
-enum ParseNumber::SymbolType ParseNumber::get_symbol(char c)
+enum TokenNumber::SymbolType TokenNumber::get_symbol(char c)
 {
     if ('1' <= c && c <= '7') {
         return SYMBOL_NUMBER_OCT;
