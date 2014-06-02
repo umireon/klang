@@ -6,30 +6,35 @@
 #include "ast/AstAssignment.h"
 
 #include "parser/types.h"
+#include "parser/BaseParse.h"
 #include "parser/ParseAssignment.h"
-#include "parser/ParseCompare.h"
-#include "parser/ParseExpression.h"
 
-AstNode* ParseAssignment::parse_assignment(pstr_t str)
+AstNode *ParseAssignment::parse_assignment(pstr_t str)
 {
-    ParseCompare p;
-
-    AstNode *expr = p.parse_compare(str);
-    str = expr->strtail;
-    str = scan_lexical_symbol(str);
-    if (str[0] == '=') {
-        str++;
-        return chain_assignment(expr, str);
-    } else {
-        return expr;
+    AstNode *node = parseNext->parse(str);
+    str = node->strtail;
+    
+    while (1) {
+        str = scan(str);
+        switch (get_symbol(str)) {
+            case SYMBOL_EQUAL:
+                node = inject_assignment(node, scan(str+1));
+                break;
+            case SYMBOL_FOLLOW:
+                return node;
+        }
+        
+        str = node->strtail;
     }
 }
 
-AstParentNode* ParseAssignment::chain_assignment(AstNode* node, pstr_t str)
+AstParentNode *ParseAssignment::inject_assignment(AstNode *node, pstr_t str)
 {
     if (node->size() == 2) {
         AstParentNode *root = static_cast<AstParentNode*>(node);
-        root->children[1] = chain_assignment(root->children[1], str);
+        root->children[1] = inject_assignment(root->children[1], str);
+        node->strtail = root->children[1]->strtail;
+
         return root;
     } else {
         AstAssignment *newRoot = new AstAssignment();
@@ -38,40 +43,21 @@ AstParentNode* ParseAssignment::chain_assignment(AstNode* node, pstr_t str)
 
         newChildren.push_back(node);
 
-        str = scan_lexical_symbol(str);
-        ParseExpression p;
-        AstNode *elem = p.parse_expression(str);
-        newChildren.push_back(elem);
+        str = scan(str);
+        AstNode *child = parseNext->parse(str);
+        newChildren.push_back(child);
 
-        newRoot->strtail = elem->strtail;
+        newRoot->strtail = child->strtail;
 
         return newRoot;
     }
 }
 
-pstr_t ParseAssignment::scan_lexical_symbol(pstr_t str)
+enum ParseAssignment::SymbolType ParseAssignment::get_symbol(pstr_t str)
 {
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
-}
-
-enum ParseAssignment::SymbolType ParseAssignment::get_symbol(char c)
-{
-    switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
-        case '*':
-            return SYMBOL_OP_ASTERISK;
-        case '/':
-            return SYMBOL_OP_SLASH;
-        case '%':
-            return SYMBOL_OP_PERCENT;
+    switch (*str) {
+        case '=':
+            return SYMBOL_EQUAL;
         default:
             return SYMBOL_FOLLOW;
     }

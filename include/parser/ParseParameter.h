@@ -3,9 +3,15 @@
 #include "ast/AstParameter.h"
 
 #include "parser/types.h"
+#include "parser/BaseParse.h"
 
-class ParseParameter {
+class ParseParameter : public BaseParse {
 public:
+	virtual AstNode *parse(pstr_t str)
+	{
+		return parse_parameter(str);
+	}
+
 	AstParameter *parse_parameter(pstr_t str);
 
 private:
@@ -18,7 +24,5 @@ private:
 	};
     
 	enum SymbolType get_symbol(char c);
-	pstr_t scan(pstr_t str);
-
 	pstr_t read_comma_or_follow(pstr_t str);
 };

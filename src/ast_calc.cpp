@@ -117,6 +117,7 @@ std::string create_prompt(int lineno, int depth)
 
 int run()
 {
+    
     Binding binding;
     Binding *b = &binding;
 	std::vector<std::string> lines;

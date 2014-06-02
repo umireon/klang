@@ -7,7 +7,26 @@
 #include "parser.h"
 
 AstNode* Parse::parse(pstr_t str)
-{
+{/*
+    ParseExpression parseExpression;
+    ParseAssignment parseAssignment;
+    ParseCompare parseCompare;
+    ParseArithExpression parseArithExpression;
+    ParseTerm parseTerm;
+    ParsePrimary parsePrimary;
+    ParseNumber parseNumber;
+    ParseParen parseParen;
+    ParseIdentifier parseIdentifier;
+
+    parseExpression->parseNext = &parseAssignment;
+    parseAssignment->parseNext = &parseCompare;
+    parseCompare->parseNext = &parseArithExpression;
+    parseArithExpression->parseNext = &parseTerm;
+    parseTerm->parseNext = &parsePrimary;
+    parsePrimary->parseNumber = &parseNumber;
+    parsePrimary->parseParen = &parseParen;
+    parsePrimary->parseIdentifier = &parseIdentifier;*/
+
     str = scan_lexical_symbol(str);
     return this->parse_statement(str);
 }
@@ -16,6 +35,7 @@ AstNode* Parse::parse_statement(pstr_t str)
 {
     enum SymbolType type = get_symbol(str[0]);
 
+    ParseExpression p;
     switch (type) {
         case SYMBOL_NUMBER_ZERO:
         case SYMBOL_NUMBER_OCT:
@@ -27,8 +47,7 @@ AstNode* Parse::parse_statement(pstr_t str)
         case SYMBOL_ALPHABET_HEXLOWER:
         case SYMBOL_ALPHABET_X:
         case SYMBOL_ALPHABET:
-            ParseExpression p;
-            return p.parse_expression(str);
+            //return p.parse_expression(str);
         default:
             return NULL;
     }

@@ -9,6 +9,7 @@
 #include "ast/AstOctal.h"
 
 #include "parser/types.h"
+#include "parser/SyntaxErrorHandler.h"
 #include "parser/ParseNumber.h"
 
 AstNumber* ParseNumber::parse_number(pstr_t str)
@@ -28,6 +29,8 @@ AstNumber* ParseNumber::parse_number(pstr_t str)
             num = read_number_signed(str+1);
             break;
         default:
+            SyntaxErrorHandler seh;
+            seh.invalid_char(str);
             std::ostringstream os;
             os << "Unexpected character: " << str[0] << std::endl;
             throw std::invalid_argument(os.str());
@@ -50,6 +53,8 @@ AstNumber* ParseNumber::read_number_signed(pstr_t str)
         case SYMBOL_NUMBER_DEC:
             return read_number_dec_or_float(str);
         default:
+            SyntaxErrorHandler seh;
+            seh.invalid_char(str);
             std::ostringstream os;
             os << "Unexpected character: " << str[0] << std::endl;
             throw std::invalid_argument(os.str());

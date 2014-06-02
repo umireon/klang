@@ -1,6 +1,6 @@
-#include <CppUTest/TestHarness.h>
+#include "CppUTest/TestHarness.h"
+#include "CppUTestExt/MockSupport.h"
 
-#include <stdexcept>
 #include <string>
 
 #include "ast/AstNode.h"
@@ -10,37 +10,56 @@
 #include "ast/AstPower.h"
 #include "ast/AstReminder.h"
 
+#include "parser/BaseParse.h"
 #include "parser/ParseTerm.h"
+
+class ParseNextMock : public BaseParse
+{
+    virtual AstNode *parse(pstr_t str)
+    {
+        mock().actualCall("parse");
+        AstNode *node = new AstNode();
+        node->strhead = str;
+        node->strtail = str + 1;
+        return node;
+    }
+};
 
 TEST_GROUP(ParseTerm)
 {
-    ParseTerm p;
+    ParseNextMock *pn;
+    ParseTerm *p;
     AstNode *node;
+    
+    void setup()
+    {
+        pn = new ParseNextMock();
+        p = new ParseTerm();
+        p->parseNext = pn;
+    }
     
     void teardown()
     {
+        delete p;
+        delete pn;
         delete node;
+        mock().clear();
     }
 };
 
 TEST(ParseTerm, get_string)
 {
-    std::string input("(1)");
-    node = p.parse_term(input.begin());
+    std::string input("1");
+    mock().expectOneCall("parse");
+    node = p->parse_term(input.begin());
     CHECK_EQUAL(input, node->get_string());
-}
-
-TEST(ParseTerm, AstNumber)
-{
-    std::string input("0");
-    node = p.parse_term(input.begin());
-    CHECK(dynamic_cast<AstNumber *>(node));
 }
 
 TEST(ParseTerm, 2ElemMultiplication)
 {
     std::string input("2*3");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(2, "parse");
+    node = p->parse_term(input.begin());
     AstMultiplication *term = dynamic_cast<AstMultiplication *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -52,7 +71,8 @@ TEST(ParseTerm, 2ElemMultiplication)
 TEST(ParseTerm, 3ElemMultiplication)
 {
     std::string input("2*3*4");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_term(input.begin());
     AstMultiplication *term = dynamic_cast<AstMultiplication *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -69,7 +89,8 @@ TEST(ParseTerm, 3ElemMultiplication)
 TEST(ParseTerm, 2ElemDivision)
 {
     std::string input("2/3");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(2, "parse");
+    node = p->parse_term(input.begin());
     AstDivision *term = dynamic_cast<AstDivision *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -81,7 +102,8 @@ TEST(ParseTerm, 2ElemDivision)
 TEST(ParseTerm, 3ElemDivision)
 {
     std::string input("2/3/4");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_term(input.begin());
     AstDivision *term = dynamic_cast<AstDivision *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -98,7 +120,8 @@ TEST(ParseTerm, 3ElemDivision)
 TEST(ParseTerm, 2ElemReminder)
 {
     std::string input("2%3");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(2, "parse");
+    node = p->parse_term(input.begin());
     AstReminder *term = dynamic_cast<AstReminder *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -110,7 +133,8 @@ TEST(ParseTerm, 2ElemReminder)
 TEST(ParseTerm, 3ElemReminder)
 {
     std::string input("2%3%4");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_term(input.begin());
     AstReminder *term = dynamic_cast<AstReminder *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -127,7 +151,8 @@ TEST(ParseTerm, 3ElemReminder)
 TEST(ParseTerm, 2ElemPower)
 {
     std::string input("2**3");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(2, "parse");
+    node = p->parse_term(input.begin());
     AstPower *term = dynamic_cast<AstPower *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -139,7 +164,8 @@ TEST(ParseTerm, 2ElemPower)
 TEST(ParseTerm, 3ElemPower)
 {
     std::string input("2**3**4");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_term(input.begin());
     AstPower *term = dynamic_cast<AstPower *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -156,7 +182,8 @@ TEST(ParseTerm, 3ElemPower)
 TEST(ParseTerm, 4ElemPower)
 {
     std::string input("2**3**4**5");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(4, "parse");
+    node = p->parse_term(input.begin());
     AstPower *term = dynamic_cast<AstPower *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -178,7 +205,8 @@ TEST(ParseTerm, 4ElemPower)
 TEST(ParseTerm, Complex)
 {
     std::string input("1*2**3/4%5");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(5, "parse");
+    node = p->parse_term(input.begin());
     AstReminder *term = dynamic_cast<AstReminder *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -205,7 +233,8 @@ TEST(ParseTerm, Complex)
 TEST(ParseTerm, Whitespace)
 {
     std::string input("1  *   2   **   3   /  4  %   5");
-    node = p.parse_term(input.begin());
+    mock().expectNCalls(5, "parse");
+    node = p->parse_term(input.begin());
     AstReminder *term = dynamic_cast<AstReminder *>(node);
     CHECK(term);
     std::vector<AstNode *> &children = term->children;
@@ -228,11 +257,3 @@ TEST(ParseTerm, Whitespace)
     CHECK_EQUAL(std::string("4"), children0[1]->get_string());
     CHECK_EQUAL(std::string("5"), children[1]->get_string());
 }
-
-#ifndef __APPLE__
-TEST(ParseTerm, Invalid)
-{
-    std::string input("*");
-    CHECK_THROWS(std::invalid_argument, p.parse_term(input.begin()));
-}
-#endif

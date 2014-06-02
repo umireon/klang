@@ -1,36 +1,63 @@
-#include <CppUTest/TestHarness.h>
+#include "CppUTest/TestHarness.h"
+#include "CppUTestExt/MockSupport.h"
 
 #include <string>
 
-#include "ast/AstNode.h"
 #include "ast/AstAssignment.h"
 
+#include "parser/types.h"
+#include "parser/BaseParse.h"
 #include "parser/ParseAssignment.h"
+
+class ParseNextMock : public BaseParse
+{
+    virtual AstNode *parse(pstr_t str)
+    {
+        mock().actualCall("parse");
+        AstNode *node = new AstNode();
+        node->strhead = str;
+        node->strtail = str + 1;
+        return node;
+    }
+};
 
 TEST_GROUP(ParseAssignment)
 {
-    ParseAssignment p;
+    ParseNextMock *pn;
+    ParseAssignment *p;
+
     AstNode *node;
-    AstAssignment *assign;
+    
+    void setup()
+    {
+        pn = new ParseNextMock();
+        p = new ParseAssignment();
+        p->parseNext = pn;
+    }
     
     void teardown()
     {
+        delete p;
+        delete pn;
         delete node;
+        mock().clear();
     }
 };
 
 TEST(ParseAssignment, get_string)
 {
     std::string input("a=3");
-    node = p.parse_assignment(input.begin());
+    mock().expectNCalls(2, "parse");
+    node = p->parse_assignment(input.begin());
     CHECK_EQUAL(input, node->get_string());
 }
 
 TEST(ParseAssignment, 2ExpressionAssignment)
 {
     std::string input("a=3");
-    node = p.parse_assignment(input.begin());
-    assign = dynamic_cast<AstAssignment *>(node);
+    mock().expectNCalls(2, "parse");
+    node = p->parse_assignment(input.begin());
+    AstAssignment *assign = dynamic_cast<AstAssignment *>(node);
     CHECK(assign);
     std::vector<AstNode *> &children = assign->children;
     
@@ -41,8 +68,9 @@ TEST(ParseAssignment, 2ExpressionAssignment)
 TEST(ParseAssignment, 3ExpressionAssignment)
 {
     std::string input("a=b=4");
-    node = p.parse_assignment(input.begin());
-    assign = dynamic_cast<AstAssignment *>(node);
+    mock().expectNCalls(3, "parse");
+    node = p->parse_assignment(input.begin());
+    AstAssignment *assign = dynamic_cast<AstAssignment *>(node);
     CHECK(assign);
     std::vector<AstNode *> &children = assign->children;
     
@@ -58,8 +86,9 @@ TEST(ParseAssignment, 3ExpressionAssignment)
 TEST(ParseAssignment, Whitespace)
 {
     std::string input("a =  b  =  4");
-    node = p.parse_assignment(input.begin());
-    assign = dynamic_cast<AstAssignment *>(node);
+    mock().expectNCalls(3, "parse");
+    node = p->parse_assignment(input.begin());
+    AstAssignment *assign = dynamic_cast<AstAssignment *>(node);
     CHECK(assign);
     std::vector<AstNode *> &children = assign->children;
     

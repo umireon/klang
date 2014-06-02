@@ -4,22 +4,26 @@
 #include "ast/AstParentNode.h"
 
 #include "parser/types.h"
+#include "parser/BaseParse.h"
 
-class ParseAssignment {
+class ParseAssignment : public BaseParse {
 public:
+    BaseParse *parseNext;
+
+	virtual AstNode *parse(pstr_t str)
+	{
+		return parse_assignment(str);
+	}
+
 	AstNode *parse_assignment(pstr_t str);
 
 protected:
 	enum SymbolType {
-		SYMBOL_OP_ASTERISK,
-		SYMBOL_OP_SLASH,
-		SYMBOL_OP_PERCENT,
+		SYMBOL_EQUAL,
 		SYMBOL_FOLLOW,
-		SYMBOL_WHITESPACE,
 	};
     
-	enum SymbolType get_symbol(char c);
-	pstr_t scan_lexical_symbol(pstr_t str);
+	enum SymbolType get_symbol(pstr_t str);
     
-	AstParentNode *chain_assignment(AstNode *root, pstr_t str);
+	AstParentNode *inject_assignment(AstNode *node, pstr_t str);
 };
