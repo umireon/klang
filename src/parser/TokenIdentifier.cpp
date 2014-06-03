@@ -17,9 +17,9 @@ AstIdentifier* TokenIdentifier::parse_identifier(pstr_t str)
             break;
         case SYMBOL_NUMBER:
         case SYMBOL_FOLLOW:
-            pstr_t recover = syntaxErrorHandler->invalid_char(str);
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, "TokenIdentifier::parse_identifier");
             if (*recover != '\0') {
-                return parse_identifier(syntaxErrorHandler->invalid_char(str));
+                return parse_identifier(recover);
             } else {
                 ident->strtail = ident->strhead;
                 return ident;

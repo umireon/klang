@@ -29,9 +29,15 @@ AstNode* ParsePrimary::parse_primary(pstr_t str)
             return parse_identifier_or_invocation(str);
             break;
         default:
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
+            if (*recover != '\0') {
+                return parse_primary(recover);
+            } else {
+                AstNode *nullnode = new AstNode();
+                nullnode->strhead = str;
+                nullnode->strtail = recover;
+                return nullnode;
+            }
     }
 }
 

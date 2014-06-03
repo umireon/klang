@@ -75,5 +75,10 @@ AstNode* Parse::parse(pstr_t str)
     tokenNumber.syntaxErrorHandler = syntaxErrorHandler;
     tokenIdentifier.syntaxErrorHandler = syntaxErrorHandler;
 
-    return parseExpression.parse(scan(str));
+    str = scan(str);
+    if (*str == '\n') {
+        return NULL;
+    } else {
+        return parseExpression.parse(str);
+    }
 }

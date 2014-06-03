@@ -26,6 +26,8 @@ private:
 		SYMBOL_WHITESPACE,
 	};
     
-	enum SymbolType get_symbol(char c);
+	pstr_t read_paren_left(pstr_t str);
 	pstr_t read_comma_or_follow(pstr_t str);
+
+	enum SymbolType get_symbol(pstr_t str);
 };

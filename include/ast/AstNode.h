@@ -3,6 +3,7 @@
 class Binding;
 
 #include "kobject/KObject.h"
+#include "kobject/KNil.h"
 #include "Binding.h"
 
 #include "parser/types.h"
@@ -16,5 +17,8 @@ public:
     virtual ~AstNode() {}
     virtual int size() { return 0; }
 	virtual std::string get_string();
-	virtual KObject *evaluate(Binding *b) { throw std::invalid_argument(std::string("evaluation not defined.")); }
+	virtual KObject *evaluate(Binding *b) {
+        std::cout << "WARNING: evaluation not defined." << std::cout;
+        return new KNil();
+    }
 };

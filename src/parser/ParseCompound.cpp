@@ -13,15 +13,7 @@ AstCompound *ParseCompound::parse_compound(pstr_t str)
     AstCompound *com = new AstCompound();
     com->strhead = str;
 
-    switch (get_symbol(str)) {
-        case SYMBOL_BRACE_LEFT:
-            str++;
-            break;
-        default:
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
-    }
+    str = read_brace_left(str);
 
     while (1) {
         str = scan(str);
@@ -34,6 +26,21 @@ AstCompound *ParseCompound::parse_compound(pstr_t str)
                 str = expr->strtail;
                 com->children.push_back(expr);
         }
+    }
+}
+
+pstr_t ParseCompound::read_brace_left(pstr_t str)
+{
+    switch (get_symbol(str)) {
+        case SYMBOL_BRACE_LEFT:
+            return str+1;
+        default:
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, "ParseCompound::read_brace_left");
+            if (*recover != '\0') {
+                return read_brace_left(recover);
+            } else {
+                return recover;
+            }
     }
 }
 

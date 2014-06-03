@@ -1,6 +1,3 @@
-#include <sstream>
-#include <stdexcept>
-
 #include "ast/AstFunction.h"
 #include "ast/AstParameter.h"
 
@@ -13,18 +10,10 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
     AstFunction *astFunc = new AstFunction();
     astFunc->strhead = str;
 
-    AstParameter *astParam;
-    switch (get_symbol(str)) {
-        case SYMBOL_PAREN_LEFT:
-            astParam = parseParameter->parse_parameter(str);
-            astFunc->astParam = astParam;
-            str = scan(astParam->strtail);
-            break;
-        default:
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
-    }
+    str = check_paren_left(str);
+    AstParameter *astParam = parseParameter->parse_parameter(str);
+    astFunc->astParam = astParam;
+    str = scan(astParam->strtail);
 
     AstNode *body;
     switch (get_symbol(str)) {
@@ -40,6 +29,21 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
     astFunc->strtail = body->strtail;
 
     return astFunc;
+}
+
+pstr_t ParseFunction::check_paren_left(pstr_t str)
+{
+    switch (get_symbol(str)) {
+        case SYMBOL_PAREN_LEFT:
+            return str;
+        default:
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, "ParseFunction::check_paren_left");
+            if (*recover != '\0') {
+                return check_paren_left(recover);
+            } else {
+                return recover;
+            }
+    }
 }
 
 enum ParseFunction::SymbolType ParseFunction::get_symbol(pstr_t str)

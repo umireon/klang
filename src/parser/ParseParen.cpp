@@ -17,27 +17,34 @@ AstParen* ParseParen::parse_paren(pstr_t str)
         case SYMBOL_PAREN_LEFT:
             break;
         default:
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
+            pstr_t recover = syntaxErrorHandler->never_reach(str, __FUNCTION__);
+            if (*recover != '\0') {
+                delete paren;
+                return parse_paren(recover);
+            } else {
+                paren->strtail = recover;
+                return paren;
+            }
     }
 
     AstNode *expr = parseExpression->parse(scan(str+1));
     str = scan(expr->strtail);
     paren->children.push_back(expr);
 
-    switch (get_symbol(str)) {
-        case SYMBOL_PAREN_RIGHT:
-            break;
-        default:
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
+    while (true) {
+        switch (get_symbol(str)) {
+            case SYMBOL_PAREN_RIGHT:
+                paren->strtail = str + 1;
+                return paren;
+            default:
+                str = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
+                if (*str == '\0') {
+                    paren->strtail = str;
+                    return paren;
+                }
+        }
     }
 
-    paren->strtail = str + 1;
-
-    return paren;
 }
 
 enum ParseParen::SymbolType ParseParen::get_symbol(pstr_t str)

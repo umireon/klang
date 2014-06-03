@@ -24,6 +24,8 @@ protected:
 	};
     
 	virtual bool is_whitespace(pstr_t str);
+    
+	pstr_t read_brace_left(pstr_t str);
 
 	enum SymbolType get_symbol(pstr_t str);
 };

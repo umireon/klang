@@ -25,6 +25,8 @@ protected:
 		SYMBOL_BRACE_LEFT,
 		SYMBOL_FOLLOW,
 	};
+
+	pstr_t check_paren_left(pstr_t str);
     
 	enum SymbolType get_symbol(pstr_t str);
 };
