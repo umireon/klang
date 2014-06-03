@@ -1,3 +1,4 @@
+#include <iostream>
 #include "kobject/KFunctionAst.h"
 
 KFunctionAst::KFunctionAst(Binding *b, AstNode *n, std::vector<std::string> p) : body(n), paramNames(p)
