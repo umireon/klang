@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 class Binding;
 
@@ -20,7 +21,7 @@ public:
     virtual int size() { return 0; }
 	virtual std::string get_string();
 	virtual KObject *evaluate(Binding *b) {
-        std::cout << "WARNING: evaluation not defined." << std::cout;
+        std::cout << "WARNING: evaluation not defined." << std::endl;
         return new KNil();
     }
 };

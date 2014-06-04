@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 #include <cstring>
-#include <math.h>
+#include <cmath>
 #include <stdexcept>
 #include <algorithm>
 #include <stdlib.h>
@@ -113,8 +113,8 @@ void make_world(Binding *b)
     b->set_local(std::string("comb"), &kComb);
     b->set_local(std::string("hmpr"), &kHmpr);
 
-    b->set_local(std::string("pi"), new KFloat(M_PI));
-    b->set_local(std::string("e"), new KFloat(M_E));
+	b->set_local(std::string("pi"), new KFloat(3.14159265358979323846));
+	b->set_local(std::string("e"), new KFloat(2.7182818284590452354));
 
     //physical constants
     b->set_local(std::string("c"), new KFloat(299792458));  //speed of light
