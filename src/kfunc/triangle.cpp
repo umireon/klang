@@ -17,7 +17,7 @@ KObject* FuncSin::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(sin(value));
                 }
             case KObject::VECTOR:
                 {
@@ -51,7 +51,7 @@ KObject* FuncCos::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(cos(value));
                 }
             case KObject::VECTOR:
                 {
@@ -85,7 +85,7 @@ KObject* FuncTan::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(tan(value));
                 }
             case KObject::VECTOR:
                 {
@@ -120,7 +120,7 @@ KObject* FuncSinh::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(sinh(value));
                 }
             case KObject::VECTOR:
                 {
@@ -155,7 +155,7 @@ KObject* FuncCosh::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(cosh(value));
                 }
             case KObject::VECTOR:
                 {
@@ -189,7 +189,7 @@ KObject* FuncTanh::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(tanh(value));
                 }
             case KObject::VECTOR:
                 {
@@ -223,7 +223,7 @@ KObject* FuncArcsin::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(asin(value));
                 }
             case KObject::VECTOR:
                 {
@@ -257,7 +257,7 @@ KObject* FuncArccos::invoke(std::vector<KObject*> args) {
                     KNumber *knum = static_cast<KNumber *>(args[0]);
                     double value = knum->to_f();
                     delete knum;
-                    return new KFloat(atan(value));
+                    return new KFloat(acos(value));
                 }
             case KObject::VECTOR:
                 {
