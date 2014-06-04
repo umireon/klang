@@ -1,166 +1,317 @@
-#include "kobject.h"
+#include <algorithm>
+
+#include "kobject/KObject.h"
+#include "kobject/KNumber.h"
+#include "kobject/KFloat.h"
+#include "kobject/KNil.h"
+#include "kobject/KFunction.h"
 
 #include "kfunc/triangle.h"
 
 KObject* FuncSin::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), sin);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = sin(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 KObject* FuncCos::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), cos);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = cos(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 KObject* FuncTan::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), tan);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = tan(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 
 KObject* FuncSinh::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), sinh);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = sinh(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 KObject* FuncCosh::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), cosh);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = cosh(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 KObject* FuncTanh::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), tanh);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = tanh(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 KObject* FuncArcsin::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), asin);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = asin(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 KObject* FuncArccos::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), acos);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = acos(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }
 
 KObject* FuncArctan::invoke(std::vector<KObject*> args) {
-    KNumber *num = dynamic_cast<KNumber*>(args.at(0));
-    
-    if (args.size() != 1) {
-        throw std::invalid_argument("Arity: 1");
+    if (args.size() == 1) {
+        switch (args[0]->get_type()) {
+            case KObject::INTEGER:
+            case KObject::FLOAT:
+                {
+                    KNumber *knum = static_cast<KNumber *>(args[0]);
+                    double value = knum->to_f();
+                    delete knum;
+                    return new KFloat(atan(value));
+                }
+            case KObject::VECTOR:
+                {
+                    KVector *kvect = static_cast<KVector *>(args[0]);
+                    dvector &vect = kvect->vect;
+                    std::transform(vect.begin(), vect.end(), vect.begin(), atan);
+                    return kvect;
+                }
+            default:
+                ;
+        }
+    } else {
+        std::cout << "WARNING: seq arity 2" << std::endl;
     }
-    
-    if (!num) {
-        throw std::invalid_argument("Argument1 is not a KNumber.");
+
+    std::vector<KObject *>::iterator iter = args.begin();
+    while (iter != args.end()) {
+        delete *iter;
+        iter++;
     }
 
-    double newValue = atan(num->to_f());
-
-    delete num;
-
-    return new KFloat(newValue);
+    return new KNil();
 }

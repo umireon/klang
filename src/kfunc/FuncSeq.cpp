@@ -36,7 +36,7 @@ KVector* FuncSeq::invoke(KNumber *first, KNumber *last) {
 
     dvector vect(l-f+1);
 
-    for (int i = 0; i <= vect.size(); i++) {
+    for (int i = 0; i < vect.size(); i++) {
         vect[i] = f + i;
     }
 
