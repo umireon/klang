@@ -85,7 +85,7 @@ void make_world(Binding *b)
 
     b->set_local(std::string("c"), &kC);
     b->set_local(std::string("sum"), &kSum);
-    b->set_local(std::string("seq"), &kSum);
+    b->set_local(std::string("seq"), &kSeq);
     b->set_local(std::string("prod"), &kSum);
     b->set_local(std::string("matrix"), &kMatrix);
     

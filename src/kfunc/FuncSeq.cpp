@@ -8,20 +8,20 @@
 #include "kfunc/FuncSeq.h"
 
 KObject* FuncSeq::invoke(std::vector<KObject*> args) {
-    std::vector<KObject *>::iterator iter = args.begin();
-    std::vector<double> list;
+    if (args.size() == 2) {
+        KNumber *first = dynamic_cast<KNumber *>(args[0]);
+        KNumber *second = dynamic_cast<KNumber *>(args[1]);
 
-    if (args.size() != 2) {
+        if (first && second) {
+            return invoke(first, second);
+        } else {
+            std::cout << "WARNING: seq arguments KNumber" << std::endl;
+        }
+    } else {
         std::cout << "WARNING: seq arity 2" << std::endl;
     }
 
-    KNumber *first = dynamic_cast<KNumber *>(args[0]);
-    KNumber *second = dynamic_cast<KNumber *>(args[1]);
-
-    if (first && second) {
-        return invoke(first, second);
-    }
-
+    std::vector<KObject *>::iterator iter = args.begin();
     while (iter != args.end()) {
         delete *iter;
         iter++;
@@ -34,7 +34,7 @@ KVector* FuncSeq::invoke(KNumber *first, KNumber *last) {
     long f = first->to_i();
     long l = last->to_i();
 
-    dvector vect(f-l+1);
+    dvector vect(l-f+1);
 
     for (int i = 0; i <= vect.size(); i++) {
         vect[i] = f + i;
