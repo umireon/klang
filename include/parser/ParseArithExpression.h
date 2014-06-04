@@ -5,9 +5,18 @@
 #include "ast/AstSubtraction.h"
 
 #include "parser/types.h"
+#include "parser/BaseParse.h"
+#include "parser/ParseTerm.h"
 
-class ParseArithExpression {
+class ParseArithExpression : public BaseParse {
 public:
+    BaseParse *parseNext;
+
+	virtual AstNode *parse(pstr_t str)
+	{
+		return parse_arith_expression(str);
+	}
+
 	AstNode *parse_arith_expression(pstr_t str);
 
 protected:
@@ -15,11 +24,9 @@ protected:
 		SYMBOL_SIGN_PLUS,
 		SYMBOL_SIGN_MINUS,
 		SYMBOL_FOLLOW,
-		SYMBOL_WHITESPACE,
 	};
     
-	enum SymbolType get_symbol(char c);
-	pstr_t scan_lexical_symbol(pstr_t str);
+	enum SymbolType get_symbol(pstr_t c);
     
 	AstAddition* chain_addition(AstNode *root, pstr_t str);
 	AstSubtraction* chain_subtraction(AstNode *root, pstr_t str);

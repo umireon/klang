@@ -1,3 +1,4 @@
+#include <iostream>
 #include "kobject/KFunctionAst.h"
 
 KFunctionAst::KFunctionAst(Binding *b, AstNode *n, std::vector<std::string> p) : body(n), paramNames(p)
@@ -15,10 +16,12 @@ KObject* KFunctionAst::invoke(std::vector<KObject*> args) {
 
     if (paramNames.size() != args.size()) {
     	if (paramNames.size() > args.size()) {
-	        throw std::invalid_argument("I need MORE arguments.");
+            std::cout << "I need MORE arguments." << std::endl;
+            return new KNil();
 		} else {
-	        throw std::invalid_argument("I am TOO MUCH with arguments");
+            std::cout << "I am TOO MUCH with arguments" << std::endl;
 	    }
+        return new KNil();
 	}
 
 	for (int i = 0; i < paramNames.size(); i++) {

@@ -8,16 +8,23 @@
 #include "ast/AstNode/AstParentNode/AstCompare/AstLessThan.h"
 
 #include "parser/types.h"
+#include "parser/BaseParse.h"
 
-class ParseCompare {
+class ParseCompare : public BaseParse {
 public:
+    BaseParse *parseNext;
+
+    virtual AstNode *parse(pstr_t str)
+    {
+        return parse_compare(str);
+    }
+
     AstNode *parse_compare(pstr_t str);
 protected:
     enum SymbolType {
         SYMBOL_LESS,
         SYMBOL_GREATER,
         SYMBOL_EQUAL,
-        SYMBOL_WHITESPACE,
         SYMBOL_FOLLOW,
     };
 
@@ -26,6 +33,5 @@ protected:
     AstGreaterThanEqual *chain_greater_than_equal(AstNode* root, pstr_t str);
     AstGreaterThan *chain_greater_than(AstNode* root, pstr_t str);
     
-    enum SymbolType get_symbol(char c);
-    pstr_t scan(pstr_t str);
+    enum SymbolType get_symbol(pstr_t str);
 };

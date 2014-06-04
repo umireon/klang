@@ -1,11 +1,7 @@
-#include <sstream>
-#include <stdexcept>
-
 #include "ast/AstFunction.h"
+#include "ast/AstParameter.h"
 
 #include "parser/types.h"
-#include "parser/ParseCompound.h"
-#include "parser/ParseExpression.h"
 #include "parser/ParseFunction.h"
 #include "parser/ParseParameter.h"
 
@@ -14,30 +10,19 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
     AstFunction *astFunc = new AstFunction();
     astFunc->strhead = str;
 
-    AstParameter *astParam;
-    ParseParameter pp;
-    switch (get_symbol(str[0])) {
-        case SYMBOL_PAREN_LEFT:
-            astParam = pp.parse_parameter(str);
-            astFunc->astParam = astParam;
-            str = astParam->strtail;
-            break;
-        default:
-            std::ostringstream os;
-            os << "Unexpected character: " << str[0] << std::endl;
-            throw std::invalid_argument(os.str());
-    }
+    str = check_paren_left(str);
+    AstParameter *astParam = parseParameter->parse_parameter(str);
+    astFunc->astParam = astParam;
+    str = scan(astParam->strtail);
 
-    str = scan(str);
     AstNode *body;
-    ParseExpression pe;
-    ParseCompound pc;
-    switch (get_symbol(str[0])) {
+    switch (get_symbol(str)) {
         case SYMBOL_BRACE_LEFT:
-            body = pc.parse_compound(str);
+            body = parseCompound->parse(str);
             break;
-        default:
-            body = pe.parse_expression(str);
+        case SYMBOL_FOLLOW:
+        case SYMBOL_PAREN_LEFT:
+            body = parseExpression->parse(str);
     }
 
     astFunc->body = body;
@@ -46,23 +31,24 @@ AstFunction *ParseFunction::parse_function(pstr_t str)
     return astFunc;
 }
 
-pstr_t ParseFunction::scan(pstr_t str)
+pstr_t ParseFunction::check_paren_left(pstr_t str)
 {
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
+    switch (get_symbol(str)) {
+        case SYMBOL_PAREN_LEFT:
+            return str;
+        default:
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, "ParseFunction::check_paren_left");
+            if (*recover != '\0') {
+                return check_paren_left(recover);
+            } else {
+                return recover;
+            }
+    }
 }
 
-enum ParseFunction::SymbolType ParseFunction::get_symbol(char c)
+enum ParseFunction::SymbolType ParseFunction::get_symbol(pstr_t str)
 {
-    switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
+    switch (*str) {
         case '(':
             return SYMBOL_PAREN_LEFT;
         case '{':

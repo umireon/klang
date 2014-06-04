@@ -12,30 +12,34 @@
 
 AstNode *ParseCompare::parse_compare(pstr_t str)
 {
-    ParseArithExpression p;
-    AstNode *node = p.parse_arith_expression(str);
-
+    AstNode *node = parseNext->parse(str);
     str = scan(node->strtail);
-    switch (get_symbol(str[0])) {
+
+    switch (get_symbol(str)) {
         case SYMBOL_LESS:
-            switch (get_symbol(str[1])) {
+            switch (get_symbol(str+1)) {
                 case SYMBOL_EQUAL:
                     str = scan(str+2);
                     return chain_less_than_equal(node, str);
-                default:
+                case SYMBOL_FOLLOW:
+                case SYMBOL_GREATER:
+                case SYMBOL_LESS:
                     str = scan(str+1);
                     return chain_less_than(node, str);
             }
         case SYMBOL_GREATER:
-            switch (get_symbol(str[1])) {
+            switch (get_symbol(str+1)) {
                 case SYMBOL_EQUAL:
                     str = scan(str+2);
                     return chain_greater_than_equal(node, str);
-                default:
+                case SYMBOL_FOLLOW:
+                case SYMBOL_GREATER:
+                case SYMBOL_LESS:
                     str = scan(str+1);
                     return chain_greater_than(node, str);
             }
-        default:
+        case SYMBOL_EQUAL:
+        case SYMBOL_FOLLOW:
             return node;
     }
 }
@@ -47,10 +51,9 @@ AstLessThanEqual *ParseCompare::chain_less_than_equal(AstNode* root, pstr_t str)
     newRoot->strhead = root->strhead;
     newChildren.push_back(root);
 
-    ParsePrimary p;
-    AstNode *elem = p.parse_primary(str);
-    newRoot->strtail = elem->strtail;
-    newChildren.push_back(elem);
+    AstNode *node = parseNext->parse(str);
+    newRoot->strtail = node->strtail;
+    newChildren.push_back(node);
 
     return newRoot;
 }
@@ -62,10 +65,9 @@ AstLessThan *ParseCompare::chain_less_than(AstNode* root, pstr_t str)
     newRoot->strhead = root->strhead;
     newChildren.push_back(root);
 
-    ParsePrimary p;
-    AstNode *elem = p.parse_primary(str);
-    newRoot->strtail = elem->strtail;
-    newChildren.push_back(elem);
+    AstNode *node = parseNext->parse(str);
+    newRoot->strtail = node->strtail;
+    newChildren.push_back(node);
 
     return newRoot;
 }
@@ -76,11 +78,10 @@ AstGreaterThanEqual *ParseCompare::chain_greater_than_equal(AstNode* root, pstr_
     std::vector<AstNode *> &newChildren = newRoot->children;
     newRoot->strhead = root->strhead;
     newChildren.push_back(root);
-
-    ParsePrimary p;
-    AstNode *elem = p.parse_primary(str);
-    newRoot->strtail = elem->strtail;
-    newChildren.push_back(elem);
+    
+    AstNode *node = parseNext->parse(str);
+    newRoot->strtail = node->strtail;
+    newChildren.push_back(node);
 
     return newRoot;
 }
@@ -91,39 +92,24 @@ AstGreaterThan *ParseCompare::chain_greater_than(AstNode* root, pstr_t str)
     std::vector<AstNode *> &newChildren = newRoot->children;
     newRoot->strhead = root->strhead;
     newChildren.push_back(root);
-
-    ParsePrimary p;
-    AstNode *elem = p.parse_primary(str);
-    newRoot->strtail = elem->strtail;
-    newChildren.push_back(elem);
+    
+    AstNode *node = parseNext->parse(str);
+    newRoot->strtail = node->strtail;
+    newChildren.push_back(node);
 
     return newRoot;
 }
 
-enum ParseCompare::SymbolType ParseCompare::get_symbol(char c)
+enum ParseCompare::SymbolType ParseCompare::get_symbol(pstr_t str)
 {
-    switch (c) {
+    switch (*str) {
         case '<':
             return SYMBOL_LESS;
         case '>':
             return SYMBOL_GREATER;
         case '=':
             return SYMBOL_EQUAL;
-        case ' ':
-            return SYMBOL_WHITESPACE;
         default:
             return SYMBOL_FOLLOW;
     }
-}
-
-pstr_t ParseCompare::scan(pstr_t str)
-{
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
 }

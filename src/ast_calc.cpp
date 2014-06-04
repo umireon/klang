@@ -11,7 +11,7 @@
 #include <boost/numeric/ublas/vector.hpp>
 
 #include "ast.h"
-#include "parser.h"
+#include "parser/Parse.h"
 #include "kobject.h"
 
 #include "kfunc/FuncExit.h"
@@ -117,6 +117,7 @@ std::string create_prompt(int lineno, int depth)
 
 int run()
 {
+    
     Binding binding;
     Binding *b = &binding;
 	std::vector<std::string> lines;
@@ -149,24 +150,30 @@ int run()
         
 		add_history(const_cast<char *>(line.c_str()));
         
-        try {
-            Parse p;
-			AstNode *ast = p.parse(line.begin());
-            
-            if (ast == NULL) {
-                continue;
-            }
-            
+        Parse p;
+        SyntaxErrorHandler seh;
+        seh.line = &line;
+        seh.lineno = lineno;
+        p.syntaxErrorHandler = &seh;
+        
+        AstNode *ast = p.parse(line.begin());
+        
+        if (ast == NULL) {
+            continue;
+        }
+        
+        
+        //try {
             KObject* res = ast->evaluate(b);
             
             if (res == NULL) {
                 cout << "NULL" << endl;
             } else {
-                cout << res->to_s() << endl;
+                cout << endl << "#=> " << res->to_s() << endl;
             }
-        } catch (std::exception& e) {
-            std::cerr << e.what() << std::endl;
-        }
+        //} catch (std::exception& e) {
+            //std::cerr << e.what() << std::endl;
+        //}
     }
 }
 

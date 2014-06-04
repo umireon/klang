@@ -1,6 +1,3 @@
-#include <sstream>
-#include <stdexcept>
-
 #include "ast/AstNode.h"
 #include "ast/AstParentNode.h"
 #include "ast/AstDivision.h"
@@ -9,62 +6,45 @@
 #include "ast/AstReminder.h"
 
 #include "parser/types.h"
-#include "parser/ParsePrimary.h"
 #include "parser/ParseTerm.h"
 
 AstNode *ParseTerm::parse_term(pstr_t str)
 {
-    AstNode *term;
-    enum SymbolType type = get_symbol(str[0]);
-    pstr_t s = str;
-
-    switch (type) {
-        case SYMBOL_FOLLOW:
-            ParsePrimary p;
-            term = p.parse_primary(s);
-            s = term->strtail;
-            break;
-        default:
-            std::ostringstream os;
-            os << "Unexpected character: " << s[0] << std::endl;
-            throw std::invalid_argument(os.str());
-    }
+    AstNode *term = parseNext->parse(str);
+    str = term->strtail;
 
     while (1) {
-        s = scan_lexical_symbol(s);
-        type = get_symbol(s[0]);
-
-        switch (type) {
+        str = scan(str);
+        switch (get_symbol(str)) {
             case SYMBOL_OP_ASTERISK:
-                type = get_symbol(s[1]);
-                switch (type) {
+                switch (get_symbol(str+1)) {
                     case SYMBOL_OP_ASTERISK:
-                        term = chain_power(term, s+2);
+                        term = inject_power(term, scan(str+2));
                         break;
                     default:
-                        term = chain_multiplication(term, s+1);
+                        term = chain_multiplication(term, scan(str+1));
                         break;
                 }
                 break;
             case SYMBOL_OP_SLASH:
-                term = chain_division(term, s+1);
+                term = chain_division(term, scan(str+1));
                 break;
             case SYMBOL_OP_PERCENT:
-                term = chain_reminder(term, s+1);
+                term = chain_reminder(term, scan(str+1));
                 break;
             default:
                 return term;
         }
 
-        s = term->strtail;
+        str = term->strtail;
     }
 }
 
-AstParentNode *ParseTerm::chain_power(AstNode* node, pstr_t str)
+AstParentNode *ParseTerm::inject_power(AstNode *node, pstr_t str)
 {
     if (node->size() == 2) {
         AstParentNode *root = static_cast<AstParentNode *>(node);
-        root->children[1] = chain_power(root->children[1], str);
+        root->children[1] = inject_power(root->children[1], str);
         node->strtail = root->children[1]->strtail;
         return root;
     } else {
@@ -74,9 +54,8 @@ AstParentNode *ParseTerm::chain_power(AstNode* node, pstr_t str)
 
         newChildren.push_back(node);
 
-        str = scan_lexical_symbol(str);
-        ParsePrimary p;
-        AstNode *elem = p.parse_primary(str);
+        str = scan(str);
+        AstNode *elem = parseNext->parse(str);
         newChildren.push_back(elem);
 
         newRoot->strtail = elem->strtail;
@@ -85,7 +64,7 @@ AstParentNode *ParseTerm::chain_power(AstNode* node, pstr_t str)
     }
 }
 
-AstMultiplication *ParseTerm::chain_multiplication(AstNode* root, pstr_t str)
+AstMultiplication *ParseTerm::chain_multiplication(AstNode *root, pstr_t str)
 {
     AstMultiplication *newRoot = new AstMultiplication();
     newRoot->strhead = root->strhead;
@@ -93,9 +72,8 @@ AstMultiplication *ParseTerm::chain_multiplication(AstNode* root, pstr_t str)
 
     newChildren.push_back(root);
 
-    str = scan_lexical_symbol(str);
-    ParsePrimary p;
-    AstNode *elem = p.parse_primary(str);
+    str = scan(str);
+    AstNode *elem = parseNext->parse(str);
     newChildren.push_back(elem);
 
     newRoot->strtail = elem->strtail;
@@ -103,7 +81,7 @@ AstMultiplication *ParseTerm::chain_multiplication(AstNode* root, pstr_t str)
     return newRoot;
 }
 
-AstDivision *ParseTerm::chain_division(AstNode* root, pstr_t str)
+AstDivision *ParseTerm::chain_division(AstNode *root, pstr_t str)
 {
     AstDivision *newRoot = new AstDivision();
     newRoot->strhead = root->strhead;
@@ -111,9 +89,8 @@ AstDivision *ParseTerm::chain_division(AstNode* root, pstr_t str)
 
     newChildren.push_back(root);
 
-    str = scan_lexical_symbol(str);
-    ParsePrimary p;
-    AstNode *elem = p.parse_primary(str);
+    str = scan(str);
+    AstNode *elem = parseNext->parse(str);
     newChildren.push_back(elem);
 
     newRoot->strtail = elem->strtail;
@@ -121,7 +98,7 @@ AstDivision *ParseTerm::chain_division(AstNode* root, pstr_t str)
     return newRoot;
 }
 
-AstReminder *ParseTerm::chain_reminder(AstNode* root, pstr_t str)
+AstReminder *ParseTerm::chain_reminder(AstNode *root, pstr_t str)
 {
     AstReminder *newRoot = new AstReminder();
     newRoot->strhead = root->strhead;
@@ -129,9 +106,8 @@ AstReminder *ParseTerm::chain_reminder(AstNode* root, pstr_t str)
 
     newChildren.push_back(root);
 
-    str = scan_lexical_symbol(str);
-    ParsePrimary p;
-    AstNode *elem = p.parse_primary(str);
+    str = scan(str);
+    AstNode *elem = parseNext->parse(str);
     newChildren.push_back(elem);
 
     newRoot->strtail = elem->strtail;
@@ -139,23 +115,9 @@ AstReminder *ParseTerm::chain_reminder(AstNode* root, pstr_t str)
     return newRoot;
 }
 
-pstr_t ParseTerm::scan_lexical_symbol(pstr_t str)
+enum ParseTerm::SymbolType ParseTerm::get_symbol(pstr_t str)
 {
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
-}
-
-enum ParseTerm::SymbolType ParseTerm::get_symbol(char c)
-{
-    switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
+    switch (*str) {
         case '*':
             return SYMBOL_OP_ASTERISK;
         case '/':

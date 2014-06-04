@@ -1,46 +1,60 @@
-#include <CppUTest/TestHarness.h>
+#include "CppUTest/TestHarness.h"
+#include "CppUTestExt/MockSupport.h"
 
-#include <stdexcept>
 #include <string>
-#include <memory>
 
 #include "ast/AstNumber.h"
 #include "ast/AstAddition.h"
 #include "ast/AstSubtraction.h"
 
+#include "parser/types.h"
+#include "parser/BaseParse.h"
 #include "parser/ParseArithExpression.h"
 
 TEST_GROUP(ParseArithExpression)
 {
-    ParseArithExpression p;
+    class ParseNextMock : public BaseParse
+    {
+        virtual AstNode *parse(pstr_t str)
+        {
+            mock().actualCall("parse");
+            AstNode *node = new AstNode();
+            node->strhead = str;
+            node->strtail = str + 1;
+            return node;
+        }
+    } parseNextMock;
+
+    ParseArithExpression parseArithExpression, *p;
+
     AstNode *node;
+    
+    void setup()
+    {
+        p = &parseArithExpression;
+        p->parseNext = &parseNextMock;
+    }
     
     void teardown()
     {
         delete node;
+        mock().clear();
     }
 };
 
 TEST(ParseArithExpression, get_string)
 {
     std::string input("0");
-    node = p.parse_arith_expression(input.begin());
+    mock().expectOneCall("parse");
+    node = p->parse_arith_expression(input.begin());
     CHECK_EQUAL(input, node->get_string());
-}
-
-TEST(ParseArithExpression, AstNumber)
-{
-    std::string input("0");
-    node = p.parse_arith_expression(input.begin());
-    AstNumber *num = dynamic_cast<AstNumber *>(node);
-    CHECK(num);
-    CHECK_EQUAL(input, num->get_string());
 }
 
 TEST(ParseArithExpression, 2ElemAddition)
 {
     std::string input("2+3");
-    node = p.parse_arith_expression(input.begin());
+    mock().expectNCalls(2, "parse");
+    node = p->parse_arith_expression(input.begin());
     AstAddition *expr = dynamic_cast<AstAddition *>(node);
     CHECK(expr);
     std::vector<AstNode *> &children = expr->children;
@@ -52,7 +66,8 @@ TEST(ParseArithExpression, 2ElemAddition)
 TEST(ParseArithExpression, 3ElemAddition)
 {
     std::string input("2+3+4");
-    node = p.parse_arith_expression(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_arith_expression(input.begin());
     AstAddition *expr = dynamic_cast<AstAddition *>(node);
     CHECK(expr);
     std::vector<AstNode *> &children = expr->children;
@@ -69,7 +84,8 @@ TEST(ParseArithExpression, 3ElemAddition)
 TEST(ParseArithExpression, 2ElemSubtraction)
 {
     std::string input("2-3");
-    node = p.parse_arith_expression(input.begin());
+    mock().expectNCalls(2, "parse");
+    node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
     std::vector<AstNode *> &children = expr->children;
@@ -81,7 +97,8 @@ TEST(ParseArithExpression, 2ElemSubtraction)
 TEST(ParseArithExpression, 3ElemSubtraction)
 {
     std::string input("2-3-4");
-    node = p.parse_arith_expression(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
     std::vector<AstNode *> &children = expr->children;
@@ -98,7 +115,8 @@ TEST(ParseArithExpression, 3ElemSubtraction)
 TEST(ParseArithExpression, Complex)
 {
     std::string input("2+3-4");
-    node = p.parse_arith_expression(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
     std::vector<AstNode *> &children = expr->children;
@@ -115,7 +133,8 @@ TEST(ParseArithExpression, Complex)
 TEST(ParseArithExpression, Whitespace)
 {
     std::string input("2 +  3   - 4");
-    node = p.parse_arith_expression(input.begin());
+    mock().expectNCalls(3, "parse");
+    node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
     std::vector<AstNode *> &children = expr->children;

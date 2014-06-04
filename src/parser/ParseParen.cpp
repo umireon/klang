@@ -11,60 +11,45 @@
 AstParen* ParseParen::parse_paren(pstr_t str)
 {
     AstParen* paren = new AstParen();
-    pstr_t s = str;
+    paren->strhead = str;
 
-    enum SymbolType type = get_symbol(s[0]);
-    switch (type) {
+    switch (get_symbol(str)) {
         case SYMBOL_PAREN_LEFT:
-            s++;
             break;
         default:
-            std::ostringstream os;
-            os << "Unexpected character: " << s[0] << std::endl;
-            throw std::invalid_argument(os.str());
+            pstr_t recover = syntaxErrorHandler->never_reach(str, __FUNCTION__);
+            if (*recover != '\0') {
+                delete paren;
+                return parse_paren(recover);
+            } else {
+                paren->strtail = recover;
+                return paren;
+            }
     }
 
-    s = scan_lexical_symbol(s);
-    ParseExpression p;
-    AstNode *expr = p.parse_expression(s);
-    s = expr->strtail;
+    AstNode *expr = parseExpression->parse(scan(str+1));
+    str = scan(expr->strtail);
     paren->children.push_back(expr);
 
-    s = scan_lexical_symbol(s);
-    type = get_symbol(s[0]);
-    switch (type) {
-        case SYMBOL_PAREN_RIGHT:
-            s++;
-            break;
-        default:
-            std::ostringstream os;
-            os << "Unexpected character: " << s[0] << std::endl;
-            throw std::invalid_argument(os.str());
+    while (true) {
+        switch (get_symbol(str)) {
+            case SYMBOL_PAREN_RIGHT:
+                paren->strtail = str + 1;
+                return paren;
+            default:
+                str = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
+                if (*str == '\0') {
+                    paren->strtail = str;
+                    return paren;
+                }
+        }
     }
 
-    paren->strhead = str;
-    paren->strtail = s;
-
-    return paren;
 }
 
-pstr_t ParseParen::scan_lexical_symbol(pstr_t str)
+enum ParseParen::SymbolType ParseParen::get_symbol(pstr_t str)
 {
-    enum SymbolType type;
-
-    do {
-        type = get_symbol(str[0]);
-        str++;
-    } while (type == SYMBOL_WHITESPACE);
-
-    return str - 1;
-}
-
-enum ParseParen::SymbolType ParseParen::get_symbol(char c)
-{
-    switch (c) {
-        case ' ':
-            return SYMBOL_WHITESPACE;
+    switch (*str) {
         case '(':
             return SYMBOL_PAREN_LEFT;
         case ')':
