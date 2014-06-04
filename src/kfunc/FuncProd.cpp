@@ -1,12 +1,16 @@
-#include "kobject.h"
-
+#include <functional>
+#include <numeric>
 #include <vector>
 
-#include "kfunc/FuncC.h"
+#include "kobject/KObject.h"
+#include "kobject/KNumber.h"
+#include "kobject/KInteger.h"
 
-KObject* FuncC::invoke(std::vector<KObject*> args) {
+#include "kfunc/FuncProd.h"
+
+KObject* FuncProd::invoke(std::vector<KObject*> args) {
     std::vector<KObject *>::iterator iter = args.begin();
-    std::vector<double> list;
+    double newValue = 1.0;
 
     while (iter != args.end()) {
         switch ((*iter)->get_type()) {
@@ -14,14 +18,14 @@ KObject* FuncC::invoke(std::vector<KObject*> args) {
             case KObject::FLOAT:
                 {
                     KNumber *knum = static_cast<KNumber *>(*iter);
-                    list.push_back(knum->to_f());
+                    newValue *= knum->to_f();
                 }
                 break;
             case KObject::VECTOR:
                 {
                     KVector *kvect = static_cast<KVector *>(*iter);
                     dvector &vect = kvect->vect;
-                    list.insert(list.end(), vect.begin(), vect.end());
+                    newValue = std::accumulate(vect.begin(), vect.end(), newValue, std::multiplies<double>());
                 }
                 break;
             default:
@@ -32,9 +36,5 @@ KObject* FuncC::invoke(std::vector<KObject*> args) {
         iter++;
     }
 
-    dvector vect(list.size());
-    for (int i = 0; i < list.size(); i++) {
-        vect[i] = list[i];
-    }
-	return new KVector(vect);
+    return new KFloat(newValue);
 }
