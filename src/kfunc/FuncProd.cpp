@@ -25,7 +25,7 @@ KObject* FuncProd::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(*iter);
                     dvector &vect = kvect->vect;
-                    newValue = std::accumulate(vect.begin(), vect.end(), newValue, std::multiplies<int>);
+                    newValue = std::accumulate(vect.begin(), vect.end(), newValue, std::multiplies<double>());
                 }
                 break;
             default:

@@ -24,6 +24,7 @@
 #include "kfunc/FuncNot.h"
 
 #include "kfunc/FuncC.h"
+#include "kfunc/FuncSeq.h"
 #include "kfunc/FuncSum.h"
 #include "kfunc/FuncProd.h"
 #include "kfunc/FuncMatrix.h"
@@ -49,7 +50,8 @@ void make_world(Binding *b)
 
     FuncC kC;
     FuncSum kSum;
-    FuncSum kProd;
+    FuncSeq kSeq;
+    FuncProd kProd;
     FuncMatrix kMatrix;
     
     FuncLog kLog;
@@ -83,6 +85,7 @@ void make_world(Binding *b)
 
     b->set_local(std::string("c"), &kC);
     b->set_local(std::string("sum"), &kSum);
+    b->set_local(std::string("seq"), &kSum);
     b->set_local(std::string("prod"), &kSum);
     b->set_local(std::string("matrix"), &kMatrix);
     
@@ -165,14 +168,14 @@ int run()
         seh.lineno = lineno;
         p.syntaxErrorHandler = &seh;
         
-        AstNode *ast = p.parse(line.begin());
+        try {
+            AstNode *ast = p.parse(line.begin());
         
-        if (ast == NULL) {
-            continue;
-        }
+            if (ast == NULL) {
+                continue;
+            }
         
         
-        //try {
             KObject* res = ast->evaluate(b);
             
             if (res == NULL) {
@@ -180,9 +183,9 @@ int run()
             } else {
                 cout << endl << "#=> " << res->to_s() << endl;
             }
-        //} catch (std::exception& e) {
-            //std::cerr << e.what() << std::endl;
-        //}
+        } catch (std::exception &e) {
+            std::cerr << e.what() << std::endl;
+        }
     }
 }
 
