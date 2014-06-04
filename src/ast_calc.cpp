@@ -25,6 +25,7 @@
 
 #include "kfunc/FuncC.h"
 #include "kfunc/FuncSum.h"
+#include "kfunc/FuncProd.h"
 #include "kfunc/FuncMatrix.h"
 
 #include "kfunc/FuncLog.h"
@@ -48,6 +49,7 @@ void make_world(Binding *b)
 
     FuncC kC;
     FuncSum kSum;
+    FuncSum kProd;
     FuncMatrix kMatrix;
     
     FuncLog kLog;
@@ -81,6 +83,7 @@ void make_world(Binding *b)
 
     b->set_local(std::string("c"), &kC);
     b->set_local(std::string("sum"), &kSum);
+    b->set_local(std::string("prod"), &kSum);
     b->set_local(std::string("matrix"), &kMatrix);
     
     b->set_local(std::string("log"), &kLog);
