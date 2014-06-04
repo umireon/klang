@@ -27,4 +27,5 @@ pstr_t SyntaxErrorHandler::invalid_char(pstr_t str, const char *func)
 pstr_t SyntaxErrorHandler::never_reach(pstr_t str, const char *func)
 {
     std::cout << "[BUG] Never Reach in " << func << std::endl;
+	return str;
 }

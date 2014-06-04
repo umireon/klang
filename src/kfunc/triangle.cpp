@@ -23,7 +23,7 @@ KObject* FuncSin::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), sin);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::sin);
                     return kvect;
                 }
             default:
@@ -57,7 +57,7 @@ KObject* FuncCos::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), cos);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::cos);
                     return kvect;
                 }
             default:
@@ -91,7 +91,7 @@ KObject* FuncTan::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), tan);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::tan);
                     return kvect;
                 }
             default:
@@ -126,7 +126,7 @@ KObject* FuncSinh::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), sinh);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::sinh);
                     return kvect;
                 }
             default:
@@ -161,7 +161,7 @@ KObject* FuncCosh::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), cosh);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::cosh);
                     return kvect;
                 }
             default:
@@ -195,7 +195,7 @@ KObject* FuncTanh::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), tanh);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::tanh);
                     return kvect;
                 }
             default:
@@ -229,7 +229,7 @@ KObject* FuncArcsin::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), asin);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::asin);
                     return kvect;
                 }
             default:
@@ -263,7 +263,7 @@ KObject* FuncArccos::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), acos);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::acos);
                     return kvect;
                 }
             default:
@@ -297,7 +297,7 @@ KObject* FuncArctan::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), atan);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::atan);
                     return kvect;
                 }
             default:

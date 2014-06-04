@@ -21,7 +21,7 @@ KObject* FuncLog10::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), log10);
+					std::transform(vect.begin(), vect.end(), vect.begin(), (double(*)(double))std::log10);
                     return kvect;
                 }
             default:

@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "kobject/KObject.h"
 #include "kobject/KNumber.h"
 #include "kobject/KFloat.h"
@@ -21,7 +23,7 @@ KObject* FuncLog::invoke(std::vector<KObject*> args) {
                 {
                     KVector *kvect = static_cast<KVector *>(args[0]);
                     dvector &vect = kvect->vect;
-                    std::transform(vect.begin(), vect.end(), vect.begin(), log);
+                    std::transform(vect.begin(), vect.end(), vect.begin(), (double (*)(double))std::log);
                     return kvect;
                 }
             default:
