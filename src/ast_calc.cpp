@@ -100,6 +100,8 @@ void make_world(Binding *b)
     b->set_local(std::string("perm"), &kPerm);
     b->set_local(std::string("comb"), &kComb);
     b->set_local(std::string("hmpr"), &kHmpr);
+
+    b->set_local(std::string("pi"), new KFloat(M_PI));
 }
 
 std::string create_prompt(int lineno, int depth)
