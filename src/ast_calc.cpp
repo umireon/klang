@@ -130,7 +130,7 @@ void make_world(Binding *b)
     b->set_local(std::string("ec"), new KFloat(1.60217657*pow(10,-19)));   //elementary charge
     b->set_local(std::string("mach"), new KFloat(340.29));  //speed of sound
 
-    b->set_local(std::string("gravity_earth"), new KFloat(9.80665));    //gravity on earth
+    b->set_local(std::string("gravityEarth"), new KFloat(9.80665));    //gravity on earth
 }
 
 std::string create_prompt(int lineno, int depth)
