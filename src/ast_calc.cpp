@@ -24,9 +24,11 @@
 #include "kfunc/FuncNot.h"
 
 #include "kfunc/FuncC.h"
+#include "kfunc/FuncSum.h"
+#include "kfunc/FuncMatrix.h"
+
 #include "kfunc/FuncLog.h"
 #include "kfunc/FuncLog10.h"
-#include "kfunc/FuncMatrix.h"
 #include "kfunc/triangle.h"
 #include "kfunc/factorial.h"
 
@@ -43,11 +45,13 @@ void make_world(Binding *b)
     FuncAnd kAnd;
     FuncOr kOr;
     FuncNot kNot;
+
+    FuncC kC;
+    FuncSum kSum;
+    FuncMatrix kMatrix;
     
     FuncLog kLog;
     FuncLog10 kLog10;
-    FuncC kC;
-    FuncMatrix kMatrix;
     
     FuncSin kSin;
     FuncCos kCos;
@@ -74,11 +78,13 @@ void make_world(Binding *b)
     b->set_local(std::string("and"), &kAnd);
     b->set_local(std::string("or"), &kOr);
     b->set_local(std::string("not"), &kNot);
+
+    b->set_local(std::string("c"), &kC);
+    b->set_local(std::string("sum"), &kSum);
+    b->set_local(std::string("matrix"), &kMatrix);
     
     b->set_local(std::string("log"), &kLog);
     b->set_local(std::string("log10"), &kLog10);
-    b->set_local(std::string("c"), &kC);
-    b->set_local(std::string("matrix"), &kMatrix);
     
     b->set_local(std::string("sin"), &kSin);
     b->set_local(std::string("cos"), &kCos);
