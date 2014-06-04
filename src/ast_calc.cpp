@@ -114,6 +114,23 @@ void make_world(Binding *b)
     b->set_local(std::string("hmpr"), &kHmpr);
 
     b->set_local(std::string("pi"), new KFloat(M_PI));
+    b->set_local(std::string("e"), new KFloat(M_E));
+
+    //physical constants
+    b->set_local(std::string("c"), new KFloat(299792458));  //speed of light
+    b->set_local(std::string("NA"), new KFloat(6.02214129*pow(10,23)));    //Avogadro's constant
+    b->set_local(std::string("R"), new KFloat(8.3144621));              //Air constant
+    b->set_local(std::string("F"), new KFloat(96485.3365));             //Faraday constant
+    b->set_local(std::string("G"), new KFloat(6.67384*pow(10,-11)));        //banyuuinryokuteisuu
+    b->set_local(std::string("h"), new KFloat(6.62606957*pow(10,-34)));     //Planck's consntan
+    b->set_local(std::string("k"), new KFloat(1.3806488*pow(10,-23)));      //Boltzmann constant
+    b->set_local(std::string("Rydbergconst"), new KFloat(10973731.568539));    //Rydberg consntant
+    b->set_local(std::string("e0"), new KFloat(8.85418782*pow(10,-12)));   //e0
+    b->set_local(std::string("mu0"), new KFloat(1.25663706*pow(10,-6)));   //mu0
+    b->set_local(std::string("ec"), new KFloat(1.60217657*pow(10,-19)));   //elementary charge
+    b->set_local(std::string("mach"), new KFloat(340.29));  //speed of sound
+
+    b->set_local(std::string("gravity_earth"), new KFloat(9.80665));    //gravity on earth
 }
 
 std::string create_prompt(int lineno, int depth)
