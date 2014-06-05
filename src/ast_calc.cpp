@@ -29,8 +29,6 @@
 #include "kfunc/FuncProd.h"
 #include "kfunc/FuncMatrix.h"
 
-#include "kfunc/FuncLog.h"
-#include "kfunc/FuncLog10.h"
 #include "kfunc/triangle.h"
 #include "kfunc/factorial.h"
 
