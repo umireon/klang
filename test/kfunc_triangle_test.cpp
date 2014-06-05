@@ -65,7 +65,7 @@ TEST(kfunc_triangle, SinVector)
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
     CHECK(kvect);
-    CHECK_EQUAL(2, kvect->vect.size());
+	UNSIGNED_LONGS_EQUAL(2, kvect->vect.size());
     DOUBLES_EQUAL(1.0, kvect->vect[0], 0.01);
     DOUBLES_EQUAL(0.0, kvect->vect[1], 0.01);
 }

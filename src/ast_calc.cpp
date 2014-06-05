@@ -67,31 +67,54 @@ void make_world(Binding *b)
     b->set_local(std::string("prod"), &kSum);
     b->set_local(std::string("matrix"), &kMatrix);
     
-    FuncMath kLog(&std::log);
-    FuncMath kLog10(&std::cos);
+    FuncMath kLog(&log);
+    FuncMath kLog2(&log2);
+    FuncMath kLog10(&log10);
     b->set_local(std::string("log"), &kLog);
+    b->set_local(std::string("log2"), &kLog2);
     b->set_local(std::string("log10"), &kLog10);
 
-    FuncMath kSin(&std::sin);
-    FuncMath kCos(&std::cos);
-    FuncMath kTan(&std::tan);
+    FuncMath kSin(&sin);
+    FuncMath kCos(&cos);
+    FuncMath kTan(&tan);
     b->set_local(std::string("sin"), &kSin);
     b->set_local(std::string("cos"), &kCos);
     b->set_local(std::string("tan"), &kTan);
     
-    FuncMath kSinh(&std::sinh);
-    FuncMath kCosh(&std::cosh);
-    FuncMath kTanh(&std::tanh);
+    FuncMath kSinh(&sinh);
+    FuncMath kCosh(&cosh);
+    FuncMath kTanh(&tanh);
     b->set_local(std::string("sinh"), &kSinh);
     b->set_local(std::string("cosh"), &kCosh);
     b->set_local(std::string("tanh"), &kTanh);
     
-    FuncMath kArcsin(&std::sinh);
-    FuncMath kArccos(&std::cosh);
-    FuncMath kArctan(&std::tanh);
+    FuncMath kArcsin(&sinh);
+    FuncMath kArccos(&cosh);
+    FuncMath kArctan(&tanh);
     b->set_local(std::string("arcsin"), &kArcsin);
     b->set_local(std::string("arccos"), &kArccos);
     b->set_local(std::string("arctan"), &kArctan);
+    
+    FuncMath kArcsinh(&asinh);
+    FuncMath kArccosh(&acosh);
+    FuncMath kArctanh(&atanh);
+    b->set_local(std::string("arcsinh"), &kArcsinh);
+    b->set_local(std::string("arccosh"), &kArccosh);
+    b->set_local(std::string("arctanh"), &kArctanh);
+    
+    FuncMath kSqrt(&sqrt);
+    FuncMath kErf(&erf);
+    FuncMath kErfc(&erfc);
+    b->set_local(std::string("sqrt"), &kSqrt);
+    b->set_local(std::string("erf"), &kErf);
+    b->set_local(std::string("erfc"), &kErfc);
+    
+    FuncMath kCeil(&ceil);
+    FuncMath kFloor(&floor);
+    FuncMath kRound(&round);
+    b->set_local(std::string("ceil"), &kCeil);
+    b->set_local(std::string("floor"), &kFloor);
+    b->set_local(std::string("round"), &kRound);
     
     FuncFact kFact;
     FuncPerm kPerm;

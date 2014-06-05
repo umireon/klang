@@ -55,7 +55,7 @@ TEST(ParseParameter, One)
     p->tokenIdentifier->line = &input;
     p->syntaxErrorHandler = &seh;
     astParam = p->parse_parameter(input.begin());
-    CHECK_EQUAL(1, astParam->params.size());
+	UNSIGNED_LONGS_EQUAL(1, astParam->params.size());
     CHECK_EQUAL(std::string("a"), astParam->params[0]->get_string());
 }
 
@@ -67,7 +67,7 @@ TEST(ParseParameter, More)
     p->tokenIdentifier->line = &input;
     p->syntaxErrorHandler = &seh;
     astParam = p->parse_parameter(input.begin());
-    CHECK_EQUAL(3, astParam->params.size());
+	UNSIGNED_LONGS_EQUAL(3, astParam->params.size());
     CHECK_EQUAL(std::string("a"), astParam->params[0]->get_string());
     CHECK_EQUAL(std::string("b"), astParam->params[1]->get_string());
     CHECK_EQUAL(std::string("c"), astParam->params[2]->get_string());
@@ -81,7 +81,7 @@ TEST(ParseParameter, Whitespace)
     p->tokenIdentifier->line = &input;
     p->syntaxErrorHandler = &seh;
     astParam = p->parse_parameter(input.begin());
-    CHECK_EQUAL(3, astParam->params.size());
+	UNSIGNED_LONGS_EQUAL(3, astParam->params.size());
     CHECK_EQUAL(std::string("a"), astParam->params[0]->get_string());
     CHECK_EQUAL(std::string("b"), astParam->params[1]->get_string());
     CHECK_EQUAL(std::string("c"), astParam->params[2]->get_string());

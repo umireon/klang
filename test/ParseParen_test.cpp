@@ -80,7 +80,7 @@ TEST(ParseParen, SingleParenInvalidFirst)
     p->line = &input;
     p->syntaxErrorHandler = &seh;
     paren = p->parse_paren(input.begin());
-    CHECK_EQUAL(0, paren->children.size());
+	UNSIGNED_LONGS_EQUAL(0, paren->children.size());
 }
 
 TEST(ParseParen, SingleParenInvalidLast)
