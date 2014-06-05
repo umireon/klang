@@ -30,7 +30,7 @@ AstNumber* TokenNumber::parse_number(pstr_t str)
             break;
         default:
             pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
-            if (*recover != '\0') {
+            if (recover != line->end()) {
                 return parse_number(recover);
             } else {
                 AstInteger *nullnum = new AstInteger();
@@ -57,7 +57,7 @@ AstNumber* TokenNumber::read_number_signed(pstr_t str)
             return read_number_dec_or_float(str);
         default:
             pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
-            if (*recover != '\0') {
+            if (recover != line->end()) {
                 return read_number_signed(recover);
             } else {
                 AstInteger *nullnum = new AstInteger();
