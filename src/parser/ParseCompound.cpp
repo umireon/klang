@@ -35,7 +35,7 @@ pstr_t ParseCompound::read_brace_left(pstr_t str)
         case SYMBOL_BRACE_LEFT:
             return str+1;
         default:
-            pstr_t recover = syntaxErrorHandler->invalid_char(str, "ParseCompound::read_brace_left");
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
             if (*recover != '\0') {
                 return read_brace_left(recover);
             } else {
@@ -46,6 +46,10 @@ pstr_t ParseCompound::read_brace_left(pstr_t str)
 
 enum ParseCompound::SymbolType ParseCompound::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '{':
             return SYMBOL_BRACE_LEFT;
@@ -57,6 +61,10 @@ enum ParseCompound::SymbolType ParseCompound::get_symbol(pstr_t str)
 }
 
 bool ParseCompound::is_whitespace(pstr_t str) {
+    if (str == line->end()) {
+        return false;
+    }
+
     switch (*str) {
         case '\n':
         case '\r':

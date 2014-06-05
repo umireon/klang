@@ -17,6 +17,7 @@ TEST_GROUP(kfunc_FuncPuts)
     KObject *res;
 
 	Parse p;
+    SyntaxErrorHandler seh;
 	Binding binding;
     Binding *b;
 
@@ -42,6 +43,8 @@ TEST_GROUP(kfunc_FuncPuts)
 TEST(kfunc_FuncPuts, 1Arg)
 {
     std::string input("puts(1)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     CHECK_EQUAL(std::string("1\n"), os.str());
@@ -50,6 +53,8 @@ TEST(kfunc_FuncPuts, 1Arg)
 TEST(kfunc_FuncPuts, 2Args)
 {
     std::string input("puts(1,2)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     CHECK_EQUAL(std::string("1\n2\n"), os.str());

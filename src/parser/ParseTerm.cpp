@@ -117,6 +117,10 @@ AstReminder *ParseTerm::chain_reminder(AstNode *root, pstr_t str)
 
 enum ParseTerm::SymbolType ParseTerm::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '*':
             return SYMBOL_OP_ASTERISK;

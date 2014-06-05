@@ -17,6 +17,7 @@ TEST_GROUP(AstAssignment)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     
     void setup()
     {
@@ -27,6 +28,8 @@ TEST_GROUP(AstAssignment)
 TEST(AstAssignment, KInteger)
 {
     std::string input("a=1");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     AstNode *node = p.parse(input.begin());
     KObject *res = node->evaluate(b);
     delete node;
@@ -46,12 +49,16 @@ TEST(AstAssignment, KInteger)
 TEST(AstAssignment, KIntegerReassign)
 {
     std::string input("a=1");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     AstNode *node = p.parse(input.begin());
     KObject *res = node->evaluate(b);
     delete node;
     delete res;
     
     std::string input2("a=2");
+    seh.line = &input2;
+    p.syntaxErrorHandler = &seh;
     AstNode *node2 = p.parse(input2.begin());
     KObject *res2 = node2->evaluate(b);
     delete node2;
@@ -67,6 +74,8 @@ TEST(AstAssignment, KIntegerReassign)
 TEST(AstAssignment, KFunctionAst)
 {
     std::string input("a=function(x)x");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     AstNode *node = p.parse(input.begin());
     KObject *res = node->evaluate(b);
     delete node;
@@ -93,18 +102,24 @@ TEST(AstAssignment, KFunctionAst)
 TEST(AstAssignment, KFunctionAstReassign)
 {
     std::string input("a=function(x)x");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     AstNode *node = p.parse(input.begin());
     KObject *res = node->evaluate(b);
     delete node;
     delete res;
     
     std::string input2("a=function(x)x*x");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     AstNode *node2 = p.parse(input.begin());
     KObject *res2 = node2->evaluate(b);
     delete node2;
     delete res2;
     
     KObject *sto2 = b->get_local(std::string("a"));
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     KFunctionAst *kfunc2 = dynamic_cast<KFunctionAst *>(sto2);
     CHECK(kfunc2);
     delete sto2;

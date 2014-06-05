@@ -26,6 +26,7 @@ TEST_GROUP(ParseArithExpression)
     } parseNextMock;
 
     ParseArithExpression parseArithExpression, *p;
+    SyntaxErrorHandler seh;
 
     AstNode *node;
     
@@ -46,6 +47,9 @@ TEST(ParseArithExpression, get_string)
 {
     std::string input("0");
     mock().expectOneCall("parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_arith_expression(input.begin());
     CHECK_EQUAL(input, node->get_string());
 }
@@ -54,6 +58,9 @@ TEST(ParseArithExpression, 2ElemAddition)
 {
     std::string input("2+3");
     mock().expectNCalls(2, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_arith_expression(input.begin());
     AstAddition *expr = dynamic_cast<AstAddition *>(node);
     CHECK(expr);
@@ -67,6 +74,9 @@ TEST(ParseArithExpression, 3ElemAddition)
 {
     std::string input("2+3+4");
     mock().expectNCalls(3, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_arith_expression(input.begin());
     AstAddition *expr = dynamic_cast<AstAddition *>(node);
     CHECK(expr);
@@ -85,6 +95,9 @@ TEST(ParseArithExpression, 2ElemSubtraction)
 {
     std::string input("2-3");
     mock().expectNCalls(2, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
@@ -98,6 +111,9 @@ TEST(ParseArithExpression, 3ElemSubtraction)
 {
     std::string input("2-3-4");
     mock().expectNCalls(3, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
@@ -116,6 +132,10 @@ TEST(ParseArithExpression, Complex)
 {
     std::string input("2+3-4");
     mock().expectNCalls(3, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);
@@ -134,6 +154,9 @@ TEST(ParseArithExpression, Whitespace)
 {
     std::string input("2 +  3   - 4");
     mock().expectNCalls(3, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_arith_expression(input.begin());
     AstSubtraction *expr = dynamic_cast<AstSubtraction *>(node);
     CHECK(expr);

@@ -18,6 +18,7 @@ TEST_GROUP(AstIf)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     
@@ -36,6 +37,8 @@ TEST_GROUP(AstIf)
 TEST(AstIf, IfTrue)
 {
     std::string input("if 1 2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -46,6 +49,8 @@ TEST(AstIf, IfTrue)
 TEST(AstIf, IfFalse)
 {
     std::string input("if 0 2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KNil *knil = dynamic_cast<KNil *>(res);
@@ -55,6 +60,8 @@ TEST(AstIf, IfFalse)
 TEST(AstIf, IfFalseElse)
 {
     std::string input("if 0 2 else 4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -65,6 +72,8 @@ TEST(AstIf, IfFalseElse)
 TEST(AstIf, IfTrueElsif)
 {
     std::string input("if 1 2 elsif 1 4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -75,6 +84,8 @@ TEST(AstIf, IfTrueElsif)
 TEST(AstIf, IfFalseElsifTrue)
 {
     std::string input("if 0 2 elsif 1 4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -85,6 +96,8 @@ TEST(AstIf, IfFalseElsifTrue)
 TEST(AstIf, IfFalseElsifFalse)
 {
     std::string input("if 0 2 elsif 0 4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KNil *knil = dynamic_cast<KNil *>(res);
@@ -94,6 +107,8 @@ TEST(AstIf, IfFalseElsifFalse)
 TEST(AstIf, IfFalseElsifFalseElse)
 {
     std::string input("if 0 2 elsif 0 4 else 6");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -104,6 +119,8 @@ TEST(AstIf, IfFalseElsifFalseElse)
 TEST(AstIf, IfFalseElsifFalseElsifTrue)
 {
     std::string input("if 0 2 elsif 0 4 elsif 1 6");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -114,6 +131,8 @@ TEST(AstIf, IfFalseElsifFalseElsifTrue)
 TEST(AstIf, IfFalseElsifFalseElsifFalseElse)
 {
     std::string input("if 0 2 elsif 0 4 elsif 0 6 else 8");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);

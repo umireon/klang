@@ -18,6 +18,7 @@ TEST_GROUP(kfunc_FuncNot)
     KObject *res;
     
 	Parse p;
+    SyntaxErrorHandler seh;
 	Binding binding;
     Binding *b;
     
@@ -39,6 +40,8 @@ TEST_GROUP(kfunc_FuncNot)
 TEST(kfunc_FuncNot, 1ArgTrue)
 {
     std::string input("and(0)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -49,6 +52,8 @@ TEST(kfunc_FuncNot, 1ArgTrue)
 TEST(kfunc_FuncNot, 1ArgFalse)
 {
     std::string input("and(1)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -59,6 +64,8 @@ TEST(kfunc_FuncNot, 1ArgFalse)
 TEST(kfunc_FuncNot, 3ArgTrue)
 {
     std::string input("and(1,0,1)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -69,6 +76,8 @@ TEST(kfunc_FuncNot, 3ArgTrue)
 TEST(kfunc_FuncNot, 3ArgFalse)
 {
     std::string input("and(1,1,1)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);

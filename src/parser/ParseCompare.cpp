@@ -102,6 +102,10 @@ AstGreaterThan *ParseCompare::chain_greater_than(AstNode* root, pstr_t str)
 
 enum ParseCompare::SymbolType ParseCompare::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '<':
             return SYMBOL_LESS;

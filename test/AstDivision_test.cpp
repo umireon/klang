@@ -21,6 +21,7 @@ TEST_GROUP(AstDivision)
     Binding *b;
 
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     
@@ -39,6 +40,8 @@ TEST_GROUP(AstDivision)
 TEST(AstDivision, IntInt)
 {
     std::string input("7/2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -49,6 +52,8 @@ TEST(AstDivision, IntInt)
 TEST(AstDivision, IntFloat)
 {
     std::string input("7/2.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -62,6 +67,8 @@ TEST(AstDivision, IntVector)
     b->set_local("c", &kC);
 
     std::string input("7/c(2,4)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -73,6 +80,8 @@ TEST(AstDivision, IntVector)
 TEST(AstDivision, FloatInt)
 {
     std::string input("7.0/2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -83,6 +92,8 @@ TEST(AstDivision, FloatInt)
 TEST(AstDivision, FloatFloat)
 {
     std::string input("7.0/2.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -96,6 +107,8 @@ TEST(AstDivision, FloatVector)
     b->set_local("c", &kC);
     
     std::string input("7.0/c(2,4)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -110,6 +123,8 @@ TEST(AstDivision, VectorInt)
     b->set_local("c", &kC);
     
     std::string input("c(14,7)/2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -122,7 +137,10 @@ TEST(AstDivision, VectorFloat)
 {
     FuncC kC;
     b->set_local("c", &kC);
+
     std::string input("c(14,7)/2.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -137,6 +155,8 @@ TEST(AstDivision, VectorVector)
     b->set_local("c", &kC);
     
     std::string input("c(14,7)/c(2,4)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);

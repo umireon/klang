@@ -25,6 +25,7 @@ TEST_GROUP(ParseCompound)
     } parseExpressionMock;
 
     ParseCompound parseCompound, *p;
+    SyntaxErrorHandler seh;
     
     AstCompound *com;
     
@@ -45,6 +46,9 @@ TEST(ParseCompound, get_string)
 {
     std::string input("{x}");
     mock().expectOneCall("parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     com = p->parse_compound(input.begin());
     CHECK_EQUAL(input, com->get_string());
 }
@@ -53,6 +57,9 @@ TEST(ParseCompound, InLine)
 {
     std::string input("{x}");
     mock().expectOneCall("parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     com = p->parse_compound(input.begin());
     
 	CHECK_EQUAL(std::string("x"), com->children.at(0)->get_string());
@@ -62,6 +69,9 @@ TEST(ParseCompound, SingleLine)
 {
     std::string input("{ \n\rx\r\n }");
     mock().expectOneCall("parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     com = p->parse_compound(input.begin());
     
 	CHECK_EQUAL(std::string("x"), com->children.at(0)->get_string());
@@ -71,6 +81,9 @@ TEST(ParseCompound, MultipleLine)
 {
     std::string input("{\nx\n  y\rz\n}");
     mock().expectNCalls(3, "parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     com = p->parse_compound(input.begin());
     
 	CHECK_EQUAL(std::string("x"), com->children.at(0)->get_string());

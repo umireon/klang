@@ -89,6 +89,7 @@ TEST_GROUP(ParsePrimary)
     } tokenNumberMock;
 
     ParsePrimary parsePrimary, *p;
+    SyntaxErrorHandler seh;
     
     AstNode *node;
     
@@ -115,6 +116,10 @@ TEST(ParsePrimary, Number)
     std::string input("1");
     mock().expectOneCall("parseExpression");
     mock().expectOneCall("tokenNumber");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK(dynamic_cast<AstNumber *>(node));
     CHECK_EQUAL(input, node->get_string());
@@ -124,6 +129,10 @@ TEST(ParsePrimary, Identifier)
 {
     std::string input("a");
     mock().expectOneCall("tokenIdentifier");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK(dynamic_cast<AstIdentifier *>(node));
     CHECK_EQUAL(input, node->get_string());
@@ -135,6 +144,10 @@ TEST(ParsePrimary, Function)
     mock().expectOneCall("parseFunction");
     mock().expectOneCall("tokenIdentifier");
     mock().expectOneCall("tokenNumber");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
 }
 
@@ -144,6 +157,10 @@ TEST(ParsePrimary, If)
     mock().expectOneCall("parseIf");
     mock().expectOneCall("tokenIdentifier");
     mock().expectNCalls(2, "tokenNumber");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
 }
 
@@ -151,6 +168,10 @@ TEST(ParsePrimary, Paren)
 {
     std::string input("(1)");
     mock().expectOneCall("parseParen");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
 }
 
@@ -158,6 +179,10 @@ TEST(ParsePrimary, 0ArgInvocation)
 {
     std::string input("f()");
     mock().expectOneCall("tokenIdentifier");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK_EQUAL(input, node->get_string());
     
@@ -174,6 +199,10 @@ TEST(ParsePrimary, 0ArgInvocationWhitespace)
 {
     std::string input("f ( )");
     mock().expectOneCall("tokenIdentifier");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK_EQUAL(input, node->get_string());
 
@@ -191,6 +220,10 @@ TEST(ParsePrimary, 1ArgInvocation)
     std::string input("f(1)");
     mock().expectOneCall("tokenIdentifier");
     mock().expectOneCall("parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK_EQUAL(input, node->get_string());
 
@@ -209,6 +242,10 @@ TEST(ParsePrimary, 1ArgInvocationWhitespace)
     std::string input("f  (  1  )");
     mock().expectOneCall("tokenIdentifier");
     mock().expectOneCall("parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK_EQUAL(input, node->get_string());
     
@@ -227,6 +264,10 @@ TEST(ParsePrimary, 2ArgInvocation)
     std::string input("f(1,2)");
     mock().expectOneCall("tokenIdentifier");
     mock().expectNCalls(2, "parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK_EQUAL(input, node->get_string());
     
@@ -246,6 +287,10 @@ TEST(ParsePrimary, 2ArgInvocationWhitespace)
     std::string input("f  (  1  ,  2  )");
     mock().expectOneCall("tokenIdentifier");
     mock().expectNCalls(2, "parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_primary(input.begin());
     CHECK_EQUAL(input, node->get_string());
     

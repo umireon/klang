@@ -19,6 +19,7 @@ TEST_GROUP(kfunc_factorial)
     KObject *res;
 
 	Parse p;
+    SyntaxErrorHandler seh;
 	Binding binding;
     Binding *b;
 
@@ -46,6 +47,8 @@ TEST_GROUP(kfunc_factorial)
 TEST(kfunc_factorial, FactInteger)
 {
     std::string input("fact(3)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -56,6 +59,8 @@ TEST(kfunc_factorial, FactInteger)
 TEST(kfunc_factorial, PermInteger)
 {
     std::string input("perm(4,2)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -66,6 +71,8 @@ TEST(kfunc_factorial, PermInteger)
 TEST(kfunc_factorial, CombInteger)
 {
     std::string input("comb(4,2)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -76,6 +83,8 @@ TEST(kfunc_factorial, CombInteger)
 TEST(kfunc_factorial, HmprInteger)
 {
     std::string input("hmpr(4,2)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);

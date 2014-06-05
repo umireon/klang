@@ -61,6 +61,10 @@ AstSubtraction* ParseArithExpression::chain_subtraction(AstNode* root, pstr_t st
 
 enum ParseArithExpression::SymbolType ParseArithExpression::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '+':
             return SYMBOL_SIGN_PLUS;

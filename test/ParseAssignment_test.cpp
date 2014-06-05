@@ -24,6 +24,7 @@ TEST_GROUP(ParseAssignment)
     } parseNextMock;
 
     ParseAssignment parseAssignment, *p;
+    SyntaxErrorHandler seh;
 
     AstNode *node;
     
@@ -44,6 +45,9 @@ TEST(ParseAssignment, get_string)
 {
     std::string input("a=3");
     mock().expectNCalls(2, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_assignment(input.begin());
     CHECK_EQUAL(input, node->get_string());
 }
@@ -52,6 +56,9 @@ TEST(ParseAssignment, 2ExpressionAssignment)
 {
     std::string input("a=3");
     mock().expectNCalls(2, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_assignment(input.begin());
     AstAssignment *assign = dynamic_cast<AstAssignment *>(node);
     CHECK(assign);
@@ -65,6 +72,9 @@ TEST(ParseAssignment, 3ExpressionAssignment)
 {
     std::string input("a=b=4");
     mock().expectNCalls(3, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_assignment(input.begin());
     AstAssignment *assign = dynamic_cast<AstAssignment *>(node);
     CHECK(assign);
@@ -83,6 +93,9 @@ TEST(ParseAssignment, Whitespace)
 {
     std::string input("a =  b  =  4");
     mock().expectNCalls(3, "parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_assignment(input.begin());
     AstAssignment *assign = dynamic_cast<AstAssignment *>(node);
     CHECK(assign);

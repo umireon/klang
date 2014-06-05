@@ -55,6 +55,10 @@ AstParentNode *ParseAssignment::inject_assignment(AstNode *node, pstr_t str)
 
 enum ParseAssignment::SymbolType ParseAssignment::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '=':
             return SYMBOL_EQUAL;
