@@ -29,7 +29,7 @@ AstIf *ParseIf::parse_if(pstr_t str)
         str = scan(node->strtail);
         astIf->body.push_back(node);
 
-        if (str[0] != 'e') {
+        if (str == line->end() || *str != 'e') {
             astIf->strtail = node->strtail;
             return astIf;
         }

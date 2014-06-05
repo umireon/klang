@@ -68,7 +68,7 @@ TEST(kfunc_FuncSeq, 2Arg)
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
     CHECK(kvect);
-    CHECK_EQUAL(3, kvect->vect.size());
+    UNSIGNED_LONGS_EQUAL(3, kvect->vect.size());
     DOUBLES_EQUAL(1.0, kvect->vect[0], DBL_EPSILON);
     DOUBLES_EQUAL(2.0, kvect->vect[1], DBL_EPSILON);
     DOUBLES_EQUAL(3.0, kvect->vect[2], DBL_EPSILON);

@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(klang)
 
-option(TEST "Build all tests." OFF)
-option(UNIT_TEST "Build unit tests." OFF)
-option(INTEGRATION_TEST "Build integration tests." OFF)
+option(KLANG_UNIT "Build unit tests." OFF)
 
 find_package(Boost)
 include_directories(${Boost_INCLUDE_DIR})
@@ -53,10 +51,19 @@ if (KLANG_UNIT)
 
     set(TEST_HELPER_H "${CMAKE_SOURCE_DIR}/test/test_helper.h")
     set(CLANG_UNIT_COMPILE_FLAGS "-include ${TEST_HELPER_H}")
+    set(MSVC_UNIT_COMPILE_FLAGS "/FI\"${TEST_HELPER_H}\"")
 
     if (KLANG_COVERAGE)
         set(CLANG_UNIT_COMPILE_FLAGS "${CLANG_UNIT_COMPILE_FLAGS} -coverage")
     endif ()
+
+	if (MSVC)
+	    set(UNIT_COMPILE_FLAGS "${MSVC_UNIT_COMPILE_FLAGS}")
+	    set(UNIT_LINK_FLAGS "")
+	else ()
+	    set(UNIT_COMPILE_FLAGS "${CLANG_UNIT_COMPILE_FLAGS}")
+	    set(UNIT_LINK_FLAGS "${CLANG_UNIT_COMPILE_FLAGS}")
+	endif ()
 
     set(TESTS OFF CACHE BOOL "CppUTest test")
     add_subdirectory(vendors/cpputest)
@@ -68,17 +75,17 @@ if (KLANG_UNIT)
     target_link_libraries(runUnit ${Boost_LIBRARIES})
     target_link_libraries(runUnit CppUTest CppUTestExt)
     target_link_libraries(runUnit parser ast kobject kfunc)
-    set_target_properties(runUnit PROPERTIES COMPILE_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
-    set_target_properties(runUnit PROPERTIES LINK_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+    set_target_properties(runUnit PROPERTIES COMPILE_FLAGS "${UNIT_COMPILE_FLAGS}")
+    set_target_properties(runUnit PROPERTIES LINK_FLAGS "${UNIT_LINK_FLAGS}")
 
     target_link_libraries(parser CppUTest CppUTestExt)
     target_link_libraries(ast CppUTest CppUTestExt)
     target_link_libraries(kobject CppUTest CppUTestExt)
     target_link_libraries(kfunc CppUTest CppUTestExt)
-    set_target_properties(parser ast kobject kfunc PROPERTIES COMPILE_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
-    set_target_properties(parser ast kobject kfunc PROPERTIES LINK_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+    set_target_properties(parser ast kobject kfunc PROPERTIES COMPILE_FLAGS "${UNIT_COMPILE_FLAGS}")
+    set_target_properties(parser ast kobject kfunc PROPERTIES LINK_FLAGS "${UNIT_LINK_FLAGS}")
 
-    set_target_properties(klang ast_compile print_ast PROPERTIES LINK_FLAGS ${CLANG_UNIT_COMPILE_FLAGS})
+    set_target_properties(klang ast_compile print_ast PROPERTIES LINK_FLAGS "${UNIT_LINK_FLAGS}")
 
     add_test(Unit runUnit)
 endif ()
