@@ -18,7 +18,7 @@ AstParen* ParseParen::parse_paren(pstr_t str)
             break;
         default:
             pstr_t recover = syntaxErrorHandler->never_reach(str, __FUNCTION__);
-            if (*recover != '\0') {
+            if (recover == line->end()) {
                 delete paren;
                 return parse_paren(recover);
             } else {
@@ -38,7 +38,7 @@ AstParen* ParseParen::parse_paren(pstr_t str)
                 return paren;
             default:
                 str = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
-                if (*str == '\0') {
+                if (str == line->end()) {
                     paren->strtail = str;
                     return paren;
                 }
