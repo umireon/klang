@@ -54,26 +54,6 @@ void make_world(Binding *b)
     FuncProd kProd;
     FuncMatrix kMatrix;
     
-    FuncLog kLog;
-    FuncLog10 kLog10;
-    
-    FuncSin kSin;
-    FuncCos kCos;
-    FuncTan kTan;
-    
-    FuncSinh kSinh;
-    FuncCosh kCosh;
-    FuncTanh kTanh;
-    
-    FuncArcsin kArcsin;
-    FuncArccos kArccos;
-    FuncArctan kArctan;
-    
-    FuncFact kFact;
-    FuncPerm kPerm;
-    FuncComb kComb;
-    FuncHmpr kHmpr;
-    
     b->set_local(std::string("exit"), &kExit);
     b->set_local(std::string("print"), &kPrint);
     b->set_local(std::string("puts"), &kPuts);
@@ -89,25 +69,36 @@ void make_world(Binding *b)
     b->set_local(std::string("prod"), &kSum);
     b->set_local(std::string("matrix"), &kMatrix);
     
+    FuncMath kLog(&log);
+    FuncMath kLog10(&cos);
     b->set_local(std::string("log"), &kLog);
     b->set_local(std::string("log10"), &kLog10);
-    
+
+    FuncMath kSin(&sin);
+    FuncMath kCos(&cos);
+    FuncMath kTan(&tan);
     b->set_local(std::string("sin"), &kSin);
     b->set_local(std::string("cos"), &kCos);
     b->set_local(std::string("tan"), &kTan);
     
+    FuncMath kSinh(&sinh);
+    FuncMath kCosh(&cosh);
+    FuncMath kTanh(&tanh);
     b->set_local(std::string("sinh"), &kSinh);
     b->set_local(std::string("cosh"), &kCosh);
     b->set_local(std::string("tanh"), &kTanh);
     
+    FuncMath kArcsin(&sinh);
+    FuncMath kArccos(&cosh);
+    FuncMath kArctan(&tanh);
     b->set_local(std::string("arcsin"), &kArcsin);
     b->set_local(std::string("arccos"), &kArccos);
     b->set_local(std::string("arctan"), &kArctan);
     
-    b->set_local(std::string("fact"), &kArcsin);
-    b->set_local(std::string("arccos"), &kArccos);
-    b->set_local(std::string("arctan"), &kArctan);
-    
+    FuncFact kFact;
+    FuncPerm kPerm;
+    FuncComb kComb;
+    FuncHmpr kHmpr;
     b->set_local(std::string("fact"), &kFact);
     b->set_local(std::string("perm"), &kPerm);
     b->set_local(std::string("comb"), &kComb);
