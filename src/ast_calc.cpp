@@ -67,28 +67,28 @@ void make_world(Binding *b)
     b->set_local(std::string("prod"), &kSum);
     b->set_local(std::string("matrix"), &kMatrix);
     
-    FuncMath kLog(&log);
-    FuncMath kLog10(&cos);
+    FuncMath kLog(&std::log);
+    FuncMath kLog10(&std::cos);
     b->set_local(std::string("log"), &kLog);
     b->set_local(std::string("log10"), &kLog10);
 
-    FuncMath kSin(&sin);
-    FuncMath kCos(&cos);
-    FuncMath kTan(&tan);
+    FuncMath kSin(&std::sin);
+    FuncMath kCos(&std::cos);
+    FuncMath kTan(&std::tan);
     b->set_local(std::string("sin"), &kSin);
     b->set_local(std::string("cos"), &kCos);
     b->set_local(std::string("tan"), &kTan);
     
-    FuncMath kSinh(&sinh);
-    FuncMath kCosh(&cosh);
-    FuncMath kTanh(&tanh);
+    FuncMath kSinh(&std::sinh);
+    FuncMath kCosh(&std::cosh);
+    FuncMath kTanh(&std::tanh);
     b->set_local(std::string("sinh"), &kSinh);
     b->set_local(std::string("cosh"), &kCosh);
     b->set_local(std::string("tanh"), &kTanh);
     
-    FuncMath kArcsin(&sinh);
-    FuncMath kArccos(&cosh);
-    FuncMath kArctan(&tanh);
+    FuncMath kArcsin(&std::sinh);
+    FuncMath kArccos(&std::cosh);
+    FuncMath kArctan(&std::tanh);
     b->set_local(std::string("arcsin"), &kArcsin);
     b->set_local(std::string("arccos"), &kArccos);
     b->set_local(std::string("arctan"), &kArctan);
@@ -102,24 +102,39 @@ void make_world(Binding *b)
     b->set_local(std::string("comb"), &kComb);
     b->set_local(std::string("hmpr"), &kHmpr);
 
-	b->set_local(std::string("PI"), new KFloat(3.14159265358979323846));
-	b->set_local(std::string("E"), new KFloat(2.7182818284590452354));
+    KFloat cPI(3.14159265358979323846);
+    KFloat cE(2.7182818284590452354);
+	b->set_local(std::string("PI"), &cPI);
+	b->set_local(std::string("E"), &cE);
 
     //physical constants
-    b->set_local(std::string("C"), new KFloat(299792458));  //speed of light
-    b->set_local(std::string("NA"), new KFloat(6.02214129*pow(10,23)));    //Avogadro's constant
-    b->set_local(std::string("R"), new KFloat(8.3144621));              //Air constant
-    b->set_local(std::string("F"), new KFloat(96485.3365));             //Faraday constant
-    b->set_local(std::string("G"), new KFloat(6.67384*pow(10,-11)));        //banyuuinryokuteisuu
-    b->set_local(std::string("H"), new KFloat(6.62606957*pow(10,-34)));     //Planck's consntan
-    b->set_local(std::string("K"), new KFloat(1.3806488*pow(10,-23)));      //Boltzmann constant
-    b->set_local(std::string("RYDBERG_CONST"), new KFloat(10973731.568539));    //Rydberg consntant
-    b->set_local(std::string("E0"), new KFloat(8.85418782*pow(10,-12)));   //e0
-    b->set_local(std::string("MU0"), new KFloat(1.25663706*pow(10,-6)));   //mu0
-    b->set_local(std::string("EC"), new KFloat(1.60217657*pow(10,-19)));   //elementary charge
-    b->set_local(std::string("MACH"), new KFloat(340.29));  //speed of sound
 
-    b->set_local(std::string("GRAVITY_EARTH"), new KFloat(9.80665));    //gravity on earth
+    KFloat cC(299792458);
+    KFloat cNA(6.02214129*pow(10,23));
+    KFloat cR(8.3144621);
+    KFloat cF(96485.3365);
+    KFloat cG(6.67384*pow(10,-11));
+    KFloat cH(6.62606957*pow(10,-34));
+    KFloat cK(1.3806488*pow(10,-23));
+    KFloat cRYDBERG_CONST(10973731.568539);
+    KFloat cE0(8.85418782*pow(10,-12));
+    KFloat cMU0(8.85418782*pow(10,-12));
+    KFloat cEC(1.60217657*pow(10,-19));
+    KFloat cMACH(340.29);
+    KFloat cGRAVITY_EARTH(9.80665);
+    b->set_local(std::string("C"), &cC);  //speed of light
+    b->set_local(std::string("NA"), &cNA);    //Avogadro's constant
+    b->set_local(std::string("R"), &cR);              //Air constant
+    b->set_local(std::string("F"), &cF);             //Faraday constant
+    b->set_local(std::string("G"), &cG);        //banyuuinryokuteisuu
+    b->set_local(std::string("H"), &cH);     //Planck's consntan
+    b->set_local(std::string("K"), &cK);      //Boltzmann constant
+    b->set_local(std::string("RYDBERG_CONST"), &cRYDBERG_CONST);    //Rydberg consntant
+    b->set_local(std::string("E0"), &cE0);   //e0
+    b->set_local(std::string("MU0"), &cMU0);   //mu0
+    b->set_local(std::string("EC"), &cEC);   //elementary charge
+    b->set_local(std::string("MACH"), &cMACH);  //speed of sound
+    b->set_local(std::string("GRAVITY_EARTH"), &cGRAVITY_EARTH);    //gravity on earth
 }
 
 std::string create_prompt(int lineno, int depth)
