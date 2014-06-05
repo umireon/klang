@@ -68,8 +68,10 @@ void make_world(Binding *b)
     b->set_local(std::string("matrix"), &kMatrix);
     
     FuncMath kLog(&std::log);
-    FuncMath kLog10(&std::cos);
+    FuncMath kLog2(&std::log2);
+    FuncMath kLog10(&std::log10);
     b->set_local(std::string("log"), &kLog);
+    b->set_local(std::string("log2"), &kLog2);
     b->set_local(std::string("log10"), &kLog10);
 
     FuncMath kSin(&std::sin);
@@ -92,6 +94,27 @@ void make_world(Binding *b)
     b->set_local(std::string("arcsin"), &kArcsin);
     b->set_local(std::string("arccos"), &kArccos);
     b->set_local(std::string("arctan"), &kArctan);
+    
+    FuncMath kArcsinh(&std::asinh);
+    FuncMath kArccosh(&std::acosh);
+    FuncMath kArctanh(&std::atanh);
+    b->set_local(std::string("arcsinh"), &kArcsinh);
+    b->set_local(std::string("arccosh"), &kArccosh);
+    b->set_local(std::string("arctanh"), &kArctanh);
+    
+    FuncMath kSqrt(&std::sqrt);
+    FuncMath kErf(&std::erf);
+    FuncMath kErfc(&std::erfc);
+    b->set_local(std::string("sqrt"), &kSqrt);
+    b->set_local(std::string("erf"), &kErf);
+    b->set_local(std::string("erfc"), &kErfc);
+    
+    FuncMath kCeil(&std::ceil);
+    FuncMath kFloor(&std::floor);
+    FuncMath kRound(&std::round);
+    b->set_local(std::string("ceil"), &kCeil);
+    b->set_local(std::string("floor"), &kFloor);
+    b->set_local(std::string("round"), &kRound);
     
     FuncFact kFact;
     FuncPerm kPerm;
