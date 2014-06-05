@@ -30,7 +30,7 @@ AstNode* ParsePrimary::parse_primary(pstr_t str)
             break;
         default:
             pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
-            if (*recover != '\0') {
+            if (recover != line->end()) {
                 return parse_primary(recover);
             } else {
                 AstNode *nullnode = new AstNode();
@@ -130,6 +130,10 @@ AstArgument* ParsePrimary::parse_argument(pstr_t str)
 
 enum ParsePrimary::SymbolType ParsePrimary::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     char c = *str;
     if ('0' <= c && c <= '9') {
         return SYMBOL_FIRST_NUMBER;

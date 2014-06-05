@@ -75,8 +75,23 @@ AstNode* Parse::parse(pstr_t str)
     tokenNumber.syntaxErrorHandler = syntaxErrorHandler;
     tokenIdentifier.syntaxErrorHandler = syntaxErrorHandler;
 
+    line = syntaxErrorHandler->line;
+    parseExpression.line = line;
+    parseAssignment.line = line;
+    parseCompare.line = line;
+    parseArithExpression.line = line;
+    parseTerm.line = line;
+    parsePrimary.line = line;
+    parseFunction.line = line;
+    parseCompound.line = line;
+    parseParameter.line = line;
+    parseIf.line = line;
+    parseParen.line = line;
+    tokenNumber.line = line;
+    tokenIdentifier.line = line;
+
     str = scan(str);
-    if (*str == '\n') {
+    if (str == line->end()) {
         return NULL;
     } else {
         return parseExpression.parse(str);

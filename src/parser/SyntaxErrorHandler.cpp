@@ -6,7 +6,6 @@
 
 pstr_t SyntaxErrorHandler::invalid_char(pstr_t str, const char *func)
 {
-    
     if (str == line->end()) {
         std::cout << "Unexpected End Of Line in line " << lineno - 1 << std::endl;
         std::cout << *line << std::endl;

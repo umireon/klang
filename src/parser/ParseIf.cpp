@@ -60,6 +60,10 @@ AstIf *ParseIf::parse_if(pstr_t str)
 
 enum ParseIf::SymbolType ParseIf::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '{':
             return SYMBOL_BRACE_LEFT;

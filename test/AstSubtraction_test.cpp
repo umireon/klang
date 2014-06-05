@@ -21,6 +21,7 @@ TEST_GROUP(AstSubtraction)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     
@@ -39,6 +40,8 @@ TEST_GROUP(AstSubtraction)
 TEST(AstSubtraction, IntInt)
 {
     std::string input("2-3");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -49,6 +52,8 @@ TEST(AstSubtraction, IntInt)
 TEST(AstSubtraction, IntFloat)
 {
     std::string input("2-3.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -62,6 +67,8 @@ TEST(AstSubtraction, IntVector)
     b->set_local("c", &kC);
     
     std::string input("2-c(3,4)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -73,6 +80,8 @@ TEST(AstSubtraction, IntVector)
 TEST(AstSubtraction, FloatInt)
 {
     std::string input("2.0-3");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -83,6 +92,8 @@ TEST(AstSubtraction, FloatInt)
 TEST(AstSubtraction, FloatFloat)
 {
     std::string input("2.0-3.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -96,6 +107,8 @@ TEST(AstSubtraction, FloatVector)
     b->set_local("c", &kC);
     
     std::string input("2.0-c(3,4)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -110,6 +123,8 @@ TEST(AstSubtraction, VectorInt)
     b->set_local("c", &kC);
     
     std::string input("c(3,4)-2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -124,6 +139,8 @@ TEST(AstSubtraction, VectorFloat)
     b->set_local("c", &kC);
     
     std::string input("c(3,4)-2.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -138,6 +155,8 @@ TEST(AstSubtraction, VectorVector)
     b->set_local("c", &kC);
     
     std::string input("c(3,4)-c(5,6)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);

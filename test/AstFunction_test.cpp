@@ -19,6 +19,7 @@ TEST_GROUP(AstFunction)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     KObject *res2;
@@ -39,6 +40,8 @@ TEST_GROUP(AstFunction)
 TEST(AstFunction, Constant)
 {
     std::string input("function (x) 1");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFunctionAst *kfunc = dynamic_cast<KFunctionAst *>(res);
@@ -55,6 +58,8 @@ TEST(AstFunction, Constant)
 TEST(AstFunction, Invoke)
 {
     std::string input("function (x) x");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFunctionAst *kfunc = dynamic_cast<KFunctionAst *>(res);
@@ -72,6 +77,8 @@ TEST(AstFunction, Invoke)
 TEST(AstFunction, ReservedWord)
 {
     std::string input("function (function) x");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     CHECK_THROWS(std::invalid_argument, node->evaluate(b));
 }

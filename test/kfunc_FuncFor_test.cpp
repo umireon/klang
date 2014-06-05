@@ -22,6 +22,7 @@ TEST_GROUP(kfunc_FuncFor)
     KObject *res;
 
 	Parse p;
+    SyntaxErrorHandler seh;
 	Binding binding;
     Binding *b;
 
@@ -45,6 +46,8 @@ TEST_GROUP(kfunc_FuncFor)
 TEST(kfunc_FuncFor, TwoArgs)
 {
     std::string input("for(c(1,2,3),function(i)i)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -79,6 +82,8 @@ TEST(kfunc_FuncFor, Iteration)
     binding.set_local(std::string("checker"), &kChecker);
 
     std::string input("for(c(1,2,3),function(i)checker(i))");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
 }
@@ -90,6 +95,8 @@ TEST(kfunc_FuncFor, OuterBinding)
     delete zero;
     
     std::string input("for(c(1,2,3,4,5),function(i)s=s+1)");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);

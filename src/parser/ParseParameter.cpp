@@ -41,7 +41,7 @@ pstr_t ParseParameter::read_paren_left(pstr_t str)
         case SYMBOL_PAREN_LEFT:
             return str + 1;
         default:
-            pstr_t recover = syntaxErrorHandler->invalid_char(str, "ParseParameter::read_paren_left");
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
             if (*recover != '\0') {
                 return read_paren_left(recover);
             } else {
@@ -58,7 +58,7 @@ pstr_t ParseParameter::read_comma_or_follow(pstr_t str)
         case SYMBOL_PAREN_RIGHT:
             return str;
         default:
-            pstr_t recover = syntaxErrorHandler->invalid_char(str, "ParseParameter::read_comma_or_follow");
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
             if (*recover != '\0') {
                 return read_comma_or_follow(recover);
             } else {
@@ -69,6 +69,10 @@ pstr_t ParseParameter::read_comma_or_follow(pstr_t str)
 
 enum ParseParameter::SymbolType ParseParameter::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '(':
             return SYMBOL_PAREN_LEFT;

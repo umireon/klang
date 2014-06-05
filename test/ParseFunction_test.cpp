@@ -50,6 +50,7 @@ TEST_GROUP(ParseFunction)
     } parseParameterMock;
 
     ParseFunction parseFunction, *p;
+    SyntaxErrorHandler seh;
     
     AstFunction *astFunc;
     
@@ -74,6 +75,9 @@ TEST(ParseFunction, get_string)
     std::string input("() 0");
     mock().expectOneCall("parseExpression");
     mock().expectOneCall("parseParameter");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     astFunc = p->parse_function(input.begin());
 }
 
@@ -82,6 +86,9 @@ TEST(ParseFunction, Expression)
     std::string input("(a) 0");
     mock().expectOneCall("parseExpression");
     mock().expectOneCall("parseParameter");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     astFunc = p->parse_function(input.begin());
 }
 
@@ -91,5 +98,8 @@ TEST(ParseFunction, Compound)
     mock().expectOneCall("parseCompound");
     mock().expectNCalls(2, "parseExpression");
     mock().expectOneCall("parseParameter");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     astFunc = p->parse_function(input.begin());
 }

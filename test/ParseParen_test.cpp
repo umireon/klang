@@ -24,6 +24,7 @@ TEST_GROUP(ParseParen)
     } parseExpressionMock;
 
     ParseParen parseParen, *p;
+    SyntaxErrorHandler seh;
     
     AstParen *paren;
     
@@ -44,6 +45,9 @@ TEST(ParseParen, get_string)
 {
     std::string input("(1)");
     mock().expectOneCall("parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     paren = p->parse_paren(input.begin());
     CHECK_EQUAL(input, paren->get_string());
 }
@@ -52,6 +56,9 @@ TEST(ParseParen, SingleParen)
 {
     std::string input("(a)");
     mock().expectOneCall("parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     paren = p->parse_paren(input.begin());
     CHECK_EQUAL(std::string("a"), paren->children.at(0)->get_string());
 }

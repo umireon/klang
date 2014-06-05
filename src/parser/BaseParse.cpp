@@ -6,7 +6,7 @@ bool BaseParse::is_whitespace(pstr_t str) {
 }
 
 pstr_t BaseParse::scan(pstr_t str) {
-	while (is_whitespace(str)) {
+	while (str != line->end() && is_whitespace(str)) {
 		str++;
 	}
 

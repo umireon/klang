@@ -22,6 +22,7 @@ TEST_GROUP(ParseExpression)
     } parseNextMock;
 
     ParseExpression parseExpression, *p;
+    SyntaxErrorHandler seh;
 
     AstNode *node;
     
@@ -42,6 +43,9 @@ TEST(ParseExpression, get_string)
 {
     std::string input("0");
     mock().expectOneCall("parse");
+    seh.line = &input;
+    p->line = &input;
+    p->syntaxErrorHandler = &seh;
     node = p->parse_expression(input.begin());
     CHECK_EQUAL(input, node->get_string());
 }

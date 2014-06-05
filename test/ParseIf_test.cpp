@@ -38,6 +38,7 @@ TEST_GROUP(ParseIf)
     TokenIdentifier tokenIdentifier;
 
     ParseIf parseIf, *p;
+    SyntaxErrorHandler seh;
     
     AstIf *astIf;
     
@@ -60,6 +61,10 @@ TEST(ParseIf, get_string)
 {
     std::string input("1 3");
     mock().expectNCalls(2, "parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(input, astIf->get_string());
@@ -69,6 +74,10 @@ TEST(ParseIf, IfExpr)
 {
     std::string input("1 3");
     mock().expectNCalls(2, "parseExpression");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -80,6 +89,10 @@ TEST(ParseIf, IfCompound)
     std::string input("1 {3}");
     mock().expectNCalls(1, "parseExpression");
     mock().expectNCalls(1, "parseCompound");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -92,6 +105,10 @@ TEST(ParseIf, ElseCompound)
     mock().expectNCalls(2, "parseExpression");
     mock().expectNCalls(1, "parseCompound");
     mock().expectNCalls(1, "tokenIdentifier");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -105,6 +122,10 @@ TEST(ParseIf, IfElsif)
     std::string input("1 3 elsif 2 4");
     mock().expectNCalls(4, "parseExpression");
     mock().expectNCalls(1, "tokenIdentifier");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -119,6 +140,10 @@ TEST(ParseIf, IfElse)
     std::string input("1 3 else 4");
     mock().expectNCalls(3, "parseExpression");
     mock().expectNCalls(1, "tokenIdentifier");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());
@@ -132,6 +157,10 @@ TEST(ParseIf, IfElsifElse)
     std::string input("1 3 elsif 2 4 else 6");
     mock().expectNCalls(5, "parseExpression");
     mock().expectNCalls(2, "tokenIdentifier");
+    seh.line = &input;
+    p->line = &input;
+    p->tokenIdentifier->line = &input;
+    p->syntaxErrorHandler = &seh;
     astIf = p->parse_if(input.begin());
     
     CHECK_EQUAL(std::string("1"), astIf->cond.at(0)->get_string());

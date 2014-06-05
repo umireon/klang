@@ -21,6 +21,7 @@ TEST_GROUP(AstReminder)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     
@@ -39,6 +40,8 @@ TEST_GROUP(AstReminder)
 TEST(AstReminder, IntInt)
 {
 	std::string input("7%2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -49,6 +52,8 @@ TEST(AstReminder, IntInt)
 TEST(AstReminder, IntFloat)
 {
 	std::string input("7%2.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -59,6 +64,8 @@ TEST(AstReminder, IntFloat)
 TEST(AstReminder, FloatInt)
 {
 	std::string input("7.0%2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -69,6 +76,8 @@ TEST(AstReminder, FloatInt)
 TEST(AstReminder, FloatFloat)
 {
 	std::string input("7.0%2.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -82,6 +91,8 @@ TEST(AstReminder, VectorInt)
     b->set_local("c", &kC);
 
     std::string input("c(14,7)%2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);
@@ -96,6 +107,8 @@ TEST(AstReminder, VectorFloat)
     b->set_local("c", &kC);
 
     std::string input("c(14,7)%2.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KVector *kvect = dynamic_cast<KVector *>(res);

@@ -16,6 +16,7 @@ TEST_GROUP(AstGreaterThan)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     
@@ -34,6 +35,8 @@ TEST_GROUP(AstGreaterThan)
 TEST(AstGreaterThan, IntTrue)
 {
     std::string input("3>2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -44,6 +47,8 @@ TEST(AstGreaterThan, IntTrue)
 TEST(AstGreaterThan, IntFalse)
 {
     std::string input("2>3");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -54,6 +59,8 @@ TEST(AstGreaterThan, IntFalse)
 TEST(AstGreaterThan, FloatTrue)
 {
     std::string input("3.0>2");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -64,6 +71,8 @@ TEST(AstGreaterThan, FloatTrue)
 TEST(AstGreaterThan, FloatFalse)
 {
     std::string input("2>3.0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);

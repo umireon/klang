@@ -49,6 +49,10 @@ AstParen* ParseParen::parse_paren(pstr_t str)
 
 enum ParseParen::SymbolType ParseParen::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '(':
             return SYMBOL_PAREN_LEFT;

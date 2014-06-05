@@ -37,7 +37,7 @@ pstr_t ParseFunction::check_paren_left(pstr_t str)
         case SYMBOL_PAREN_LEFT:
             return str;
         default:
-            pstr_t recover = syntaxErrorHandler->invalid_char(str, "ParseFunction::check_paren_left");
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
             if (*recover != '\0') {
                 return check_paren_left(recover);
             } else {
@@ -48,6 +48,10 @@ pstr_t ParseFunction::check_paren_left(pstr_t str)
 
 enum ParseFunction::SymbolType ParseFunction::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     switch (*str) {
         case '(':
             return SYMBOL_PAREN_LEFT;

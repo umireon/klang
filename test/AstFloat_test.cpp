@@ -17,6 +17,7 @@ TEST_GROUP(AstFloat)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     
@@ -35,6 +36,8 @@ TEST_GROUP(AstFloat)
 TEST(AstFloat, ZeroFloat)
 {
     std::string input("0.4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -46,6 +49,8 @@ TEST(AstFloat, ZeroFloat)
 TEST(AstFloat, PlainFloat)
 {
     std::string input("1.4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -57,6 +62,8 @@ TEST(AstFloat, PlainFloat)
 TEST(AstFloat, PositiveFloat)
 {
     std::string input("+1.4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);
@@ -68,6 +75,8 @@ TEST(AstFloat, PositiveFloat)
 TEST(AstFloat, NegativeFloat)
 {
     std::string input("-1.4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KFloat *kflt = dynamic_cast<KFloat *>(res);

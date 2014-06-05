@@ -17,7 +17,7 @@ AstIdentifier* TokenIdentifier::parse_identifier(pstr_t str)
             break;
         case SYMBOL_NUMBER:
         case SYMBOL_FOLLOW:
-            pstr_t recover = syntaxErrorHandler->invalid_char(str, "TokenIdentifier::parse_identifier");
+            pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
             if (*recover != '\0') {
                 return parse_identifier(recover);
             } else {
@@ -42,6 +42,10 @@ AstIdentifier* TokenIdentifier::parse_identifier(pstr_t str)
 
 enum TokenIdentifier::SymbolType TokenIdentifier::get_symbol(pstr_t str)
 {
+    if (str == line->end()) {
+        return SYMBOL_FOLLOW;
+    }
+
     char c = *str;
     if ('0' <= c && c <= '9') {
         return SYMBOL_NUMBER;

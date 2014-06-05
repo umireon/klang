@@ -17,6 +17,7 @@ TEST_GROUP(AstInteger)
     Binding *b;
     
     Parse p;
+    SyntaxErrorHandler seh;
     AstNode *node;
     KObject *res;
     
@@ -35,6 +36,8 @@ TEST_GROUP(AstInteger)
 TEST(AstInteger, PlainDecimal)
 {
     std::string input("3");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -46,6 +49,8 @@ TEST(AstInteger, PlainDecimal)
 TEST(AstInteger, Zero)
 {
     std::string input("0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -57,6 +62,8 @@ TEST(AstInteger, Zero)
 TEST(AstInteger, PlainOctal)
 {
     std::string input("077");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -68,6 +75,8 @@ TEST(AstInteger, PlainOctal)
 TEST(AstInteger, PlainHexdecimal)
 {
     std::string input("0x4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -79,6 +88,8 @@ TEST(AstInteger, PlainHexdecimal)
 TEST(AstInteger, PositiveDecimal)
 {
     std::string input("+3");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -90,6 +101,8 @@ TEST(AstInteger, PositiveDecimal)
 TEST(AstInteger, PositiveZero)
 {
     std::string input("+0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -101,6 +114,8 @@ TEST(AstInteger, PositiveZero)
 TEST(AstInteger, PositiveOctal)
 {
     std::string input("+077");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -112,6 +127,8 @@ TEST(AstInteger, PositiveOctal)
 TEST(AstInteger, PositiveHexdecimal)
 {
     std::string input("+0x4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -123,6 +140,8 @@ TEST(AstInteger, PositiveHexdecimal)
 TEST(AstInteger, NegativeDecimal)
 {
     std::string input("-3");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -134,6 +153,8 @@ TEST(AstInteger, NegativeDecimal)
 TEST(AstInteger, NegativeZero)
 {
     std::string input("-0");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -145,6 +166,8 @@ TEST(AstInteger, NegativeZero)
 TEST(AstInteger, NegativeOctal)
 {
     std::string input("-077");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);
@@ -156,6 +179,8 @@ TEST(AstInteger, NegativeOctal)
 TEST(AstInteger, NegativeHexdecimal)
 {
     std::string input("-0x4");
+    seh.line = &input;
+    p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
     KInteger *kint = dynamic_cast<KInteger *>(res);

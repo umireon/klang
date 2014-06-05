@@ -31,7 +31,7 @@ protected:
 		SYMBOL_FOLLOW,
 	};
     
-	enum SymbolType get_symbol(char c);
+	enum SymbolType get_symbol(pstr_t str);
     
 	AstNumber *read_number_signed(pstr_t str);
     
