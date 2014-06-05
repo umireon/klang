@@ -26,7 +26,7 @@ AstParameter *ParseParameter::parse_parameter(pstr_t str)
 
                 str = scan(ident->strtail);
                 str = read_comma_or_follow(str);
-                if (*str == '\0') {
+                if (str == line->end()) {
                     astParam->strtail = str;
                     return astParam;
                 }
@@ -42,7 +42,7 @@ pstr_t ParseParameter::read_paren_left(pstr_t str)
             return str + 1;
         default:
             pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
-            if (*recover != '\0') {
+            if (recover != line->end()) {
                 return read_paren_left(recover);
             } else {
                 return recover;
@@ -59,7 +59,7 @@ pstr_t ParseParameter::read_comma_or_follow(pstr_t str)
             return str;
         default:
             pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
-            if (*recover != '\0') {
+            if (recover != line->end()) {
                 return read_comma_or_follow(recover);
             } else {
                 return recover;

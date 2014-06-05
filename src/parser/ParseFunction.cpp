@@ -38,7 +38,7 @@ pstr_t ParseFunction::check_paren_left(pstr_t str)
             return str;
         default:
             pstr_t recover = syntaxErrorHandler->invalid_char(str, __FUNCTION__);
-            if (*recover != '\0') {
+            if (recover != line->end()) {
                 return check_paren_left(recover);
             } else {
                 return recover;

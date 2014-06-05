@@ -15,10 +15,10 @@ KObject* FuncSeq::invoke(std::vector<KObject*> args) {
         if (first && second) {
             return invoke(first, second);
         } else {
-            std::cout << "WARNING: seq arguments KNumber" << std::endl;
+            outerror << "WARNING: seq arguments KNumber" << std::endl;
         }
     } else {
-        std::cout << "WARNING: seq arity 2" << std::endl;
+        outerror << "WARNING: seq arity 2" << std::endl;
     }
 
     std::vector<KObject *>::iterator iter = args.begin();

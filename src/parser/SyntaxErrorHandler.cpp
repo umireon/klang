@@ -7,16 +7,16 @@
 pstr_t SyntaxErrorHandler::invalid_char(pstr_t str, const char *func)
 {
     if (str == line->end()) {
-        std::cout << "Unexpected End Of Line in line " << lineno - 1 << std::endl;
-        std::cout << *line << std::endl;
-        std::cout << "Raised in " << func << std::endl;
+        output << "Unexpected End Of Line in line " << lineno - 1 << std::endl;
+        output << *line << std::endl;
+        output << "Raised in " << func << std::endl;
     } else {
         int reallineno = lineno - std::count(str, line->end(), '\n');
         std::string before(line->begin(), str);
         std::string after(str + 1, line->end());
-        std::cout << "Unexpected Character: " << *str << "in line " << reallineno << std::endl;
-        std::cout << "Raised in " << func << std::endl;
-        std::cout << before << "_" << *str << "_" << after << std::endl;
+        output << "Unexpected Character: " << *str << "in line " << reallineno << std::endl;
+        output << "Raised in " << func << std::endl;
+        output << before << "_" << *str << "_" << after << std::endl;
         str++;
     }
     
@@ -25,6 +25,6 @@ pstr_t SyntaxErrorHandler::invalid_char(pstr_t str, const char *func)
 
 pstr_t SyntaxErrorHandler::never_reach(pstr_t str, const char *func)
 {
-    std::cout << "[BUG] Never Reach in " << func << std::endl;
+    output << "[BUG] Never Reach in " << func << std::endl;
 	return str;
 }

@@ -8,6 +8,7 @@
 #include "Binding.h"
 
 #include "kfunc/triangle.h"
+#include "kfunc/FuncC.h"
 
 #include "ast/AstNode.h"
 
@@ -23,32 +24,9 @@ TEST_GROUP(kfunc_triangle)
 	Binding binding;
     Binding *b;
 
-    FuncSin kSin;
-    FuncCos kCos;
-    FuncTan kTan;
-
-    FuncSinh kSinh;
-    FuncCosh kCosh;
-    FuncTanh kTanh;
-
-    FuncArcsin kArcsin;
-    FuncArccos kArccos;
-    FuncArctan kArctan;
-
 	void setup()
 	{
         b = &binding;
-	    binding.set_local(std::string("sin"), &kSin);
-	    binding.set_local(std::string("cos"), &kCos);
-	    binding.set_local(std::string("tan"), &kTan);
-
-	    binding.set_local(std::string("sinh"), &kSinh);
-	    binding.set_local(std::string("cosh"), &kCosh);
-	    binding.set_local(std::string("tanh"), &kTanh);
-
-	    binding.set_local(std::string("arcsin"), &kArcsin);
-	    binding.set_local(std::string("arccos"), &kArccos);
-	    binding.set_local(std::string("arctan"), &kArctan);
 	}
 
 	void teardown()
@@ -60,6 +38,9 @@ TEST_GROUP(kfunc_triangle)
 
 TEST(kfunc_triangle, SinFloat)
 {
+    FuncMath kSin(&sin);
+    b->set_local("sin", &kSin);
+
     std::string input("sin(1.57)");
     seh.line = &input;
     p.syntaxErrorHandler = &seh;
@@ -70,100 +51,21 @@ TEST(kfunc_triangle, SinFloat)
     DOUBLES_EQUAL(1.0, kflt->to_f(), 0.01);
 }
 
-TEST(kfunc_triangle, CosFloat)
+TEST(kfunc_triangle, SinVector)
 {
-    std::string input("cos(0.0)");
+    FuncMath kSin(&sin);
+    b->set_local("sin", &kSin);
+    FuncC kC;
+    b->set_local("c", &kC);
+
+    std::string input("sin(c(1.57,0))");
     seh.line = &input;
     p.syntaxErrorHandler = &seh;
     node = p.parse(input.begin());
     res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(1.0, kflt->to_f(), 0.01);
-}
-
-TEST(kfunc_triangle, TanFloat)
-{
-    std::string input("tan(0.785)");
-    seh.line = &input;
-    p.syntaxErrorHandler = &seh;
-    node = p.parse(input.begin());
-    res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(1.0, kflt->to_f(), 0.01);
-}
-
-TEST(kfunc_triangle, SinhFloat)
-{
-    std::string input("sinh(1.0)");
-    seh.line = &input;
-    p.syntaxErrorHandler = &seh;
-    node = p.parse(input.begin());
-    res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(1.17, kflt->to_f(), 0.01);
-}
-
-TEST(kfunc_triangle, CoshFloat)
-{
-    std::string input("cosh(1.0)");
-    seh.line = &input;
-    p.syntaxErrorHandler = &seh;
-    node = p.parse(input.begin());
-    res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(1.54, kflt->to_f(), 0.01);
-}
-
-TEST(kfunc_triangle, TanhFloat)
-{
-    std::string input("tanh(1)");
-    seh.line = &input;
-    p.syntaxErrorHandler = &seh;
-    node = p.parse(input.begin());
-    res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(0.761, kflt->to_f(), 0.001);
-}
-
-
-TEST(kfunc_triangle, ArcsinFloat)
-{
-    std::string input("arcsin(1.0)");
-    seh.line = &input;
-    p.syntaxErrorHandler = &seh;
-    node = p.parse(input.begin());
-    res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(1.57, kflt->to_f(), 0.01);
-}
-
-TEST(kfunc_triangle, ArccosFloat)
-{
-    std::string input("arccos(0.0)");
-    seh.line = &input;
-    p.syntaxErrorHandler = &seh;
-    node = p.parse(input.begin());
-    res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(1.57, kflt->to_f(), 0.01);
-}
-
-TEST(kfunc_triangle, ArctanFloat)
-{
-    std::string input("arctan(1.0)");
-    seh.line = &input;
-    p.syntaxErrorHandler = &seh;
-    node = p.parse(input.begin());
-    res = node->evaluate(b);
-    KFloat *kflt = dynamic_cast<KFloat *>(res);
-    CHECK(kflt);
-    DOUBLES_EQUAL(0.785, kflt->to_f(), 0.01);
-
+    KVector *kvect = dynamic_cast<KVector *>(res);
+    CHECK(kvect);
+    CHECK_EQUAL(2, kvect->vect.size());
+    DOUBLES_EQUAL(1.0, kvect->vect[0], 0.01);
+    DOUBLES_EQUAL(0.0, kvect->vect[1], 0.01);
 }
