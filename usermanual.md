@@ -84,6 +84,46 @@ exitの入力で終了する。
 2. 実行速度が高速
 3. メモリ使用量が少なく軽量
 
+文法記法
+========================================
+```
+　Expression :=Assignment
+
+　Assignment := Compare ｛｀=´ Compare｝
+
+　Compare := ArithExpression ｛(｀>´|｀<´)[｀=´] ArithExpression｝
+
+　ArithExpression := Term ｛(｀+´|｀-´) Term｝
+
+　Term := Primary ｛(｀/´|｀*´[｀*´]|｀%´) Term｝
+
+　Primary := Number | Identifier | Invocation | If | Function
+
+　Function := ｀function´ Parameter (Expression|Compound)
+
+　Compound := '{' {Expression} '}'
+
+　Parameter := '(' ({Identifier ','}Identifier|'')')'
+
+　If := ｀if´ Expression (Expression|Compound) {｀elsif´ Expression 　(Expression|　　Compound)}  [｀else´ (Expression|Compound)]
+
+　Paren := '(' Expression ')'
+
+　Number := Integer | Float
+
+　Integer := Octal | Decimal | Hexdecimal
+
+　Octal := [｀+´|｀-´]｀0´[0-7]*
+
+　Decimal := [｀+´|｀-´][0-9]*
+
+　Hexdecimal := [｀+´|｀-´]｀0´[xX][0-9A-Fa-f]*
+
+　Float := [｀+´|｀-´][1-9][0-9]*｀.´[0-9][0-9]*
+
+　Identifier := [A-Za-z]+
+```
+
 その他の機能
 ========================================
 リテラル表記に対応した16進数、8進数での計算
@@ -144,12 +184,69 @@ log(x),log2(x),log10(x)
 - sinh(x),cosh(x),tanh(x)
 - arcsinh(x),arccosh(x),arctanh(x)
 
-組み合わせ関数
+sin(KInteger x) : KFloat
+  　与えられた整数のsin値を浮動小数で返す．
+sin(KFloat x) : KFloat
+  　与えられた浮動小数のsin値を浮動小数で返す．
+
+平方根
 ----------------------------------------
-- fact(n)    (=n!)
-- perm(n,r)  (=nPr)
-- comb(n,r)  (=nCr)
-- hmpr(n,r)  (=nHr)
+sqrt
+
+誤差関数，誤差補関数
+----------------------------------------
+erf,erfc
+
+切り上げ，切り捨て，四捨五入
+----------------------------------------
+ceil,floor,round
+
+階乗(x!)
+----------------------------------------
+fact(KInteger x) : KInteger
+与えられた整数の階乗を整数で返す。x<0ならば，1を返す。
+
+perm型関数
+----------------------------------------
+perm(nPr),comb(nCr),hmpr(nHr)
+
+- perm(KInteger n, KInteger r) : KInteger
+　　nPrを整数で返す。
+- comb(KInteger n, KInteger r) : KInteger
+　　nCrを整数で返す。
+- hmpr(KInteger n, KInteger r) : KInteger
+　　nHrを整数で返す。
+
+print系
+----------------------------------------
+print,puts
+
+c(KFloat x,…) : KVector
+----------------------------------------
+浮動小数をまとめて，数値ベクトルとして返す。
+
+seq(KInteger first, KInteger last) : KVector
+----------------------------------------
+c(first, first+1, …, last)と同等。
+  
+sum型
+----------------------------------------
+sum,prod
+- sum(KObject x, ..) : KFloat
+  　引数に指定されたすべての数の合計を浮動小数で返す。
+- prod(KObject x, ..) : KFloat
+  　引数に指定されたすべての数の積を浮動小数で返す。
+  　
+for(KVector v, KFunction f) : KObject
+----------------------------------------
+vの要素を1つずつ取り出し，fの第一引数に渡して実行する。
+最後のfの実行によって得られた返り値が返される。
+例)
+```
+> sum=0
+> for (c(1,2,3,4,5)*2, function(x) sum=sum+x)
+#=>30
+```
 
 if式
 ----------------------------------------
@@ -173,13 +270,3 @@ if式
 #=> 832040
 ```
 
-関数for
-----------------------------------------
-関数for(配列,function(要素){ループ本文})
-1,2,3,4,5をすべて2倍してsumに足し上げる計算の例を示す。
-例)
-```
-> sum=0
-> for (c(1,2,3,4,5)*2, function(x) sum=sum+x)
-#=>30
-```
