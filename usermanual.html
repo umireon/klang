@@ -2,38 +2,38 @@
 			klang
 -------------------------------------------------
 
-���g�p���@:
-�@klang:001:0> �̂悤�ȕ\��������̂ŁA�����Ď�����͂���ƌv�Z���ʂ�#=> �̌�ɕ\�������B
-  �V���ɕϐ����`����Ƃ��́C�ϐ� = �� �̂悤�ɓ��͂���B�ϐ���������ꂽ�֐��ȉ��ŃX�R�[�v�����܂�B
-�@�@��) klang:001:0> a=1+2
+■使用方法:
+　klang:001:0> のような表示があるので、続けて式を入力すると計算結果が#=> の後に表示される。
+  新たに変数を定義するときは，変数 = 式 のように入力する。変数が代入された関数以下でスコープが決まる。
+　　例) klang:001:0> a=1+2
 	#=> 3 
-  ���Z�q�ɂ�+,-,*,/,%(�]��),**(�ׂ���)���̎Z�p���Z�q�ɉ����A=,<,>,<=,>=���̊֌W���Z�q�C
-�@and,or,not���̘_�����Z�q�����p�ł���B
-  �@�\�̍��ڂŎ����悤�ɉȊw�萔�A�O�p�֐���g�ݍ��킹�֐��Ȃǂ��\�ߒ�`����Ă���B
-�@�܂��A�V���Ȋ֐��������`���邱�Ƃ��\�ł���B
+  演算子には+,-,*,/,%(余剰),**(べき乗)等の算術演算子に加え、=,<,>,<=,>=等の関係演算子，
+　and,or,not等の論理演算子が利用できる。
+  機能の項目で示すように科学定数、三角関数や組み合わせ関数などが予め定義されている。
+　また、新たな関数を自ら定義することも可能である。
 
-�@klang�ł̓x�N�g����s��̌v�Z�ɂ��Ή����Ă���B���̗�ł͍s�x�N�g��t���`���C����2����v�Z���Ă���B
+　klangではベクトルや行列の計算にも対応している。次の例では行ベクトルtを定義し，その2乗を計算している。
 
-�E�x�N�g���̐��� c(...)
-�@�@��) > t=c(1,2,3)
+・ベクトルの生成 c(...)
+　　例) > t=c(1,2,3)
 	#=> [ 1 2 3 ]
 	> t**2
 	#=> [ 1 4 9 ]
-�@���v�f��x����y�܂ł̘A�����鐮���l�ł���΁Cseq(x,y)�̂悤�ɕ\�����Ƃ��ł���B
-�@�@��) > seq(1,3)
+　※要素がxからyまでの連続する整数値であれば，seq(x,y)のように表すこともできる。
+　　例) > seq(1,3)
 	#=> [ 1 2 3]
 
-�E�x�N�g������s������� matrix(c(...),�s,��)
-�@�@��) >matrix(c(1,2,3,4,5,6,7,8,9),3,3)
+・ベクトルから行列をつくる matrix(c(...),行,列)
+　　例) >matrix(c(1,2,3,4,5,6,7,8,9),3,3)
 	=> [
-	�@ 1 2 3
-	�@ 4 5 6
+	　 1 2 3
+	　 4 5 6
 	   7 8 9
 	   ]
 
 
-�@���͂ɃG���[���������ꍇ�A�G���[�̂������ꏊ�𕶎��P�ʂŎw�E����B
-�@�@��) > +++++4
+　入力にエラーがあった場合、エラーのあった場所を文字単位で指摘する。
+　　例) > +++++4
 	Unexpected Character; +in line 1
 	Raised in read_number_signed
 	+_+_+++4
@@ -52,85 +52,85 @@
 
 	#=> 0
 
-  exit�̓��͂ŏI������B
+  exitの入力で終了する。
 
-�������F
-1.������؂蕶�����g�p�����ɕ������m��ł���B
-�@�Ⴆ��,
-�@�@��) >if k>2 fibo(k-1)+fibo(k-2) else 1
-�@���邢�́A
-�@�@��) >if k>2fibo(k-1)+fibo(k-2)else 1
-�@�̂悤�ȏ��������ł���B
-2.���s���x������
-3.�������g�p�ʂ����Ȃ��y��
+■特徴：
+1.文末区切り文字を使用せずに文末を確定できる。
+　例えば,
+　　例) >if k>2 fibo(k-1)+fibo(k-2) else 1
+　あるいは、
+　　例) >if k>2fibo(k-1)+fibo(k-2)else 1
+　のような書き方ができる。
+2.実行速度が高速
+3.メモリ使用量が少なく軽量
 
-�����̑��̋@�\�F
-�E���e�����\�L�ɑΉ�����16�i���A8�i���ł̌v�Z
-�@�@��) > 0x10
+■その他の機能：
+・リテラル表記に対応した16進数、8進数での計算
+　　例) > 0x10
 	#=> 16
 
-�E�Ȋw�萔
-�@��`����Ă���Ȋw�萔�����Ɏ����B
-�@�@PI             �c �~������
-�@�@E              �c e�i�l�C�s�A���j
-�@�@C              �c ���̑���
-�@�@NA             �c �A�{�K�h����
-�@�@R              �c 1mol�̋C�̒萔
-�@�@F   �@         �c �t�@���f�[�萔
-�@�@G              �c ���L���͒萔
-�@�@H              �c �v�����N�萔
-�@�@K              �c �{���c�}���萔
-�@�@RYDBERG_CONST  �c �����[�h�x���萔
-�@�@E0             �c �^��̗U�d��
-�@�@MU0            �c �^��̓�����
-�@�@EC             �c �d�C�f��
-�@�@MACH           �c ����
-�@�@GRAVITY_EARTH  �c �d�͉����x
-�@�@
+・科学定数
+　定義されている科学定数を次に示す。
+　　PI             … 円周率π
+　　E              … e（ネイピア数）
+　　C              … 光の速さ
+　　NA             … アボガドロ数
+　　R              … 1molの気体定数
+　　F   　         … ファラデー定数
+　　G              … 万有引力定数
+　　H              … プランク定数
+　　K              … ボルツマン定数
+　　RYDBERG_CONST  … リュードベリ定数
+　　E0             … 真空の誘電率
+　　MU0            … 真空の透磁率
+　　EC             … 電気素量
+　　MACH           … 音速
+　　GRAVITY_EARTH  … 重力加速度
+　　
 
-�E�u�[�����Z
-�@and, or, not��g�ݍ��킹���_�����Z
+・ブール演算
+　and, or, notを組み合わせた論理演算
 
-�E���A��
-�@�W���i�s��j�̒��a�A���ς̌v�Z
-�@�@��) > �� => sum(c(1,2,3,4,5))
+・Σ、Π
+　集合（行列）の直和、直積の計算
+　　例) > Σ => sum(c(1,2,3,4,5))
 	#=> 15
 
-�E�ΐ�
-�@log(x),log2(x),log10(x)
-�@�@��) >log(2)
+・対数
+　log(x),log2(x),log10(x)
+　　例) >log(2)
 	#=> 0.30103
 
-�E�O�p�֐�,�t�O�p�֐�,�o�Ȑ��֐�,�t�o�Ȑ��֐�
-�@sin(x),cos(x),tan(x)
-�@arcsin(x),arccos(x),arctan(x)
-�@sinh(x),cosh(x),tanh(x)
+・三角関数,逆三角関数,双曲線関数,逆双曲線関数
+　sin(x),cos(x),tan(x)
+　arcsin(x),arccos(x),arctan(x)
+　sinh(x),cosh(x),tanh(x)
   arcsinh(x),arccosh(x),arctanh(x)
 
-�E�g�ݍ��킹�֐�
-�@fact(n)    (=n!)
-�@perm(n,r)  (=nPr)
-�@comb(n,r)  (=nCr)
-�@hmpr(n,r)  (=nHr)
+・組み合わせ関数
+　fact(n)    (=n!)
+　perm(n,r)  (=nPr)
+　comb(n,r)  (=nCr)
+　hmpr(n,r)  (=nHr)
 
-�Eif��
-�@�@��) >a=1
+・if式
+　　例) >a=1
 	>if a=1 5
 	#=> 5
 	>if a=0 5 else 6
 	#=> 6
 
-�E�֐��̒�`
-�@�֐�������錾���Ē�`���邱�Ƃ��ł���B
-�@�ċN�Ăяo����p���ăt�B�{�i�b�`��������߂�֐��̒�`��������B
-�@�@��) > fibo = function(k) if k>2 fibo(k-1)+fibo(k-2) else 1
+・関数の定義
+　関数を自ら宣言して定義することができる。
+　再起呼び出しを用いてフィボナッチ数列を求める関数の定義例を示す。
+　　例) > fibo = function(k) if k>2 fibo(k-1)+fibo(k-2) else 1
 	> fibo(30)
 	#=> 832040
 
-�E�֐�for
-�@�֐�for(�z��,function(�v�f){���[�v�{��})
-�@1,2,3,4,5�����ׂ�2�{����sum�ɑ����グ��v�Z�̗�������B
-�@�@��) > sum=0
+・関数for
+　関数for(配列,function(要素){ループ本文})
+　1,2,3,4,5をすべて2倍してsumに足し上げる計算の例を示す。
+　　例) > sum=0
 	> for (c(1,2,3,4,5)*2, function(x) sum=sum+x)
 	#=>30
 
